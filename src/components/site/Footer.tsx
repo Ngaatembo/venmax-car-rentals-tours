@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Instagram, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 import { company, whatsappLink } from "@/data/venmax";
 
@@ -107,6 +107,24 @@ export function Footer() {
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-navy-foreground/15 text-navy-foreground/70 hover:text-navy-foreground"
               >
                 <Facebook className="h-4 w-4" />
+              </a>
+              <a
+                href={company.social.tiktok}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="VenMax on TikTok"
+                className="inline-flex h-10 items-center justify-center rounded-full border border-navy-foreground/15 px-3 text-xs font-semibold text-navy-foreground/70 hover:text-navy-foreground"
+              >
+                TikTok
+              </a>
+              <a
+                href={company.social.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="VenMax on LinkedIn"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-navy-foreground/15 text-navy-foreground/70 hover:text-navy-foreground"
+              >
+                <Linkedin className="h-4 w-4" />
               </a>
             </div>
           </div>

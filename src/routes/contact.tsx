@@ -14,7 +14,7 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Message VenMax on WhatsApp, call or email us. B2, 20 Bradford Drive, Milton Park, Harare — free airport pickup available.",
+          "Message VenMax on WhatsApp, call or email us. 27 Lawson Avenue, Milton Park, Harare — free airport pickup available.",
       },
       { property: "og:title", content: "Contact VenMax | Harare, Zimbabwe" },
       {
