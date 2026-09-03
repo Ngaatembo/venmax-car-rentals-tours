@@ -100,9 +100,7 @@ function ContactPage() {
               <Clock className="mt-1 h-5 w-5 shrink-0 text-primary" />
               <div>
                 <h3 className="text-base">Opening hours</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {company.hours} — full hours to be confirmed by VenMax.
-                </p>
+                <p className="mt-1 text-sm text-muted-foreground">{company.hours}</p>
               </div>
             </div>
             <div className="flex gap-4">

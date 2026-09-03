@@ -31,7 +31,7 @@ export const company = {
   phones: ["+263 71 422 5314", "+263 78 047 5535"],
   whatsapp: "263714225314",
   emails: ["sales@venmax.co.zw", "venmaxcarrentaltours@gmail.com"],
-  hours: "Open daily — message us anytime on WhatsApp",
+  hours: "Office hours 8am–5pm — WhatsApp messages answered anytime",
   social: {
     instagram: "https://www.instagram.com/venmax_car_rental__tours",
     facebook: "https://www.facebook.com/share/18kPwcmXH2/?mibextid=wwXIfr",
@@ -126,7 +126,7 @@ export const vehicles: Vehicle[] = [
     slug: "toyota-fortuner",
     name: "Toyota Fortuner GD6",
     category: "SUV",
-    priceLabel: "From $150/day",
+    priceLabel: "From $170/day",
     deposit: "$300 deposit",
     description:
       "Capable 7-seater 4x4 SUV built for family travel, safaris and cross-country routes.",
@@ -194,7 +194,7 @@ export const services: Service[] = [
     slug: "airport-transfer",
     name: "Airport Transfers",
     description:
-      "Punctual pickups and drop-offs at Harare's airports — meet-and-greet included on arrival.",
+      "RGM International Airport shuttle from $30 one-way, Harare CBD to hotels, BnBs and lodges — no waiting, no sharing, door to door.",
     icon: "plane",
     whatsapp: "Hello VenMax, I'd like to arrange an airport transfer.",
   },
@@ -317,23 +317,11 @@ export const rentalTerms = [
 ];
 
 // DESIGN PLACEHOLDER — replace with genuine VenMax customer reviews before launch.
+// Genuine reviews sourced from VenMax's Google Business Profile. Names withheld
+// per client request — add more here as Rurushamy supplies them.
 export const testimonials = [
   {
-    name: "Placeholder Review",
-    location: "Harare, Zimbabwe",
     quote:
-      "This is a design placeholder. A genuine VenMax customer review will appear here once supplied.",
-  },
-  {
-    name: "Placeholder Review",
-    location: "Bulawayo, Zimbabwe",
-    quote:
-      "This is a design placeholder. A genuine VenMax customer review will appear here once supplied.",
-  },
-  {
-    name: "Placeholder Review",
-    location: "Victoria Falls, Zimbabwe",
-    quote:
-      "This is a design placeholder. A genuine VenMax customer review will appear here once supplied.",
+      "We hired your car for 3 days and everything went really well. The car was in great condition, and the service was smooth. We really appreciate it and will definitely recommend Venmax and use you again.",
   },
 ];

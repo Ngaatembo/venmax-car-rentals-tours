@@ -18,6 +18,7 @@ import {
   requirements,
   rentalTerms,
   services,
+  testimonials,
   trustPoints,
   whatsappLink,
   whyVenMax,
@@ -289,22 +290,35 @@ export function WhySection() {
 export function TestimonialsSection() {
   return (
     <Section>
-      <div className="mx-auto max-w-2xl rounded-2xl border border-border bg-card px-8 py-14 text-center">
-        <p className="eyebrow text-primary">Customer Reviews</p>
-        <h2 className="mt-3 text-2xl sm:text-3xl">Hear it from real VenMax customers</h2>
-        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-          Genuine reviews from VenMax customers are collected on our Google Business Profile. Take a
-          look before you book — and if you've travelled with us, we'd love to hear from you there
-          too.
-        </p>
+      <SectionHeading
+        eyebrow="Customer Reviews"
+        title="Trusted by travellers across Zimbabwe"
+        description="Genuine reviews from VenMax customers on our Google Business Profile."
+      />
+      <div className="mt-12 grid gap-6 lg:grid-cols-3">
+        {testimonials.map((t, i) => (
+          <figure key={i} className="rounded-2xl border border-border bg-card p-6">
+            <div className="flex gap-0.5 text-primary">
+              {Array.from({ length: 5 }).map((_, star) => (
+                <Star key={star} className="h-4 w-4 fill-current" />
+              ))}
+            </div>
+            <blockquote className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              “{t.quote}”
+            </blockquote>
+            <figcaption className="mt-6 text-xs text-muted-foreground">
+              Verified Google review
+            </figcaption>
+          </figure>
+        ))}
         <a
           href={company.googleProfile}
           target="_blank"
           rel="noreferrer"
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+          className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border p-6 text-center transition-colors hover:bg-secondary"
         >
-          <Star className="h-4 w-4" />
-          See Our Google Reviews
+          <Star className="h-6 w-6 text-primary" />
+          <span className="text-sm font-semibold">See all our Google reviews</span>
         </a>
       </div>
     </Section>
