@@ -19,14 +19,16 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-3">
           <div>
             <div className="flex items-center gap-3">
-              <img
-                src={logo}
-                alt="VenMax Car Rental logo"
-                loading="lazy"
-                width={48}
-                height={48}
-                className="h-12 w-12 rounded-full bg-background object-contain"
-              />
+              <span className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-background">
+                <img
+                  src={logo}
+                  alt="VenMax Car Rental logo"
+                  loading="lazy"
+                  width={48}
+                  height={48}
+                  className="size-full scale-[1.55] object-contain"
+                />
+              </span>
               <div>
                 <p className="font-display text-lg font-bold">{company.shortName}</p>
                 <p className="text-xs uppercase tracking-[0.18em] text-navy-foreground/60">
