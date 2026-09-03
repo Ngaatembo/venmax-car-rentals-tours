@@ -57,14 +57,12 @@ function Hero() {
           </a>
         </div>
         <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-navy-foreground/80">
-          {["Free Airport Pickup", "Harare Vehicle Delivery", "Transparent Pricing"].map(
-            (item) => (
-              <span key={item} className="inline-flex items-center gap-2">
-                <Star className="h-4 w-4 fill-primary text-primary" />
-                {item}
-              </span>
-            ),
-          )}
+          {["Free Airport Pickup", "Harare Vehicle Delivery", "Transparent Pricing"].map((item) => (
+            <span key={item} className="inline-flex items-center gap-2">
+              <Star className="h-4 w-4 fill-primary text-primary" />
+              {item}
+            </span>
+          ))}
         </div>
       </div>
     </section>

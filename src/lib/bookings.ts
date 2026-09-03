@@ -37,9 +37,7 @@ export type BookingResult = {
   status: "pending";
 };
 
-export async function submitBookingRequest(
-  data: BookingRequest,
-): Promise<BookingResult> {
+export async function submitBookingRequest(data: BookingRequest): Promise<BookingResult> {
   const parsed = bookingSchema.parse(data);
   const reference = `VM-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
 

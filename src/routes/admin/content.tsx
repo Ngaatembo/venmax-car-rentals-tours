@@ -70,10 +70,7 @@ function AdminContent() {
             <div key={item.key} className="rounded-lg border border-border bg-background p-4">
               <Label>{fieldLabels[item.key] ?? item.key}</Label>
               <div className="mt-2 flex gap-2">
-                <Input
-                  value={item.value}
-                  onChange={(e) => updateLocal(item.key, e.target.value)}
-                />
+                <Input value={item.value} onChange={(e) => updateLocal(item.key, e.target.value)} />
                 <Button
                   variant="secondary"
                   onClick={() => handleSave(item.key, item.value)}

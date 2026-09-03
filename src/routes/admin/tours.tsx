@@ -13,7 +13,14 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { listTours, upsertTour, deleteTour, uploadMedia, type DbTour } from "@/lib/admin-data";
@@ -162,7 +169,12 @@ function AdminTours() {
               </div>
               <div className="space-y-1.5">
                 <Label>Photo (should show the actual destination, not a vehicle)</Label>
-                <Input type="file" accept="image/*" onChange={handleFileChange} disabled={uploading} />
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  disabled={uploading}
+                />
                 {form.image_url && (
                   <img
                     src={form.image_url}

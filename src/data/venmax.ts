@@ -73,8 +73,7 @@ export const vehicles: Vehicle[] = [
     category: "Economy",
     priceLabel: "From $40/day",
     deposit: "$100 deposit",
-    description:
-      "Compact hybrid hatchback — easy to park and cheap to run around Harare.",
+    description: "Compact hybrid hatchback — easy to park and cheap to run around Harare.",
     image: aqua,
   },
   {
@@ -83,8 +82,7 @@ export const vehicles: Vehicle[] = [
     category: "Economy",
     priceLabel: "From $45/day",
     deposit: "$100 deposit",
-    description:
-      "Comfortable, fuel-efficient hatchback for personal or business use.",
+    description: "Comfortable, fuel-efficient hatchback for personal or business use.",
     image: fit,
   },
   {
@@ -93,8 +91,7 @@ export const vehicles: Vehicle[] = [
     category: "SUV",
     priceLabel: "From $55/day",
     deposit: "$100 refundable deposit",
-    description:
-      "Family-friendly SUV with a 600L boot and flat-folding rear seats.",
+    description: "Family-friendly SUV with a 600L boot and flat-folding rear seats.",
     image: xtrail,
   },
   {
@@ -113,8 +110,7 @@ export const vehicles: Vehicle[] = [
     category: "SUV",
     priceLabel: "From $80/day",
     deposit: "$100 refundable deposit",
-    description:
-      "Refined, comfortable crossover for business travel and executive trips.",
+    description: "Refined, comfortable crossover for business travel and executive trips.",
     image: cx5,
   },
   {
@@ -123,8 +119,7 @@ export const vehicles: Vehicle[] = [
     category: "Pickup",
     priceLabel: "From $130/day",
     deposit: "$300 refundable deposit",
-    description:
-      "Rugged double-cab 4x4, built for long-distance travel and site visits.",
+    description: "Rugged double-cab 4x4, built for long-distance travel and site visits.",
     image: d4d,
   },
   {
@@ -143,8 +138,7 @@ export const vehicles: Vehicle[] = [
     category: "Premium 4x4",
     priceLabel: "From $400/day",
     deposit: "$300 deposit",
-    description:
-      "Premium 7-seater 4x4 with robust off-road performance and comfort.",
+    description: "Premium 7-seater 4x4 with robust off-road performance and comfort.",
     image: prado,
   },
   {
@@ -153,8 +147,7 @@ export const vehicles: Vehicle[] = [
     category: "Luxury SUV",
     priceLabel: "From $400/day",
     deposit: "$500 deposit",
-    description:
-      "Executive luxury SUV for VIP travel and premium occasions.",
+    description: "Executive luxury SUV for VIP travel and premium occasions.",
     image: sport,
   },
   {
@@ -163,8 +156,7 @@ export const vehicles: Vehicle[] = [
     category: "Premium 4x4",
     priceLabel: "From $700/day",
     deposit: "$300 deposit",
-    description:
-      "Flagship 4x4, engineered for maximum durability and long hauls.",
+    description: "Flagship 4x4, engineered for maximum durability and long hauls.",
     image: landCruiser,
   },
 ];
@@ -256,8 +248,7 @@ export const tours: Tour[] = [
   {
     slug: "harare-city",
     name: "Harare City & Surrounds",
-    description:
-      "Jacaranda-lined avenues, vibrant markets and the warmth of Zimbabwe's capital.",
+    description: "Jacaranda-lined avenues, vibrant markets and the warmth of Zimbabwe's capital.",
     image: tourHarare,
   },
 ];
@@ -306,7 +297,8 @@ export const requirements = [
   {
     number: "03",
     title: "Residence / Employment",
-    description: "Proof of residence — a recent utility bill, tenancy agreement, or employer letter.",
+    description:
+      "Proof of residence — a recent utility bill, tenancy agreement, or employer letter.",
   },
   {
     number: "04",
@@ -316,7 +308,10 @@ export const requirements = [
 ];
 
 export const rentalTerms = [
-  { label: "Rental Period", value: "Flexible daily, weekly and multi-day rentals — discounts for longer hires" },
+  {
+    label: "Rental Period",
+    value: "Flexible daily, weekly and multi-day rentals — discounts for longer hires",
+  },
   { label: "Free Mileage", value: "200km free daily mileage, with excess billed at $0.60/km" },
   { label: "Chauffeur Option", value: "Available on any vehicle for an additional daily fee" },
 ];

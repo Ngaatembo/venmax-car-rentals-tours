@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { supabase } from "./supabase";
-import { vehicles as staticVehicles, tours as staticTours, type Vehicle, type Tour } from "@/data/venmax";
+import {
+  vehicles as staticVehicles,
+  tours as staticTours,
+  type Vehicle,
+  type Tour,
+} from "@/data/venmax";
 
 const staticVehicleImages = new Map(staticVehicles.map((v) => [v.slug, v.image]));
 const staticTourImages = new Map(staticTours.map((t) => [t.slug, t.image]));

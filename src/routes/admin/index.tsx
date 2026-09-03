@@ -55,9 +55,7 @@ function AdminDashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-3xl font-semibold text-foreground">
-                  {card.value ?? "…"}
-                </p>
+                <p className="text-3xl font-semibold text-foreground">{card.value ?? "…"}</p>
               </CardContent>
             </Card>
           </Link>

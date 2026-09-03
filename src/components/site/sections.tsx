@@ -6,6 +6,7 @@ import {
   MapPin,
   MessageCircle,
   Plane,
+  Star,
   User,
   Users,
 } from "lucide-react";
@@ -17,7 +18,6 @@ import {
   requirements,
   rentalTerms,
   services,
-  testimonials,
   trustPoints,
   whatsappLink,
   whyVenMax,
@@ -56,7 +56,7 @@ export function FleetSection({ limit }: { limit?: number }) {
     <Section tone="surface" id="vehicles">
       <SectionHeading
         eyebrow="The Fleet"
-        title="Choose your vehicle"
+        title="Choose the right vehicle for your Zimbabwe journey"
         description="A curated fleet from economical hybrids to flagship 4x4s. Discounts available for longer rentals — every price is transparent, with no hidden charges."
       />
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -76,8 +76,8 @@ export function FleetSection({ limit }: { limit?: number }) {
         </div>
       ) : (
         <p className="mt-10 text-center text-sm text-muted-foreground">
-          Prices shown are starting daily rates. Final pricing depends on rental duration —
-          message us for a tailored quote.
+          Prices shown are starting daily rates. Final pricing depends on rental duration — message
+          us for a tailored quote.
         </p>
       )}
     </Section>
@@ -184,8 +184,8 @@ export function ToursSection() {
     <Section tone="navy" id="tours">
       <SectionHeading
         eyebrow="Explore Zimbabwe"
-        title="Your vehicle is the key to a larger adventure"
-        description="VenMax is also a tours company. From the thunder of Victoria Falls to the ancient stone of Great Zimbabwe, we help you reach the places that make this country extraordinary."
+        title="Your journey doesn't end at the vehicle"
+        description="VenMax is also a tours company. From the thunder of Victoria Falls to the ancient stone of Great Zimbabwe, we help you reach the places that make this country extraordinary — the vehicle is just how you get there."
         invert
       />
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -203,15 +203,26 @@ export function ToursSection() {
               loading="lazy"
               width={1024}
               height={768}
-              className={cn("w-full object-cover", index === 0 ? "h-72 lg:h-full" : "h-72")}
+              className={cn(
+                "w-full object-cover transition-transform duration-700 group-hover:scale-105",
+                index === 0 ? "h-80 lg:h-full" : "h-72",
+              )}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/5" />
+            <span className="absolute left-6 top-6 inline-flex items-center gap-1.5 rounded-full bg-navy-foreground/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-navy-foreground/90 backdrop-blur-sm">
+              <MapPin className="h-3 w-3 text-primary" />
+              Zimbabwe Journey
+            </span>
             <div className="absolute inset-x-0 bottom-0 p-6">
-              <h3 className="flex items-center gap-2 text-lg text-navy-foreground">
-                <MapPin className="h-4 w-4 text-primary" />
+              <h3 className={cn("text-navy-foreground", index === 0 ? "text-2xl" : "text-lg")}>
                 {tour.name}
               </h3>
-              <p className="mt-2 max-w-md text-sm leading-relaxed text-navy-foreground/80">
+              <p
+                className={cn(
+                  "mt-2 leading-relaxed text-navy-foreground/80",
+                  index === 0 ? "max-w-lg text-base" : "max-w-md text-sm",
+                )}
+              >
                 {tour.description}
               </p>
             </div>
@@ -221,7 +232,7 @@ export function ToursSection() {
 
       <div className="mt-10 flex flex-col gap-6 rounded-2xl bg-navy-foreground p-8 text-foreground sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h3 className="text-xl">Plan your trip with VenMax</h3>
+          <h3 className="text-xl">Plan your journey with VenMax</h3>
           <p className="mt-2 text-sm text-muted-foreground">
             Tell us where you want to go — we'll handle the vehicle, the route and the logistics.
           </p>
@@ -264,10 +275,7 @@ export function WhySection() {
         </div>
         <ul className="grid gap-x-8 sm:grid-cols-2">
           {whyVenMax.map((item) => (
-            <li
-              key={item}
-              className="flex items-start gap-3 border-b border-border py-4 text-sm"
-            >
+            <li key={item} className="flex items-start gap-3 border-b border-border py-4 text-sm">
               <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
               {item}
             </li>
@@ -281,23 +289,23 @@ export function WhySection() {
 export function TestimonialsSection() {
   return (
     <Section>
-      <SectionHeading
-        eyebrow="Customer Reviews"
-        title="Trusted by travellers across Zimbabwe"
-        description="These are design placeholders. Genuine VenMax customer reviews will replace them."
-      />
-      <div className="mt-12 grid gap-6 lg:grid-cols-3">
-        {testimonials.map((t) => (
-          <figure key={t.name} className="rounded-2xl border border-border bg-card p-6">
-            <blockquote className="text-sm leading-relaxed text-muted-foreground">
-              “{t.quote}”
-            </blockquote>
-            <figcaption className="mt-6">
-              <p className="text-sm font-semibold">{t.name}</p>
-              <p className="text-xs text-muted-foreground">{t.location}</p>
-            </figcaption>
-          </figure>
-        ))}
+      <div className="mx-auto max-w-2xl rounded-2xl border border-border bg-card px-8 py-14 text-center">
+        <p className="eyebrow text-primary">Customer Reviews</p>
+        <h2 className="mt-3 text-2xl sm:text-3xl">Hear it from real VenMax customers</h2>
+        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+          Genuine reviews from VenMax customers are collected on our Google Business Profile. Take a
+          look before you book — and if you've travelled with us, we'd love to hear from you there
+          too.
+        </p>
+        <a
+          href={company.googleProfile}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+        >
+          <Star className="h-4 w-4" />
+          See Our Google Reviews
+        </a>
       </div>
     </Section>
   );
@@ -314,13 +322,9 @@ export function RequirementsSection() {
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {requirements.map((req) => (
           <article key={req.number} className="rounded-2xl border border-border bg-card p-6">
-            <span className="font-display text-2xl font-semibold text-primary">
-              {req.number}
-            </span>
+            <span className="font-display text-2xl font-semibold text-primary">{req.number}</span>
             <h3 className="mt-3 text-base">{req.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              {req.description}
-            </p>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{req.description}</p>
           </article>
         ))}
       </div>

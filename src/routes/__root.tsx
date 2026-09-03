@@ -80,10 +80,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "VenMax Car Rental & Tours | Harare, Zimbabwe" },
-      { name: "description", content: "Reliable, affordable self-drive and chauffeur car hire in Harare, Zimbabwe. Free airport pickup, free Harare delivery, 11 vehicles from $40/day. Book on WhatsApp." },
+      {
+        name: "description",
+        content:
+          "Reliable, affordable self-drive and chauffeur car hire in Harare, Zimbabwe. Free airport pickup, free Harare delivery, 11 vehicles from $40/day. Book on WhatsApp.",
+      },
       { name: "author", content: "VenMax Car Rental & Tours" },
       { property: "og:title", content: "VenMax Car Rental & Tours | Harare, Zimbabwe" },
-      { property: "og:description", content: "Rent. Drive. Explore. Enjoy. Self-drive & chauffeur car hire in Harare, Zimbabwe." },
+      {
+        property: "og:description",
+        content:
+          "Rent. Drive. Explore. Enjoy. Self-drive & chauffeur car hire in Harare, Zimbabwe.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

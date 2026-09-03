@@ -110,15 +110,30 @@ function ContactPage() {
               <div>
                 <h3 className="text-base">Follow us</h3>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  <a href={company.social.instagram} target="_blank" rel="noreferrer" className="hover:text-foreground">
+                  <a
+                    href={company.social.instagram}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-foreground"
+                  >
                     Instagram
                   </a>{" "}
                   ·{" "}
-                  <a href={company.social.facebook} target="_blank" rel="noreferrer" className="hover:text-foreground">
+                  <a
+                    href={company.social.facebook}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-foreground"
+                  >
                     Facebook
                   </a>{" "}
                   ·{" "}
-                  <a href={company.social.tiktok} target="_blank" rel="noreferrer" className="hover:text-foreground">
+                  <a
+                    href={company.social.tiktok}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-foreground"
+                  >
                     TikTok
                   </a>
                 </p>

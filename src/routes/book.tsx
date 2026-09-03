@@ -5,11 +5,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
-import {
-  bookingSchema,
-  serviceTypes,
-  submitBookingRequest,
-} from "@/lib/bookings";
+import { bookingSchema, serviceTypes, submitBookingRequest } from "@/lib/bookings";
 import { useVehicles, useTours } from "@/lib/live-content";
 
 const searchSchema = z.object({
@@ -95,8 +91,8 @@ function BookPage() {
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 Your booking request reference is{" "}
                 <span className="font-semibold text-foreground">{reference}</span>. VenMax will
-                confirm availability and final pricing with you directly. For the fastest
-                response, mention this reference on WhatsApp.
+                confirm availability and final pricing with you directly. For the fastest response,
+                mention this reference on WhatsApp.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <button
@@ -128,7 +124,9 @@ function BookPage() {
                       </option>
                     ))}
                   </select>
-                  {errors.serviceType && <span className="text-xs text-destructive">{errors.serviceType}</span>}
+                  {errors.serviceType && (
+                    <span className="text-xs text-destructive">{errors.serviceType}</span>
+                  )}
                 </label>
                 <label className="grid gap-1.5 text-sm">
                   Vehicle (optional)
@@ -155,17 +153,23 @@ function BookPage() {
                 <label className="grid gap-1.5 text-sm">
                   Start date
                   <input name="startDate" type="date" className={fieldClass} />
-                  {errors.startDate && <span className="text-xs text-destructive">{errors.startDate}</span>}
+                  {errors.startDate && (
+                    <span className="text-xs text-destructive">{errors.startDate}</span>
+                  )}
                 </label>
                 <label className="grid gap-1.5 text-sm">
                   End date
                   <input name="endDate" type="date" className={fieldClass} />
-                  {errors.endDate && <span className="text-xs text-destructive">{errors.endDate}</span>}
+                  {errors.endDate && (
+                    <span className="text-xs text-destructive">{errors.endDate}</span>
+                  )}
                 </label>
                 <label className="grid gap-1.5 text-sm">
                   Full name
                   <input name="fullName" className={fieldClass} />
-                  {errors.fullName && <span className="text-xs text-destructive">{errors.fullName}</span>}
+                  {errors.fullName && (
+                    <span className="text-xs text-destructive">{errors.fullName}</span>
+                  )}
                 </label>
                 <label className="grid gap-1.5 text-sm">
                   Phone / WhatsApp
@@ -179,8 +183,14 @@ function BookPage() {
                 </label>
                 <label className="grid gap-1.5 text-sm">
                   Pickup / delivery location
-                  <input name="pickupLocation" placeholder="e.g. Harare Airport" className={fieldClass} />
-                  {errors.pickupLocation && <span className="text-xs text-destructive">{errors.pickupLocation}</span>}
+                  <input
+                    name="pickupLocation"
+                    placeholder="e.g. Harare Airport"
+                    className={fieldClass}
+                  />
+                  {errors.pickupLocation && (
+                    <span className="text-xs text-destructive">{errors.pickupLocation}</span>
+                  )}
                 </label>
                 <label className="grid gap-1.5 text-sm sm:col-span-2">
                   Notes (optional)

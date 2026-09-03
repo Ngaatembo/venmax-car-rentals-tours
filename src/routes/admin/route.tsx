@@ -1,5 +1,13 @@
 import { createFileRoute, Link, Outlet, useNavigate, useLocation } from "@tanstack/react-router";
-import { LayoutDashboard, Car, MapPin, CalendarCheck, MessageSquare, FileText, LogOut } from "lucide-react";
+import {
+  LayoutDashboard,
+  Car,
+  MapPin,
+  CalendarCheck,
+  MessageSquare,
+  FileText,
+  LogOut,
+} from "lucide-react";
 import { useAdminSession, signOutAdmin } from "@/lib/admin-auth";
 
 export const Route = createFileRoute("/admin")({

@@ -13,7 +13,14 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import {
@@ -76,7 +83,14 @@ function AdminFleet() {
   }
 
   async function handleSave() {
-    if (!form.slug || !form.name || !form.category || !form.price_label || !form.deposit || !form.description) {
+    if (
+      !form.slug ||
+      !form.name ||
+      !form.category ||
+      !form.price_label ||
+      !form.deposit ||
+      !form.description
+    ) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -198,7 +212,12 @@ function AdminFleet() {
               </div>
               <div className="space-y-1.5">
                 <Label>Photo</Label>
-                <Input type="file" accept="image/*" onChange={handleFileChange} disabled={uploading} />
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  disabled={uploading}
+                />
                 {form.image_url && (
                   <img
                     src={form.image_url}
