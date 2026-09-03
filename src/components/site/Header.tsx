@@ -7,10 +7,10 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { to: "/", label: "Home" },
-  { to: "/vehicles", label: "Vehicles" },
-  { to: "/services", label: "Services" },
-  { to: "/tours", label: "Tours" },
-  { to: "/about", label: "About" },
+  { to: "/#vehicles", label: "Vehicles" },
+  { to: "/#services", label: "Services" },
+  { to: "/#tours", label: "Tours" },
+  { to: "/#why-venmax", label: "About" },
   { to: "/contact", label: "Contact" },
 ] as const;
 
@@ -60,16 +60,13 @@ export function Header() {
         <div className="flex items-center gap-2">
           <nav className="hidden items-center gap-1 lg:flex">
             {navItems.map((item) => (
-              <Link
+              <a
                 key={item.to}
-                to={item.to}
-                activeOptions={{ exact: item.to === "/" }}
-                activeProps={{ className: "text-navy-foreground" }}
-                inactiveProps={{ className: "text-navy-foreground/70" }}
-                className="rounded-full px-3.5 py-2 text-sm font-medium transition-colors hover:text-navy-foreground"
+                href={item.to}
+                className="rounded-full px-3.5 py-2 text-sm font-medium text-navy-foreground/70 transition-colors hover:text-navy-foreground"
               >
                 {item.label}
-              </Link>
+              </a>
             ))}
           </nav>
 
@@ -97,14 +94,13 @@ export function Header() {
       {open && (
         <nav className="border-t border-navy-foreground/10 bg-navy px-4 pb-6 pt-2 sm:px-6 lg:hidden">
           {navItems.map((item) => (
-            <Link
+            <a
               key={item.to}
-              to={item.to}
-              activeOptions={{ exact: item.to === "/" }}
+              href={item.to}
               className="block border-b border-navy-foreground/10 py-3.5 text-sm font-medium text-navy-foreground"
             >
               {item.label}
-            </Link>
+            </a>
           ))}
           <Link
             to="/book"

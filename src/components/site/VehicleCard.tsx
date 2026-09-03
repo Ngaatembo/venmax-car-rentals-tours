@@ -1,6 +1,7 @@
-import { Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import type { Vehicle } from "@/data/venmax";
+import { whatsappLink } from "@/data/venmax";
+import { Link } from "@tanstack/react-router";
 
 export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
   return (
@@ -28,14 +29,17 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
         </p>
 
         <div className="mt-6 flex items-center gap-3">
-          <Link
-            to="/vehicles/$slug"
-            params={{ slug: vehicle.slug }}
+          <a
+            href={whatsappLink(
+              `Hi VenMax, I'd like more details about the ${vehicle.name} (${vehicle.priceLabel}).`,
+            )}
+            target="_blank"
+            rel="noreferrer"
             className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-semibold transition-colors hover:bg-secondary"
           >
+            <MessageCircle className="h-3.5 w-3.5" />
             Details
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
+          </a>
           <Link
             to="/book"
             search={{ vehicle: vehicle.slug }}

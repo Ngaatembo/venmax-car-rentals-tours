@@ -66,13 +66,13 @@ export function FleetSection({ limit }: { limit?: number }) {
       </div>
       {limit ? (
         <div className="mt-10 text-center">
-          <Link
-            to="/vehicles"
+          <a
+            href="/#vehicles"
             className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold transition-colors hover:bg-secondary"
           >
             View the full fleet
             <ArrowRight className="h-4 w-4" />
-          </Link>
+          </a>
         </div>
       ) : (
         <p className="mt-10 text-center text-sm text-muted-foreground">

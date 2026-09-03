@@ -4,10 +4,10 @@ import logo from "@/assets/logo.jpg";
 import { company, whatsappLink } from "@/data/venmax";
 
 const links = [
-  { to: "/vehicles", label: "Vehicles" },
-  { to: "/services", label: "Services" },
-  { to: "/tours", label: "Tours" },
-  { to: "/about", label: "About" },
+  { to: "/#vehicles", label: "Vehicles" },
+  { to: "/#services", label: "Services" },
+  { to: "/#tours", label: "Tours" },
+  { to: "/#why-venmax", label: "About" },
   { to: "/contact", label: "Contact" },
   { to: "/book", label: "Request a Booking" },
 ] as const;
@@ -56,12 +56,12 @@ export function Footer() {
             <ul className="mt-5 space-y-3">
               {links.map((link) => (
                 <li key={link.to}>
-                  <Link
-                    to={link.to}
+                  <a
+                    href={link.to}
                     className="text-sm text-navy-foreground/70 transition-colors hover:text-navy-foreground"
                   >
                     {link.label}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>

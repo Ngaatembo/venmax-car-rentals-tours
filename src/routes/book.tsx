@@ -103,12 +103,12 @@ function BookPage() {
                 >
                   Make another request
                 </button>
-                <Link
-                  to="/vehicles"
+                <a
+                  href="/#vehicles"
                   className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
                 >
                   Back to the fleet
-                </Link>
+                </a>
               </div>
             </div>
           ) : (
