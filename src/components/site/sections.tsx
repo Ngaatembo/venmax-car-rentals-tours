@@ -7,6 +7,7 @@ import {
   MapPin,
   MessageCircle,
   Plane,
+  Star,
   User,
   Users,
 } from "lucide-react";
