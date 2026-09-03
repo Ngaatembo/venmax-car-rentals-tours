@@ -4,7 +4,8 @@ import { Clock, Instagram, Mail, MapPin, MessageCircle, Phone } from "lucide-rea
 import { toast } from "sonner";
 import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
-import { company, submitInquiry, whatsappLink } from "@/data/venmax";
+import { company, whatsappLink } from "@/data/venmax";
+import { submitInquiry } from "@/lib/bookings";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({

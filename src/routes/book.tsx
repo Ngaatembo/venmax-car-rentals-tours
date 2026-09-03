@@ -9,9 +9,8 @@ import {
   bookingSchema,
   serviceTypes,
   submitBookingRequest,
-  tours,
-  vehicles,
 } from "@/lib/bookings";
+import { tours, vehicles } from "@/data/venmax";
 
 const searchSchema = z.object({
   vehicle: z.string().optional(),
