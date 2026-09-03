@@ -15,6 +15,7 @@ const navItems = [
 ] as const;
 
 export function Header() {
+  // Keep the initial render deterministic for SSR and hydration; scroll/menu state updates after mount.
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isHome = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
