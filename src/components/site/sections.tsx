@@ -7,7 +7,6 @@ import {
   MapPin,
   MessageCircle,
   Plane,
-  Star,
   User,
   Users,
 } from "lucide-react";
@@ -362,12 +361,7 @@ export function TestimonialsSection() {
       <div className="mt-12 grid gap-6 lg:grid-cols-3">
         {testimonials.map((t, i) => (
           <figure key={i} className="rounded-2xl border border-border bg-card p-6">
-            <div className="flex gap-0.5 text-primary">
-              {Array.from({ length: 5 }).map((_, star) => (
-                <Star key={star} className="h-4 w-4 fill-current" />
-              ))}
-            </div>
-            <blockquote className="mt-4 text-sm leading-relaxed text-muted-foreground">
+            <blockquote className="text-sm leading-relaxed text-muted-foreground">
               “{t.quote}”
             </blockquote>
             <figcaption className="mt-6 text-xs text-muted-foreground">
@@ -376,7 +370,7 @@ export function TestimonialsSection() {
           </figure>
         ))}
         <a
-          href={company.googleProfile}
+          href={company.googleReviews}
           target="_blank"
           rel="noreferrer"
           className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border p-6 text-center transition-colors hover:bg-secondary"
