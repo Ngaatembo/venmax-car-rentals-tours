@@ -1,14 +1,13 @@
 /**
  * Booking submission boundary.
  *
- * The public site talks to this module only. Today it validates the request
- * and returns a locally generated reference so the UX can be reviewed without
- * a backend. When Lovable Cloud is connected, replace the body of
- * `submitBookingRequest` with a server function that inserts into the
- * `bookings` table — no UI changes required.
+ * The public site talks to this module only. Requests are inserted directly
+ * into Supabase (`bookings` / `inquiries` tables), which the admin panel
+ * reads from and manages.
  */
 
 import { z } from "zod";
+import { supabase } from "./supabase";
 
 export const serviceTypes = [
   { value: "self-drive", label: "Self-Drive Car Rental" },
@@ -42,13 +41,25 @@ export async function submitBookingRequest(
   data: BookingRequest,
 ): Promise<BookingResult> {
   const parsed = bookingSchema.parse(data);
-  void parsed; // forwarded to the backend once connected
-  await new Promise((resolve) => setTimeout(resolve, 600));
-  // TODO(lovable-cloud): insert into `bookings` table with status "pending".
-  return {
-    reference: `VM-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
+  const reference = `VM-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+
+  const { error } = await supabase.from("bookings").insert({
+    reference,
+    service_type: parsed.serviceType,
+    vehicle_slug: parsed.vehicleSlug || null,
+    tour_slug: parsed.tourSlug || null,
+    start_date: parsed.startDate,
+    end_date: parsed.endDate,
+    full_name: parsed.fullName,
+    email: parsed.email,
+    phone: parsed.phone,
+    pickup_location: parsed.pickupLocation,
+    notes: parsed.notes || null,
     status: "pending",
-  };
+  });
+  if (error) throw error;
+
+  return { reference, status: "pending" };
 }
 
 export const inquirySchema = z.object({
@@ -61,7 +72,13 @@ export const inquirySchema = z.object({
 export type InquiryRequest = z.infer<typeof inquirySchema>;
 
 export async function submitInquiry(data: InquiryRequest): Promise<void> {
-  inquirySchema.parse(data);
-  await new Promise((resolve) => setTimeout(resolve, 400));
-  // TODO(lovable-cloud): insert into `inquiries` table.
+  const parsed = inquirySchema.parse(data);
+  const { error } = await supabase.from("inquiries").insert({
+    name: parsed.name,
+    email: parsed.email,
+    phone: parsed.phone,
+    message: parsed.message,
+    status: "new",
+  });
+  if (error) throw error;
 }

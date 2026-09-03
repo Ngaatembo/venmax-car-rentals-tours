@@ -10,7 +10,7 @@ import {
   serviceTypes,
   submitBookingRequest,
 } from "@/lib/bookings";
-import { tours, vehicles } from "@/data/venmax";
+import { useVehicles, useTours } from "@/lib/live-content";
 
 const searchSchema = z.object({
   vehicle: z.string().optional(),
@@ -41,12 +41,14 @@ const fieldClass =
 
 function BookPage() {
   const { vehicle } = Route.useSearch();
+  const vehicles = useVehicles();
+  const tours = useTours();
   const [pending, setPending] = useState(false);
   const [reference, setReference] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const defaultVehicle = useMemo(
     () => (vehicle && vehicles.some((v) => v.slug === vehicle) ? vehicle : ""),
-    [vehicle],
+    [vehicle, vehicles],
   );
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {

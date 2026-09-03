@@ -18,12 +18,11 @@ import {
   rentalTerms,
   services,
   testimonials,
-  tours,
   trustPoints,
-  vehicles,
   whatsappLink,
   whyVenMax,
 } from "@/data/venmax";
+import { useVehicles, useTours } from "@/lib/live-content";
 import { cn } from "@/lib/utils";
 
 const serviceIcons = {
@@ -51,6 +50,7 @@ export function TrustStrip() {
 }
 
 export function FleetSection({ limit }: { limit?: number }) {
+  const vehicles = useVehicles();
   const list = limit ? vehicles.slice(0, limit) : vehicles;
   return (
     <Section tone="surface" id="vehicles">
@@ -179,6 +179,7 @@ export function AirportSection() {
 }
 
 export function ToursSection() {
+  const tours = useTours();
   return (
     <Section tone="navy" id="tours">
       <SectionHeading
