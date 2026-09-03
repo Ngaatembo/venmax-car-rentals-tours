@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Clock, Instagram, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Clock, Facebook, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { toast } from "sonner";
 import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
@@ -104,19 +104,10 @@ function ContactPage() {
               </div>
             </div>
             <div className="flex gap-4">
-              <Instagram className="mt-1 h-5 w-5 shrink-0 text-primary" />
+              <Facebook className="mt-1 h-5 w-5 shrink-0 text-primary" />
               <div>
-                <h3 className="text-base">Follow us</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  <a
-                    href={company.social.instagram}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-foreground"
-                  >
-                    Instagram
-                  </a>{" "}
-                  ·{" "}
+                <h3 className="text-base">Follow VenMax</h3>
+                <p className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-sm text-muted-foreground">
                   <a
                     href={company.social.facebook}
                     target="_blank"
@@ -124,8 +115,8 @@ function ContactPage() {
                     className="hover:text-foreground"
                   >
                     Facebook
-                  </a>{" "}
-                  ·{" "}
+                  </a>
+                  <span aria-hidden="true">·</span>
                   <a
                     href={company.social.tiktok}
                     target="_blank"
@@ -133,6 +124,15 @@ function ContactPage() {
                     className="hover:text-foreground"
                   >
                     TikTok
+                  </a>
+                  <span aria-hidden="true">·</span>
+                  <a
+                    href={company.social.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-foreground"
+                  >
+                    LinkedIn
                   </a>
                 </p>
               </div>

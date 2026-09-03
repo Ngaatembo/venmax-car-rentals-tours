@@ -33,12 +33,12 @@ export const company = {
   emails: ["sales@venmax.co.zw", "venmaxcarrentaltours@gmail.com"],
   hours: "Office hours 8am–5pm — WhatsApp messages answered anytime",
   social: {
-    instagram: "https://www.instagram.com/venmax_car_rental__tours",
     facebook: "https://www.facebook.com/share/18kPwcmXH2/?mibextid=wwXIfr",
     tiktok: "https://www.tiktok.com/@venmax.car.rentaltours",
     linkedin: "https://www.linkedin.com/company/venmax-car-rental-tours/",
+    instagram: null,
   },
-  googleProfile: "https://share.google/7ZD8l8RK8UuGSEQRB",
+  googleReviews: "https://share.google/7ZD8l8RK8UuGSEQRB",
 };
 
 export function whatsappLink(message: string) {

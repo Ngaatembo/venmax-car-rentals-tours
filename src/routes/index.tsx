@@ -21,14 +21,14 @@ export const Route = createFileRoute("/")({
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden bg-navy text-navy-foreground">
+    <section className="relative min-h-[min(720px,100svh)] overflow-hidden bg-navy text-navy-foreground">
       <img
         src={heroImage}
         alt="VenMax Toyota Fortuner available for hire in Harare"
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover object-[62%_center] sm:object-center"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-navy/70 via-navy/90 to-navy" />
-      <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-36 sm:px-6 lg:px-8 lg:pb-24 lg:pt-48">
+      <div className="absolute inset-0 bg-gradient-to-b from-navy/65 via-navy/78 to-navy" />
+      <div className="relative mx-auto flex min-h-[min(720px,100svh)] max-w-7xl flex-col justify-end px-4 pb-14 pt-32 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24 lg:pt-48">
         <span className="inline-flex items-center gap-2 rounded-full border border-navy-foreground/30 px-4 py-2 text-xs font-semibold uppercase tracking-widest">
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
           Harare &middot; Zimbabwe

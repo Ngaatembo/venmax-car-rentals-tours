@@ -7,7 +7,6 @@ import {
   MapPin,
   MessageCircle,
   Plane,
-  Star,
   User,
   Users,
 } from "lucide-react";
@@ -194,14 +193,14 @@ export function AirportSection() {
   return (
     <Section>
       <div className="grid items-center gap-12 lg:grid-cols-2">
-        <div className="relative overflow-hidden rounded-2xl">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl sm:aspect-[16/10] lg:aspect-auto lg:min-h-[28rem]">
           <img
             src={airportImage}
             alt="VenMax chauffeur meeting an arriving traveller at the airport"
             loading="lazy"
             width={1200}
             height={900}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-center"
           />
           <span className="absolute left-6 top-6 rounded-full bg-primary px-4 py-2 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground">
             Complimentary · Airport Pickup
@@ -270,7 +269,7 @@ export function ToursSection() {
               height={768}
               className={cn(
                 "w-full object-cover transition-transform duration-700 group-hover:scale-105",
-                index === 0 ? "h-80 lg:h-full" : "h-72",
+                index === 0 ? "h-80 sm:h-96 lg:h-full" : "h-72 sm:h-80",
               )}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/5" />
@@ -362,12 +361,7 @@ export function TestimonialsSection() {
       <div className="mt-12 grid gap-6 lg:grid-cols-3">
         {testimonials.map((t, i) => (
           <figure key={i} className="rounded-2xl border border-border bg-card p-6">
-            <div className="flex gap-0.5 text-primary">
-              {Array.from({ length: 5 }).map((_, star) => (
-                <Star key={star} className="h-4 w-4 fill-current" />
-              ))}
-            </div>
-            <blockquote className="mt-4 text-sm leading-relaxed text-muted-foreground">
+            <blockquote className="text-sm leading-relaxed text-muted-foreground">
               “{t.quote}”
             </blockquote>
             <figcaption className="mt-6 text-xs text-muted-foreground">
@@ -376,7 +370,7 @@ export function TestimonialsSection() {
           </figure>
         ))}
         <a
-          href={company.googleProfile}
+          href={company.googleReviews}
           target="_blank"
           rel="noreferrer"
           className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border p-6 text-center transition-colors hover:bg-secondary"

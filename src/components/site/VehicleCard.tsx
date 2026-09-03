@@ -6,14 +6,14 @@ import { Link } from "@tanstack/react-router";
 export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-shadow hover:shadow-lg">
-      <div className="relative aspect-4/3 overflow-hidden bg-secondary">
+      <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
         <img
           src={vehicle.image}
-          alt={vehicle.name}
+          alt={`${vehicle.name} available from VenMax`}
           loading="lazy"
           width={1024}
           height={768}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
         />
         <span className="absolute left-4 top-4 rounded-full bg-navy/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy-foreground">
           {vehicle.category}
@@ -28,7 +28,7 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
           {vehicle.description}
         </p>
 
-        <div className="mt-6 flex items-center gap-3">
+        <div className="mt-6 flex flex-wrap items-center gap-3">
           <a
             href={whatsappLink(
               `Hi VenMax, I'd like more details about the ${vehicle.name} (${vehicle.priceLabel}).`,
