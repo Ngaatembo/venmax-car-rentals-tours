@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   Check,
+  Compass,
   KeyRound,
   MapPin,
   MessageCircle,
@@ -50,22 +51,50 @@ export function TrustStrip() {
   );
 }
 
+export function WelcomeSection() {
+  return (
+    <Section tone="navy">
+      <div className="mx-auto max-w-3xl text-center">
+        <p className="eyebrow text-primary">More Than a Car</p>
+        <h2 className="mt-3 text-3xl text-navy-foreground sm:text-4xl">It's Your Journey</h2>
+        <p className="mt-5 text-base leading-relaxed text-navy-foreground/80 sm:text-lg">
+          From arriving at RGM International Airport to exploring Zimbabwe at your own pace, VenMax
+          makes getting around simple, comfortable and reliable — a local team, a well-maintained
+          fleet, and a journey that starts the moment you land.
+        </p>
+        <div className="mt-8 flex items-center justify-center gap-2 text-sm font-semibold uppercase tracking-widest text-navy-foreground/60">
+          <Compass className="h-4 w-4 text-primary" />
+          Harare · Victoria Falls · Hwange · Great Zimbabwe · and beyond
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+const fleetGroups = [
+  { title: "Small & Economical", slugs: ["toyota-aqua", "nissan-note", "honda-fit"] },
+  { title: "Comfort & Family", slugs: ["nissan-xtrail", "nissan-serena", "mazda-cx5"] },
+  { title: "SUVs & Adventure", slugs: ["toyota-d4d", "toyota-fortuner"] },
+  { title: "Premium", slugs: ["range-rover-sport", "toyota-prado", "toyota-land-cruiser"] },
+] as const;
+
 export function FleetSection({ limit }: { limit?: number }) {
   const vehicles = useVehicles();
-  const list = limit ? vehicles.slice(0, limit) : vehicles;
-  return (
-    <Section tone="surface" id="vehicles">
-      <SectionHeading
-        eyebrow="The Fleet"
-        title="Choose the right vehicle for your Zimbabwe journey"
-        description="A curated fleet from economical hybrids to flagship 4x4s. Discounts available for longer rentals — every price is transparent, with no hidden charges."
-      />
-      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {list.map((vehicle) => (
-          <VehicleCard key={vehicle.slug} vehicle={vehicle} />
-        ))}
-      </div>
-      {limit ? (
+
+  if (limit) {
+    const list = vehicles.slice(0, limit);
+    return (
+      <Section tone="surface" id="vehicles">
+        <SectionHeading
+          eyebrow="The Fleet"
+          title="Choose the right vehicle for your Zimbabwe journey"
+          description="A curated fleet from economical hybrids to flagship 4x4s. Discounts available for longer rentals — every price is transparent, with no hidden charges."
+        />
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {list.map((vehicle) => (
+            <VehicleCard key={vehicle.slug} vehicle={vehicle} />
+          ))}
+        </div>
         <div className="mt-10 text-center">
           <a
             href="/#vehicles"
@@ -75,12 +104,47 @@ export function FleetSection({ limit }: { limit?: number }) {
             <ArrowRight className="h-4 w-4" />
           </a>
         </div>
-      ) : (
-        <p className="mt-10 text-center text-sm text-muted-foreground">
-          Prices shown are starting daily rates. Final pricing depends on rental duration — message
-          us for a tailored quote.
-        </p>
-      )}
+      </Section>
+    );
+  }
+
+  // Group vehicles by the fixed slug groups above; anything not in a group
+  // (e.g. a new vehicle added later via the admin panel) falls into "More Vehicles".
+  const grouped = fleetGroups.map((group) => ({
+    title: group.title,
+    vehicles: group.slugs
+      .map((slug) => vehicles.find((v) => v.slug === slug))
+      .filter((v): v is NonNullable<typeof v> => Boolean(v)),
+  }));
+  const groupedSlugs = new Set(fleetGroups.flatMap((g) => g.slugs));
+  const ungrouped = vehicles.filter((v) => !groupedSlugs.has(v.slug as never));
+  if (ungrouped.length) grouped.push({ title: "More Vehicles", vehicles: ungrouped });
+
+  return (
+    <Section tone="surface" id="vehicles">
+      <SectionHeading
+        eyebrow="The Fleet"
+        title="Find the right vehicle for your journey"
+        description="A curated fleet from economical hybrids to flagship 4x4s. Discounts available for longer rentals — every price is transparent, with no hidden charges."
+      />
+      <div className="mt-12 space-y-14">
+        {grouped
+          .filter((g) => g.vehicles.length > 0)
+          .map((group) => (
+            <div key={group.title}>
+              <h3 className="text-lg font-semibold text-foreground">{group.title}</h3>
+              <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {group.vehicles.map((vehicle) => (
+                  <VehicleCard key={vehicle.slug} vehicle={vehicle} />
+                ))}
+              </div>
+            </div>
+          ))}
+      </div>
+      <p className="mt-10 text-center text-sm text-muted-foreground">
+        Prices shown are starting daily rates. Final pricing depends on rental duration — message us
+        for a tailored quote.
+      </p>
     </Section>
   );
 }

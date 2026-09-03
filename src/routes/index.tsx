@@ -9,6 +9,7 @@ import {
   TestimonialsSection,
   ToursSection,
   TrustStrip,
+  WelcomeSection,
   WhySection,
 } from "@/components/site/sections";
 import heroImage from "@/assets/hero-harare.jpg";
@@ -74,6 +75,7 @@ function Index() {
     <div>
       <Hero />
       <TrustStrip />
+      <WelcomeSection />
       <FleetSection />
       <RequirementsSection />
       <ServicesSection />
