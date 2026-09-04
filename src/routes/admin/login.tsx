@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signInAdmin, useAdminSession } from "@/lib/admin-auth";
+import logo from "@/assets/logo.jpg";
 
 export const Route = createFileRoute("/admin/login")({
   component: AdminLogin,
@@ -40,7 +41,8 @@ function AdminLogin() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-navy px-4">
       <div className="w-full max-w-sm rounded-lg border border-navy-foreground/10 bg-background p-8 shadow-lg">
-        <h1 className="text-xl font-semibold text-foreground">VenMax Admin</h1>
+        <img src={logo} alt="VenMax Car Rental & Tours" className="h-12 w-auto" />
+        <h1 className="mt-4 text-xl font-semibold text-foreground">Admin sign in</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Sign in to manage the fleet, tours, bookings and site content.
         </p>

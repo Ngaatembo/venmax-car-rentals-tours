@@ -9,6 +9,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { useAdminSession, useIsAdmin, signOutAdmin } from "@/lib/admin-auth";
+import logo from "@/assets/logo.jpg";
 
 export const Route = createFileRoute("/admin")({
   component: AdminLayout,
@@ -86,8 +87,8 @@ function AdminLayout() {
       <div className="flex min-h-screen">
         <aside className="hidden w-60 flex-col border-r border-border bg-background md:flex">
           <div className="border-b border-border px-5 py-4">
-            <p className="text-sm font-semibold text-foreground">VenMax Admin</p>
-            <p className="text-xs text-muted-foreground">{session.user.email}</p>
+            <img src={logo} alt="VenMax Car Rental & Tours" className="h-8 w-auto" />
+            <p className="mt-2 text-xs text-muted-foreground">{session.user.email}</p>
           </div>
           <nav className="flex-1 space-y-1 p-3">
             {navItems.map((item) => (
