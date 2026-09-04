@@ -282,10 +282,24 @@ export function DiasporaSection() {
             Book From Abroad on WhatsApp
           </a>
         </div>
-        <div className="flex items-center justify-center rounded-2xl border border-navy-foreground/15 bg-navy-foreground/5 p-10 sm:p-14">
-          <div className="text-center">
-            <Globe className="mx-auto h-12 w-12 text-primary" />
-            <p className="mt-4 text-sm text-navy-foreground/70">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl sm:aspect-[16/10] lg:aspect-auto lg:min-h-[24rem]">
+          <img
+            src={airportImage}
+            alt="VenMax meeting an arriving traveller at Harare's Robert Gabriel Mugabe International Airport"
+            loading="lazy"
+            width={1200}
+            height={900}
+            className="h-full w-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/10 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+            <div className="flex items-center gap-2 text-navy-foreground/90">
+              <Globe className="h-4 w-4 text-primary" />
+              <span className="text-xs font-semibold uppercase tracking-wider">
+                Wherever you're booking from
+              </span>
+            </div>
+            <p className="mt-2 text-sm text-navy-foreground/80">
               Zimbabweans in the diaspora trust VenMax to arrange rentals for family and
               homecoming trips — no in-person visit required to get started.
             </p>
