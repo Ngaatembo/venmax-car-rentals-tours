@@ -8,7 +8,7 @@ import {
   FileText,
   LogOut,
 } from "lucide-react";
-import { useAdminSession, signOutAdmin } from "@/lib/admin-auth";
+import { useAdminSession, useIsAdmin, signOutAdmin } from "@/lib/admin-auth";
 
 export const Route = createFileRoute("/admin")({
   component: AdminLayout,
@@ -25,6 +25,7 @@ const navItems = [
 
 function AdminLayout() {
   const session = useAdminSession();
+  const isAdmin = useIsAdmin(session);
   const navigate = useNavigate();
   const location = useLocation();
   const onLoginPage = location.pathname === "/admin/login";
@@ -47,6 +48,37 @@ function AdminLayout() {
   if (session === null) {
     navigate({ to: "/admin/login" });
     return null;
+  }
+
+  // Logged in, but still checking whether this account actually holds the
+  // admin role (a valid session alone — including anonymous sign-ins — is
+  // not sufficient).
+  if (isAdmin === undefined) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">
+        Checking permissions…
+      </div>
+    );
+  }
+
+  // Logged in, but not an admin — do not render the dashboard.
+  if (isAdmin === false) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-background px-4 text-center">
+        <p className="text-sm font-medium text-foreground">
+          This account doesn't have admin access.
+        </p>
+        <button
+          onClick={async () => {
+            await signOutAdmin();
+            navigate({ to: "/admin/login" });
+          }}
+          className="text-sm font-medium text-primary underline underline-offset-2"
+        >
+          Sign out
+        </button>
+      </div>
+    );
   }
 
   return (
