@@ -7,6 +7,7 @@ import {
   FleetSection,
   RequirementsSection,
   ServicesSection,
+  SocialShowcaseSection,
   TestimonialsSection,
   ToursSection,
   TrustStrip,
@@ -81,6 +82,7 @@ function Index() {
       <ToursSection />
       <WhySection />
       <TestimonialsSection />
+      <SocialShowcaseSection />
       <BookingCta />
     </div>
   );

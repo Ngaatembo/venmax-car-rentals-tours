@@ -18,6 +18,9 @@ const fieldLabels: Record<string, string> = {
   contact_phone_secondary: "Secondary phone",
   contact_email_sales: "Sales email",
   contact_email_bookings: "Bookings email",
+  social_showcase_1: "Featured post/reel #1 (Instagram or TikTok link)",
+  social_showcase_2: "Featured post/reel #2 (Instagram or TikTok link)",
+  social_showcase_3: "Featured post/reel #3 (Instagram or TikTok link)",
 };
 
 function AdminContent() {
@@ -60,7 +63,8 @@ function AdminContent() {
     <div>
       <h1 className="text-2xl font-semibold text-foreground">Site content</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Edit the text shown on the public site's hero section and contact details.
+        Edit the text shown on the public site's hero section, contact details, and the
+        Instagram/TikTok posts featured on the homepage.
       </p>
 
       <div className="mt-6 max-w-xl space-y-4">

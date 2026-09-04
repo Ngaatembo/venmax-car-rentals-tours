@@ -70,3 +70,28 @@ export function useTours(): Tour[] {
 
   return tours;
 }
+
+// Site content is a simple admin-editable key/value store (see /admin/content).
+// Returns a map of key -> value; missing keys are simply absent (callers should
+// treat an absent or empty-string value as "not configured yet").
+export function useSiteContent(): Record<string, string> {
+  const [content, setContent] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    let cancelled = false;
+    supabase
+      .from("site_content")
+      .select("key, value")
+      .then(({ data, error }) => {
+        if (cancelled || error || !data) return;
+        const map: Record<string, string> = {};
+        for (const row of data) map[row.key] = row.value ?? "";
+        setContent(map);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return content;
+}

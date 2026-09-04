@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   Check,
   Compass,
   Globe,
+  Instagram,
   KeyRound,
   MapPin,
   MessageCircle,
@@ -25,7 +27,7 @@ import {
   whatsappLink,
   whyVenMax,
 } from "@/data/venmax";
-import { useVehicles, useTours } from "@/lib/live-content";
+import { useVehicles, useTours, useSiteContent } from "@/lib/live-content";
 import { cn } from "@/lib/utils";
 
 const serviceIcons = {
@@ -473,6 +475,97 @@ export function RequirementsSection() {
           Ask About Requirements
         </a>
       </div>
+    </Section>
+  );
+}
+
+type EmbedPlatform = "instagram" | "tiktok" | null;
+
+function detectSocialPlatform(url: string): EmbedPlatform {
+  if (/instagram\.com/.test(url)) return "instagram";
+  if (/tiktok\.com/.test(url)) return "tiktok";
+  return null;
+}
+
+function loadEmbedScriptOnce(src: string) {
+  if (typeof document === "undefined") return;
+  const existing = document.querySelector(`script[src="${src}"]`);
+  if (existing) {
+    const instgrm = (window as unknown as { instgrm?: { Embeds: { process: () => void } } })
+      .instgrm;
+    if (src.includes("instagram") && instgrm) instgrm.Embeds.process();
+    return;
+  }
+  const script = document.createElement("script");
+  script.src = src;
+  script.async = true;
+  document.body.appendChild(script);
+}
+
+export function SocialShowcaseSection() {
+  const content = useSiteContent();
+  const links = [
+    content.social_showcase_1,
+    content.social_showcase_2,
+    content.social_showcase_3,
+  ].filter((url): url is string => Boolean(url));
+
+  useEffect(() => {
+    if (links.some((url) => detectSocialPlatform(url) === "instagram")) {
+      loadEmbedScriptOnce("//www.instagram.com/embed.js");
+    }
+    if (links.some((url) => detectSocialPlatform(url) === "tiktok")) {
+      loadEmbedScriptOnce("https://www.tiktok.com/embed.js");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [links.join("|")]);
+
+  return (
+    <Section tone="surface">
+      <SectionHeading
+        eyebrow="Follow The Journey"
+        title="See VenMax in action"
+        description="Real posts from our Instagram and TikTok — fleet updates, offers and the road ahead."
+        align="center"
+      />
+      {links.length > 0 ? (
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {links.map((url, i) => {
+            const platform = detectSocialPlatform(url);
+            if (platform === "instagram") {
+              return (
+                <blockquote
+                  key={i}
+                  className="instagram-media mx-auto"
+                  data-instgrm-permalink={url}
+                  data-instgrm-version="14"
+                  style={{ margin: 0, width: "100%" }}
+                />
+              );
+            }
+            if (platform === "tiktok") {
+              return (
+                <blockquote key={i} className="tiktok-embed mx-auto" cite={url} style={{ margin: 0, width: "100%" }}>
+                  <section />
+                </blockquote>
+              );
+            }
+            return null;
+          })}
+        </div>
+      ) : (
+        <div className="mt-10 flex justify-center">
+          <a
+            href={company.social.instagram ?? undefined}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
+          >
+            <Instagram className="h-4 w-4" />
+            Follow @venmax_car_rental_tours
+          </a>
+        </div>
+      )}
     </Section>
   );
 }
