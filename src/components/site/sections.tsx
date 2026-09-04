@@ -3,6 +3,7 @@ import {
   ArrowRight,
   Check,
   Compass,
+  Globe,
   KeyRound,
   MapPin,
   MessageCircle,
@@ -237,6 +238,56 @@ export function AirportSection() {
             <MessageCircle className="h-4 w-4" />
             Arrange Airport Pickup
           </a>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+export function DiasporaSection() {
+  return (
+    <Section tone="navy">
+      <div className="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <SectionHeading
+            eyebrow="Booking From Abroad"
+            title="Sorting a car for family back home? We make it simple."
+            description="Whether you're arranging a vehicle for relatives visiting Zimbabwe or securing a car ahead of your own trip home, VenMax handles bookings and deposits over WhatsApp — you don't need to be in the country to get it sorted."
+            invert
+          />
+          <ul className="mt-8 space-y-4">
+            {[
+              "Confirm your vehicle and dates over WhatsApp from anywhere",
+              "Secure your booking with a refundable deposit",
+              "Free airport pickup so family — or you — are covered on arrival",
+              "Clear, upfront pricing before you commit",
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-3 text-sm text-navy-foreground/90">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                {item}
+              </li>
+            ))}
+          </ul>
+          <a
+            href={whatsappLink(
+              "Hello VenMax, I'm based outside Zimbabwe and would like to arrange a vehicle booking. Can you help me sort this over WhatsApp?",
+            )}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            <MessageCircle className="h-4 w-4" />
+            Book From Abroad on WhatsApp
+          </a>
+        </div>
+        <div className="flex items-center justify-center rounded-2xl border border-navy-foreground/15 bg-navy-foreground/5 p-10 sm:p-14">
+          <div className="text-center">
+            <Globe className="mx-auto h-12 w-12 text-primary" />
+            <p className="mt-4 text-sm text-navy-foreground/70">
+              Zimbabweans in the diaspora trust VenMax to arrange rentals for family and
+              homecoming trips — no in-person visit required to get started.
+            </p>
+          </div>
         </div>
       </div>
     </Section>

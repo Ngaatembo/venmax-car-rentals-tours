@@ -3,6 +3,7 @@ import { ArrowRight, MessageCircle, Star } from "lucide-react";
 import {
   AirportSection,
   BookingCta,
+  DiasporaSection,
   FleetSection,
   RequirementsSection,
   ServicesSection,
@@ -76,6 +77,7 @@ function Index() {
       <RequirementsSection />
       <ServicesSection />
       <AirportSection />
+      <DiasporaSection />
       <ToursSection />
       <WhySection />
       <TestimonialsSection />
