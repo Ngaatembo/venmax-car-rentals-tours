@@ -415,11 +415,16 @@ export function TestimonialsSection() {
       <div className="mt-12 grid gap-6 lg:grid-cols-3">
         {testimonials.map((t, i) => (
           <figure key={i} className="rounded-2xl border border-border bg-card p-6">
-            <blockquote className="text-sm leading-relaxed text-muted-foreground">
+            <div className="flex gap-0.5">
+              {Array.from({ length: t.rating }).map((_, starIndex) => (
+                <Star key={starIndex} className="h-3.5 w-3.5 fill-primary text-primary" />
+              ))}
+            </div>
+            <blockquote className="mt-3 text-sm leading-relaxed text-muted-foreground">
               “{t.quote}”
             </blockquote>
-            <figcaption className="mt-6 text-xs text-muted-foreground">
-              Verified Google review
+            <figcaption className="mt-6 text-xs font-medium text-foreground">
+              {t.name} <span className="font-normal text-muted-foreground">· Verified Google review</span>
             </figcaption>
           </figure>
         ))}

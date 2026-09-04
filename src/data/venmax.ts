@@ -325,7 +325,33 @@ export const rentalTerms = [
 // per client request — add more here as Rurushamy supplies them.
 export const testimonials = [
   {
+    name: "Howard Darangwa",
+    rating: 5,
     quote:
-      "We hired your car for 3 days and everything went really well. The car was in great condition, and the service was smooth. We really appreciate it and will definitely recommend Venmax and use you again.",
+      "Fantastic service, clean vehicles, professional drivers, and very well organised tours. Everything was on time and stress-free. Highly recommended for anyone looking for reliable car hire and unforgettable travel experiences!",
+  },
+  {
+    name: "Enock Chaurura",
+    rating: 5,
+    quote:
+      "I had a fantastic experience. The vehicle was clean and in very excellent condition. The staff who attended me were fantastic. Quite a refreshing experience. Keep it up. You are assured of more business from my company",
+  },
+  {
+    name: "Learnmore Marimbire",
+    rating: 5,
+    quote:
+      "What takes it all is the professionalism with Venmax team, superb service very convenient its like a drive through car rental kind of service. Well serviced and clean cars. You top the list guys 10/10",
+  },
+  {
+    name: "Tatenda Munemo",
+    rating: 5,
+    quote:
+      "Excellent experience with Venmax Car Rental. The vehicle was in great condition, well-maintained, and the service was top-notch. The car was clean, comfortable and exceeded my expectations. Friendly staff and seamless process. Will definitely rent it again. Highly recommend for reliable and quality car rentals!",
+  },
+  {
+    name: "Muzah Clemence",
+    rating: 5,
+    quote:
+      "They are friendly, professional staff, a clean and well-maintained car, and fast, hassle-free service. Everything went smoothly with no surprises. Highly recommend and I would rent from them again!",
   },
 ];
