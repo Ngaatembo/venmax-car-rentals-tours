@@ -7,6 +7,7 @@ import {
   MapPin,
   MessageCircle,
   Plane,
+  Star,
   User,
   Users,
 } from "lucide-react";
@@ -110,7 +111,7 @@ export function FleetSection({ limit }: { limit?: number }) {
   // Group vehicles by the fixed slug groups above; anything not in a group
   // (e.g. a new vehicle added later via the admin panel) falls into "More Vehicles".
   const grouped = fleetGroups.map((group) => ({
-    title: group.title,
+    title: group.title as string,
     vehicles: group.slugs
       .map((slug) => vehicles.find((v) => v.slug === slug))
       .filter((v): v is NonNullable<typeof v> => Boolean(v)),

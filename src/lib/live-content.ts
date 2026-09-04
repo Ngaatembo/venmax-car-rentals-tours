@@ -30,7 +30,7 @@ export function useVehicles(): Vehicle[] {
             priceLabel: v.price_label,
             deposit: v.deposit,
             description: v.description,
-            image: v.image_url || staticVehicleImages.get(v.slug) || staticVehicles[0].image,
+            image: v.image_url || staticVehicleImages.get(v.slug) || staticVehicles[0]!.image,
           })),
         );
       });
@@ -59,7 +59,7 @@ export function useTours(): Tour[] {
             slug: t.slug,
             name: t.name,
             description: t.description,
-            image: t.image_url || staticTourImages.get(t.slug) || staticTours[0].image,
+            image: t.image_url || staticTourImages.get(t.slug) || staticTours[0]!.image,
           })),
         );
       });
