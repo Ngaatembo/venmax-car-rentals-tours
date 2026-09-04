@@ -17,6 +17,10 @@ import fortuner from "@/assets/toyota-fortuner.jpg";
 import prado from "@/assets/toyota-prado.jpg";
 import sport from "@/assets/range-rover-sport.jpg";
 import landCruiser from "@/assets/toyota-land-cruiser.jpg";
+// Tour & hero photography: real photos via Wikimedia Commons (free licenses, CC BY-SA / CC BY).
+// Victoria Falls aerial: Diego Delso (CC BY-SA 4.0) · Hwange elephants: panoramio contributor (CC BY)
+// Great Zimbabwe: Jan Derk (public domain) · Matobo balancing rocks: Babakathy (CC BY-SA 3.0)
+// Harare skyline: Tawanda.M (CC BY-SA 4.0) · Hero jacaranda avenue, Harare: Tawanda.M (CC BY-SA 4.0)
 import tourVicFalls from "@/assets/tour-victoria-falls.jpg";
 import tourHwange from "@/assets/tour-hwange.jpg";
 import tourGreatZim from "@/assets/tour-great-zimbabwe.jpg";
