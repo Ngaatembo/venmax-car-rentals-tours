@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -10,6 +9,7 @@ import {
   MapPin,
   MessageCircle,
   Plane,
+  Play,
   Star,
   User,
   Users,
@@ -506,20 +506,10 @@ function detectSocialPlatform(url: string): EmbedPlatform {
   return null;
 }
 
-function loadEmbedScriptOnce(src: string) {
-  if (typeof document === "undefined") return;
-  const existing = document.querySelector(`script[src="${src}"]`);
-  if (existing) {
-    const instgrm = (window as unknown as { instgrm?: { Embeds: { process: () => void } } })
-      .instgrm;
-    if (src.includes("instagram") && instgrm) instgrm.Embeds.process();
-    return;
-  }
-  const script = document.createElement("script");
-  script.src = src;
-  script.async = true;
-  document.body.appendChild(script);
-}
+const platformLabel: Record<Exclude<EmbedPlatform, null>, string> = {
+  instagram: "Instagram",
+  tiktok: "TikTok",
+};
 
 export function SocialShowcaseSection() {
   const content = useSiteContent();
@@ -528,16 +518,6 @@ export function SocialShowcaseSection() {
     content.social_showcase_2,
     content.social_showcase_3,
   ].filter((url): url is string => Boolean(url));
-
-  useEffect(() => {
-    if (links.some((url) => detectSocialPlatform(url) === "instagram")) {
-      loadEmbedScriptOnce("//www.instagram.com/embed.js");
-    }
-    if (links.some((url) => detectSocialPlatform(url) === "tiktok")) {
-      loadEmbedScriptOnce("https://www.tiktok.com/embed.js");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [links.join("|")]);
 
   return (
     <Section tone="surface">
@@ -551,25 +531,26 @@ export function SocialShowcaseSection() {
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {links.map((url, i) => {
             const platform = detectSocialPlatform(url);
-            if (platform === "instagram") {
-              return (
-                <blockquote
-                  key={i}
-                  className="instagram-media mx-auto"
-                  data-instgrm-permalink={url}
-                  data-instgrm-version="14"
-                  style={{ margin: 0, width: "100%" }}
-                />
-              );
-            }
-            if (platform === "tiktok") {
-              return (
-                <blockquote key={i} className="tiktok-embed mx-auto" cite={url} style={{ margin: 0, width: "100%" }}>
-                  <section />
-                </blockquote>
-              );
-            }
-            return null;
+            const label = platform ? platformLabel[platform] : "Social";
+            return (
+              <a
+                key={i}
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                className="group flex flex-col items-center justify-center gap-4 rounded-2xl border border-border bg-navy p-10 text-center text-navy-foreground transition-colors hover:border-primary"
+              >
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/15 transition-colors group-hover:bg-primary">
+                  <Play className="h-5 w-5 fill-current text-primary group-hover:text-primary-foreground" />
+                </span>
+                <span>
+                  <span className="block text-xs font-semibold uppercase tracking-wider text-navy-foreground/60">
+                    Featured on {label}
+                  </span>
+                  <span className="mt-1 block text-sm font-semibold">Watch this post</span>
+                </span>
+              </a>
+            );
           })}
         </div>
       ) : (
