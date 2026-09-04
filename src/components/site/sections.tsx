@@ -498,17 +498,19 @@ export function RequirementsSection() {
   );
 }
 
-type EmbedPlatform = "instagram" | "tiktok" | null;
+type EmbedPlatform = "instagram" | "tiktok" | "facebook" | null;
 
 function detectSocialPlatform(url: string): EmbedPlatform {
   if (/instagram\.com/.test(url)) return "instagram";
   if (/tiktok\.com/.test(url)) return "tiktok";
+  if (/facebook\.com|fb\.watch/.test(url)) return "facebook";
   return null;
 }
 
 const platformLabel: Record<Exclude<EmbedPlatform, null>, string> = {
   instagram: "Instagram",
   tiktok: "TikTok",
+  facebook: "Facebook",
 };
 
 export function SocialShowcaseSection() {
@@ -517,6 +519,7 @@ export function SocialShowcaseSection() {
     content.social_showcase_1,
     content.social_showcase_2,
     content.social_showcase_3,
+    content.social_showcase_4,
   ].filter((url): url is string => Boolean(url));
 
   return (
@@ -528,7 +531,7 @@ export function SocialShowcaseSection() {
         align="center"
       />
       {links.length > 0 ? (
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-6 sm:grid-cols-2">
           {links.map((url, i) => {
             const platform = detectSocialPlatform(url);
             const label = platform ? platformLabel[platform] : "Social";

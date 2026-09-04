@@ -18,9 +18,10 @@ const fieldLabels: Record<string, string> = {
   contact_phone_secondary: "Secondary phone",
   contact_email_sales: "Sales email",
   contact_email_bookings: "Bookings email",
-  social_showcase_1: "Featured post/reel #1 (Instagram or TikTok link)",
-  social_showcase_2: "Featured post/reel #2 (Instagram or TikTok link)",
-  social_showcase_3: "Featured post/reel #3 (Instagram or TikTok link)",
+  social_showcase_1: "Featured post/reel #1 (Instagram, TikTok or Facebook link)",
+  social_showcase_2: "Featured post/reel #2 (Instagram, TikTok or Facebook link)",
+  social_showcase_3: "Featured post/reel #3 (Instagram, TikTok or Facebook link)",
+  social_showcase_4: "Featured post/reel #4 (Instagram, TikTok or Facebook link)",
 };
 
 function AdminContent() {
