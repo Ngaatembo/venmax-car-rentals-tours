@@ -19,6 +19,24 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+function Index() {
+  return (
+    <div>
+      <Hero />
+      <TrustStrip />
+      <WelcomeSection />
+      <FleetSection />
+      <RequirementsSection />
+      <ServicesSection />
+      <AirportSection />
+      <ToursSection />
+      <WhySection />
+      <TestimonialsSection />
+      <BookingCta />
+    </div>
+  );
+}
+
 function Hero() {
   return (
     <section className="relative min-h-[min(720px,100svh)] overflow-hidden bg-navy text-navy-foreground">
