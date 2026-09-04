@@ -37,7 +37,7 @@ export const company = {
   emails: ["sales@venmax.co.zw", "venmaxcarrentaltours@gmail.com"],
   hours: "Office hours 8am–5pm — WhatsApp messages answered anytime",
   social: {
-    facebook: "https://www.facebook.com/share/18kPwcmXH2/?mibextid=wwXIfr",
+    facebook: "https://www.facebook.com/profile.php?id=61576553241839",
     tiktok: "https://www.tiktok.com/@venmax.car.rentaltours",
     linkedin: "https://www.linkedin.com/company/venmax-car-rental-tours/",
     instagram: "https://www.instagram.com/venmax_car_rental__tours",
