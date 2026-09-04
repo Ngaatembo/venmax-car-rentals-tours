@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Linkedin, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 import { company, whatsappLink } from "@/data/venmax";
 
@@ -101,6 +101,17 @@ export function Footer() {
               >
                 <Facebook className="h-4 w-4" />
               </a>
+              {company.social.instagram && (
+                <a
+                  href={company.social.instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="VenMax on Instagram"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-navy-foreground/15 text-navy-foreground/70 hover:text-navy-foreground"
+                >
+                  <Instagram className="h-4 w-4" />
+                </a>
+              )}
               <a
                 href={company.social.tiktok}
                 target="_blank"

@@ -40,7 +40,7 @@ export const company = {
     facebook: "https://www.facebook.com/share/18kPwcmXH2/?mibextid=wwXIfr",
     tiktok: "https://www.tiktok.com/@venmax.car.rentaltours",
     linkedin: "https://www.linkedin.com/company/venmax-car-rental-tours/",
-    instagram: null,
+    instagram: "https://www.instagram.com/venmax_car_rental__tours",
   },
   googleReviews: "https://share.google/7ZD8l8RK8UuGSEQRB",
 };

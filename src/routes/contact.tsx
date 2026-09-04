@@ -116,6 +116,19 @@ function ContactPage() {
               <div>
                 <h3 className="text-base">Follow VenMax</h3>
                 <p className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-sm text-muted-foreground">
+                  {company.social.instagram && (
+                    <>
+                      <a
+                        href={company.social.instagram}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:text-foreground"
+                      >
+                        Instagram
+                      </a>
+                      <span aria-hidden="true">·</span>
+                    </>
+                  )}
                   <a
                     href={company.social.facebook}
                     target="_blank"
