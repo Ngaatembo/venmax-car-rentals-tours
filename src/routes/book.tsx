@@ -41,7 +41,8 @@ function BookPage() {
   const tours = useTours();
   const [pending, setPending] = useState(false);
   const [reference, setReference] = useState<string | null>(null);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  type BookingFields = keyof z.infer<typeof bookingSchema>;
+  const [errors, setErrors] = useState<Partial<Record<BookingFields, string>>>({});
   const defaultVehicle = useMemo(
     () => (vehicle && vehicles.some((v) => v.slug === vehicle) ? vehicle : ""),
     [vehicle, vehicles],
