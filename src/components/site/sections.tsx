@@ -197,13 +197,13 @@ export function AirportSection() {
   return (
     <Section>
       <div className="grid items-center gap-12 lg:grid-cols-2">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl sm:aspect-[16/10] lg:aspect-auto lg:min-h-[28rem]">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-2xl sm:aspect-[3/4] lg:aspect-auto lg:min-h-[28rem]">
           <img
             src={airportImage}
             alt="VenMax chauffeur meeting an arriving traveller at the airport"
             loading="lazy"
             width={1200}
-            height={900}
+            height={1600}
             className="h-full w-full object-cover object-center"
           />
           <span className="absolute left-6 top-6 rounded-full bg-primary px-4 py-2 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground">
@@ -282,13 +282,13 @@ export function DiasporaSection() {
             Book From Abroad on WhatsApp
           </a>
         </div>
-        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl sm:aspect-[16/10] lg:aspect-auto lg:min-h-[24rem]">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-2xl sm:aspect-[3/4] lg:aspect-auto lg:min-h-[24rem]">
           <img
             src={airportImage}
             alt="VenMax meeting an arriving traveller at Harare's Robert Gabriel Mugabe International Airport"
             loading="lazy"
             width={1200}
-            height={900}
+            height={1600}
             className="h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/10 to-transparent" />
