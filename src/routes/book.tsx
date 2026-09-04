@@ -1,12 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
 import { bookingSchema, serviceTypes, submitBookingRequest } from "@/lib/bookings";
 import { useVehicles, useTours } from "@/lib/live-content";
+import { whatsappLink } from "@/data/venmax";
 
 const searchSchema = z.object({
   vehicle: z.string().optional(),
@@ -41,12 +42,35 @@ function BookPage() {
   const tours = useTours();
   const [pending, setPending] = useState(false);
   const [reference, setReference] = useState<string | null>(null);
+  const [confirmLink, setConfirmLink] = useState<string | null>(null);
   type BookingFields = keyof z.infer<typeof bookingSchema>;
   const [errors, setErrors] = useState<Partial<Record<BookingFields, string>>>({});
   const defaultVehicle = useMemo(
     () => (vehicle && vehicles.some((v) => v.slug === vehicle) ? vehicle : ""),
     [vehicle, vehicles],
   );
+
+  function buildConfirmMessage(
+    data: z.infer<typeof bookingSchema>,
+    ref: string,
+  ) {
+    const service = serviceTypes.find((s) => s.value === data.serviceType)?.label ?? data.serviceType;
+    const vehicleName = vehicles.find((v) => v.slug === data.vehicleSlug)?.name;
+    const tourName = tours.find((t) => t.slug === data.tourSlug)?.name;
+    const lines = [
+      `Hi VenMax, I just submitted a booking request (ref ${ref}).`,
+      `Service: ${service}`,
+      vehicleName ? `Vehicle: ${vehicleName}` : null,
+      tourName ? `Tour interest: ${tourName}` : null,
+      `Dates: ${data.startDate} to ${data.endDate}`,
+      `Name: ${data.fullName}`,
+      `Phone: ${data.phone}`,
+      `Pickup/delivery: ${data.pickupLocation}`,
+      data.notes ? `Notes: ${data.notes}` : null,
+      "Please confirm availability and pricing. Thank you!",
+    ].filter(Boolean);
+    return lines.join("\n");
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -66,9 +90,15 @@ function BookPage() {
     setPending(true);
     try {
       const result = await submitBookingRequest(parsed.data);
+      const link = whatsappLink(buildConfirmMessage(parsed.data, result.reference));
       setReference(result.reference);
+      setConfirmLink(link);
       toast.success("Booking request received.");
       form.reset();
+      // Open WhatsApp immediately so VenMax actually sees the request —
+      // saving to the database alone isn't enough since WhatsApp is their
+      // primary channel and nobody may be watching the admin panel live.
+      window.open(link, "_blank", "noreferrer");
     } catch {
       toast.error("Something went wrong — please try again or use WhatsApp.");
     } finally {
@@ -91,20 +121,35 @@ function BookPage() {
               <h2 className="mt-4 text-2xl">Request received</h2>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 Your booking request reference is{" "}
-                <span className="font-semibold text-foreground">{reference}</span>. VenMax will
-                confirm availability and final pricing with you directly. For the fastest response,
-                mention this reference on WhatsApp.
+                <span className="font-semibold text-foreground">{reference}</span>. We've opened
+                WhatsApp with your details pre-filled — send that message so VenMax can confirm
+                availability and final pricing with you directly. If WhatsApp didn't open, use the
+                button below.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
+                {confirmLink && (
+                  <a
+                    href={confirmLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    Confirm via WhatsApp
+                  </a>
+                )}
                 <button
-                  onClick={() => setReference(null)}
+                  onClick={() => {
+                    setReference(null);
+                    setConfirmLink(null);
+                  }}
                   className="rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-secondary"
                 >
                   Make another request
                 </button>
                 <a
                   href="/#vehicles"
-                  className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
+                  className="rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-secondary"
                 >
                   Back to the fleet
                 </a>

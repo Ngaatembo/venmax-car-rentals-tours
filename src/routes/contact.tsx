@@ -29,20 +29,28 @@ export const Route = createFileRoute("/contact")({
 function ContactPage() {
   const [pending, setPending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [confirmLink, setConfirmLink] = useState<string | null>(null);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
+    const name = String(form.get("name") ?? "");
+    const email = String(form.get("email") ?? "");
+    const phone = String(form.get("phone") ?? "");
+    const message = String(form.get("message") ?? "");
     setPending(true);
     try {
-      await submitInquiry({
-        name: String(form.get("name") ?? ""),
-        email: String(form.get("email") ?? ""),
-        phone: String(form.get("phone") ?? ""),
-        message: String(form.get("message") ?? ""),
-      });
+      await submitInquiry({ name, email, phone, message });
+      const link = whatsappLink(
+        `Hi VenMax, I just sent an inquiry via the website.\nName: ${name}\nPhone: ${phone}\nMessage: ${message}`,
+      );
+      setConfirmLink(link);
       setSent(true);
       toast.success("Inquiry sent — VenMax will get back to you shortly.");
+      // Same reasoning as the booking form: WhatsApp is the channel VenMax
+      // actually watches, so open it with the inquiry pre-filled rather than
+      // relying solely on someone checking the admin panel.
+      window.open(link, "_blank", "noreferrer");
     } catch {
       toast.error("Please check the form and try again.");
     } finally {
@@ -156,7 +164,7 @@ function ContactPage() {
             <h2 className="text-xl">Send an inquiry</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               {sent
-                ? "Thanks — your inquiry has been noted and VenMax will respond shortly."
+                ? "Thanks — we've opened WhatsApp with your message pre-filled. Send it so VenMax sees it right away."
                 : "Fill in the form and the VenMax team will get back to you."}
             </p>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -202,6 +210,17 @@ function ContactPage() {
             >
               {pending ? "Sending…" : sent ? "Inquiry sent" : "Send inquiry"}
             </button>
+            {confirmLink && (
+              <a
+                href={confirmLink}
+                target="_blank"
+                rel="noreferrer"
+                className="ml-3 mt-6 inline-flex items-center gap-1.5 rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-secondary"
+              >
+                <MessageCircle className="h-4 w-4" />
+                Open WhatsApp again
+              </a>
+            )}
           </form>
         </div>
       </Section>
