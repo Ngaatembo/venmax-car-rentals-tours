@@ -88,20 +88,3 @@ function Hero() {
   );
 }
 
-function Index() {
-  return (
-    <div>
-      <Hero />
-      <TrustStrip />
-      <WelcomeSection />
-      <FleetSection />
-      <RequirementsSection />
-      <ServicesSection />
-      <AirportSection />
-      <ToursSection />
-      <WhySection />
-      <TestimonialsSection />
-      <BookingCta />
-    </div>
-  );
-}
