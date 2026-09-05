@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, MessageCircle, Star } from "lucide-react";
+import { ArrowRight, CheckCircle2, MessageCircle, Star, Zap } from "lucide-react";
 import {
   BookingCta,
   BrandPromiseSection,
@@ -55,11 +55,11 @@ function Index() {
           </div>
           <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-navy-foreground/80">
             <span className="inline-flex items-center gap-2">
-              <Star className="h-4 w-4 fill-primary text-primary" />
+              <CheckCircle2 className="h-4 w-4 fill-primary text-primary" />
               No Hidden Fees
             </span>
             <span className="inline-flex items-center gap-2">
-              <Star className="h-4 w-4 fill-primary text-primary" />
+              <Zap className="h-4 w-4 fill-primary text-primary" />
               Flexible Terms
             </span>
             <span className="inline-flex items-center gap-2">
