@@ -13,8 +13,7 @@ import {
   WhySection,
 } from "@/components/site/sections";
 import { BookingWidget } from "@/components/site/BookingWidget";
-import heroImage from "@/assets/hero-harare.jpg";
-import { whatsappLink } from "@/data/venmax";
+import { businessFacts, whatsappLink } from "@/data/venmax";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -24,13 +23,8 @@ function Index() {
   return (
     <div>
       <section className="relative overflow-hidden bg-navy text-navy-foreground">
-        <img
-          src={heroImage}
-          alt="VenMax Toyota Fortuner available for hire in Harare"
-          className="absolute inset-0 h-full w-full object-cover object-[62%_center] sm:object-center"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy/65 via-navy/78 to-navy" />
-        <div className="relative mx-auto flex min-h-[min(640px,90svh)] max-w-7xl flex-col justify-end px-4 pb-16 pt-32 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24 lg:pt-48">
+        <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy to-black/40" />
+        <div className="relative mx-auto flex min-h-[min(600px,85svh)] max-w-7xl flex-col justify-center px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           <span className="inline-flex items-center gap-2 rounded-full border border-navy-foreground/30 px-4 py-2 text-xs font-semibold uppercase tracking-widest">
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             Harare &middot; Zimbabwe
@@ -44,30 +38,34 @@ function Index() {
           <div className="mt-8 flex flex-wrap gap-4">
             <a
               href="#vehicles"
-              className="inline-flex items-center gap-2 rounded-full bg-navy-foreground px-7 py-3.5 text-sm font-semibold text-navy"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground"
             >
-              Browse Vehicles
+              Browse Our Fleet
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
               href={whatsappLink("Hello VenMax, I'd like to book a vehicle.")}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground"
+              className="inline-flex items-center gap-2 rounded-full border border-navy-foreground/30 bg-navy-foreground/10 px-7 py-3.5 text-sm font-semibold text-navy-foreground"
             >
               <MessageCircle className="h-4 w-4" />
-              WhatsApp VenMax
+              Chat on WhatsApp
             </a>
           </div>
           <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-navy-foreground/80">
-            {["Free Airport Pickup", "Harare Vehicle Delivery", "Transparent Pricing"].map(
-              (item) => (
-                <span key={item} className="inline-flex items-center gap-2">
-                  <Star className="h-4 w-4 fill-primary text-primary" />
-                  {item}
-                </span>
-              ),
-            )}
+            <span className="inline-flex items-center gap-2">
+              <Star className="h-4 w-4 fill-primary text-primary" />
+              No Hidden Fees
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Star className="h-4 w-4 fill-primary text-primary" />
+              Flexible Terms
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Star className="h-4 w-4 fill-primary text-primary" />
+              {businessFacts.googleRating}★ Rated
+            </span>
           </div>
         </div>
       </section>
@@ -76,7 +74,7 @@ function Index() {
       </div>
       <ModelOfMonthSection />
       <TrustStrip />
-      <FleetSection />
+      <FleetSection limit={6} />
       <WhySection />
       <BrandPromiseSection />
       <TestimonialsSection />

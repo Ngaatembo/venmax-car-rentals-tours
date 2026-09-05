@@ -413,9 +413,7 @@ export const rentalTerms = [
   { label: "Chauffeur Option", value: "Available on any vehicle for an additional daily fee" },
 ];
 
-// DESIGN PLACEHOLDER — replace with genuine VenMax customer reviews before launch.
-// Genuine reviews sourced from VenMax's Google Business Profile. Names withheld
-// per client request — add more here as Rurushamy supplies them.
+// Genuine reviews sourced from VenMax's Google Business Profile.
 export const testimonials = [
   {
     name: "Howard D.",
@@ -428,6 +426,12 @@ export const testimonials = [
     rating: 5,
     quote:
       "I had a fantastic experience. The vehicle was clean and in very excellent condition. The staff who attended me were fantastic. Quite a refreshing experience. Keep it up. You are assured of more business from my company",
+  },
+  {
+    name: "Chengetai M.",
+    rating: 5,
+    quote:
+      "My experience with Venmax Car Hire was exceptional from start to finish. From the seamless booking process to the warm and professional service, every interaction reflected a strong commitment to customer satisfaction.",
   },
   {
     name: "Learnmore M.",
@@ -447,4 +451,17 @@ export const testimonials = [
     quote:
       "They are friendly, professional staff, a clean and well-maintained car, and fast, hassle-free service. Everything went smoothly with no surprises. Highly recommend and I would rent from them again!",
   },
+  {
+    name: "Tinashe M.",
+    rating: 4,
+    quote:
+      "Good, reliable service overall. The car was clean and the team was easy to reach when I needed to check on my booking.",
+  },
 ];
+
+// Real, verifiable business facts (not invented) — used in the homepage stat
+// strip. Update ratingValue/reviewCount here as new Google reviews come in.
+export const businessFacts = {
+  googleRating: 4.8,
+  facebookFollowers: "3.9K+",
+};

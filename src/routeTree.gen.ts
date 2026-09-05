@@ -14,6 +14,7 @@ import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as ChauffeurServiceHarareRouteImport } from './routes/chauffeur-service-harare'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as FleetRouteImport } from './routes/fleet'
 import { Route as SelfDriveCarHireHarareRouteImport } from './routes/self-drive-car-hire-harare'
 import { Route as ToursRouteImport } from './routes/tours'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
@@ -47,6 +48,11 @@ const ChauffeurServiceHarareRoute = ChauffeurServiceHarareRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FleetRoute = FleetRouteImport.update({
+  id: '/fleet',
+  path: '/fleet',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SelfDriveCarHireHarareRoute = SelfDriveCarHireHarareRouteImport.update({
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/book': typeof BookRoute
   '/chauffeur-service-harare': typeof ChauffeurServiceHarareRoute
   '/contact': typeof ContactRoute
+  '/fleet': typeof FleetRoute
   '/self-drive-car-hire-harare': typeof SelfDriveCarHireHarareRoute
   '/tours': typeof ToursRoute
   '/admin/bookings': typeof AdminBookingsRoute
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/book': typeof BookRoute
   '/chauffeur-service-harare': typeof ChauffeurServiceHarareRoute
   '/contact': typeof ContactRoute
+  '/fleet': typeof FleetRoute
   '/self-drive-car-hire-harare': typeof SelfDriveCarHireHarareRoute
   '/tours': typeof ToursRoute
   '/admin/bookings': typeof AdminBookingsRoute
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/book': typeof BookRoute
   '/chauffeur-service-harare': typeof ChauffeurServiceHarareRoute
   '/contact': typeof ContactRoute
+  '/fleet': typeof FleetRoute
   '/self-drive-car-hire-harare': typeof SelfDriveCarHireHarareRoute
   '/tours': typeof ToursRoute
   '/admin/bookings': typeof AdminBookingsRoute
@@ -151,6 +160,7 @@ export interface FileRouteTypes {
     | '/book'
     | '/chauffeur-service-harare'
     | '/contact'
+    | '/fleet'
     | '/self-drive-car-hire-harare'
     | '/tours'
     | '/admin/bookings'
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/book'
     | '/chauffeur-service-harare'
     | '/contact'
+    | '/fleet'
     | '/self-drive-car-hire-harare'
     | '/tours'
     | '/admin/bookings'
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/book'
     | '/chauffeur-service-harare'
     | '/contact'
+    | '/fleet'
     | '/self-drive-car-hire-harare'
     | '/tours'
     | '/admin/bookings'
@@ -199,6 +211,7 @@ export interface RootRouteChildren {
   BookRoute: typeof BookRoute
   ChauffeurServiceHarareRoute: typeof ChauffeurServiceHarareRoute
   ContactRoute: typeof ContactRoute
+  FleetRoute: typeof FleetRoute
   SelfDriveCarHireHarareRoute: typeof SelfDriveCarHireHarareRoute
   ToursRoute: typeof ToursRoute
 }
@@ -238,6 +251,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fleet': {
+      id: '/fleet'
+      path: '/fleet'
+      fullPath: '/fleet'
+      preLoaderRoute: typeof FleetRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/self-drive-car-hire-harare': {
@@ -336,6 +356,7 @@ const rootRouteChildren: RootRouteChildren = {
   BookRoute: BookRoute,
   ChauffeurServiceHarareRoute: ChauffeurServiceHarareRoute,
   ContactRoute: ContactRoute,
+  FleetRoute: FleetRoute,
   SelfDriveCarHireHarareRoute: SelfDriveCarHireHarareRoute,
   ToursRoute: ToursRoute,
 }

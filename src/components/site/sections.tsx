@@ -25,6 +25,7 @@ import {
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import airportImage from "@/assets/airport-pickup.jpg";
 import {
+  businessFacts,
   company,
   faqs,
   getVehicle,
@@ -139,7 +140,7 @@ export function FleetSection({ limit }: { limit?: number }) {
         />
         {limit && (
           <a
-            href="/#vehicles"
+            href="/fleet"
             className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-secondary"
           >
             View All Vehicles
@@ -470,10 +471,10 @@ export function WhySection() {
   }, null);
 
   const stats = [
-    { value: `${vehicles.length}+`, label: "Vehicle Models" },
+    { value: `${businessFacts.googleRating}★`, label: "Google Rating" },
     { value: startingPrice ? `$${startingPrice}` : "$40", label: "Starting Price/Day" },
-    { value: "Self-Drive", label: "or Chauffeur-Driven" },
-    { value: "WhatsApp", label: "First Support" },
+    { value: `${vehicles.length}+`, label: "Vehicle Models" },
+    { value: businessFacts.facebookFollowers, label: "Facebook Community" },
   ];
 
   const featureRows = whyVenMax.slice(0, 4);
@@ -551,6 +552,7 @@ export function BrandPromiseSection() {
 }
 
 export function TestimonialsSection() {
+  const avatarPalette = ["bg-primary", "bg-navy", "bg-emerald-600", "bg-sky-600", "bg-amber-600"];
   return (
     <Section>
       <SectionHeading
@@ -558,24 +560,49 @@ export function TestimonialsSection() {
         title="Trusted by Zimbabweans Across the Country"
         description="Genuine reviews from VenMax customers on our Google Business Profile."
       />
-      <Carousel opts={{ align: "start", loop: true }} className="mt-12">
+      <div className="mt-6 flex items-center justify-center gap-2 text-sm font-medium text-foreground">
+        <div className="flex gap-0.5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Star
+              key={i}
+              className={
+                i < Math.round(businessFacts.googleRating)
+                  ? "h-4 w-4 fill-primary text-primary"
+                  : "h-4 w-4 text-muted-foreground/30"
+              }
+            />
+          ))}
+        </div>
+        {businessFacts.googleRating}★ on Google
+      </div>
+      <Carousel opts={{ align: "start", loop: true }} className="mt-8">
         <CarouselContent>
           {testimonials.map((t, i) => (
             <CarouselItem key={i} className="sm:basis-1/2 lg:basis-1/3">
               <figure className="flex h-full flex-col rounded-2xl border border-border bg-card p-6">
-                <div className="flex gap-0.5">
-                  {Array.from({ length: t.rating }).map((_, starIndex) => (
-                    <Star key={starIndex} className="h-3.5 w-3.5 fill-primary text-primary" />
-                  ))}
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white ${avatarPalette[i % avatarPalette.length]}`}
+                  >
+                    {t.name.charAt(0)}
+                  </span>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{t.name}</p>
+                    <div className="flex gap-0.5">
+                      {Array.from({ length: t.rating }).map((_, starIndex) => (
+                        <Star
+                          key={starIndex}
+                          className="h-3 w-3 fill-primary text-primary"
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <blockquote className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
+                <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-muted-foreground">
                   "{t.quote}"
                 </blockquote>
-                <figcaption className="mt-6 text-xs font-medium text-foreground">
-                  {t.name}{" "}
-                  <span className="font-normal text-muted-foreground">
-                    · Verified Google review
-                  </span>
+                <figcaption className="mt-4 text-xs font-normal text-muted-foreground">
+                  Verified Google review
                 </figcaption>
               </figure>
             </CarouselItem>
