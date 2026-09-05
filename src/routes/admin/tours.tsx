@@ -22,8 +22,25 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, MapPin } from "lucide-react";
 import { listTours, upsertTour, deleteTour, uploadMedia, type DbTour } from "@/lib/admin-data";
+
+function DestinationThumb({ url, name }: { url?: string | null; name: string }) {
+  if (url) {
+    return (
+      <img
+        src={url}
+        alt={name}
+        className="h-10 w-14 flex-shrink-0 rounded-md border border-border object-cover"
+      />
+    );
+  }
+  return (
+    <div className="flex h-10 w-14 flex-shrink-0 items-center justify-center rounded-md border border-dashed border-border bg-muted text-muted-foreground">
+      <MapPin className="h-4 w-4" />
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/admin/tours")({
   component: AdminTours,

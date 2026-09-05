@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,8 +21,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, ArrowUpDown, Car as CarIcon } from "lucide-react";
 import {
   listVehicles,
   upsertVehicle,
@@ -30,6 +37,30 @@ import {
   uploadMedia,
   type DbVehicle,
 } from "@/lib/admin-data";
+
+type SortKey = "name" | "price";
+
+function parsePrice(label: string): number {
+  const match = label.replace(/,/g, "").match(/[\d.]+/);
+  return match ? parseFloat(match[0]) : Number.POSITIVE_INFINITY;
+}
+
+function VehicleThumb({ url, name }: { url?: string | null; name: string }) {
+  if (url) {
+    return (
+      <img
+        src={url}
+        alt={name}
+        className="h-10 w-14 flex-shrink-0 rounded-md border border-border object-cover"
+      />
+    );
+  }
+  return (
+    <div className="flex h-10 w-14 flex-shrink-0 items-center justify-center rounded-md border border-dashed border-border bg-muted text-muted-foreground">
+      <CarIcon className="h-4 w-4" />
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/admin/fleet")({
   component: AdminFleet,
@@ -56,6 +87,45 @@ function AdminFleet() {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [sortKey, setSortKey] = useState<SortKey>("name");
+  const [togglingId, setTogglingId] = useState<string | null>(null);
+
+  const categories = useMemo(
+    () => Array.from(new Set(vehicles.map((v) => v.category).filter(Boolean))).sort(),
+    [vehicles]
+  );
+
+  const filteredVehicles = useMemo(() => {
+    let list = vehicles;
+    if (search.trim()) {
+      const q = search.trim().toLowerCase();
+      list = list.filter((v) => v.name.toLowerCase().includes(q));
+    }
+    if (categoryFilter !== "all") {
+      list = list.filter((v) => v.category === categoryFilter);
+    }
+    return [...list].sort((a, b) =>
+      sortKey === "price"
+        ? parsePrice(a.price_label) - parsePrice(b.price_label)
+        : a.name.localeCompare(b.name)
+    );
+  }, [vehicles, search, categoryFilter, sortKey]);
+
+  async function toggleActive(vehicle: DbVehicle) {
+    setTogglingId(vehicle.id);
+    try {
+      await upsertVehicle({ ...vehicle, is_active: !vehicle.is_active });
+      setVehicles((prev) =>
+        prev.map((v) => (v.id === vehicle.id ? { ...v, is_active: !v.is_active } : v))
+      );
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to update status");
+    } finally {
+      setTogglingId(null);
+    }
+  }
 
   async function refresh() {
     setLoading(true);
@@ -244,51 +314,127 @@ function AdminFleet() {
         </Dialog>
       </div>
 
-      <div className="mt-6 rounded-lg border border-border bg-background">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Vehicle</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Active</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {loading && (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center text-muted-foreground">
-                  Loading…
-                </TableCell>
-              </TableRow>
-            )}
-            {!loading && vehicles.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center text-muted-foreground">
-                  No vehicles yet.
-                </TableCell>
-              </TableRow>
-            )}
-            {vehicles.map((v) => (
-              <TableRow key={v.id}>
-                <TableCell className="font-medium">{v.name}</TableCell>
-                <TableCell>{v.category}</TableCell>
-                <TableCell>{v.price_label}</TableCell>
-                <TableCell>{v.is_active ? "Yes" : "No"}</TableCell>
-                <TableCell className="text-right">
+      {/* Search, filter, sort controls */}
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="relative flex-1">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search vehicles…"
+            className="pl-9"
+          />
+        </div>
+        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+          <SelectTrigger className="w-full sm:w-44">
+            <SelectValue placeholder="Category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All categories</SelectItem>
+            {categories.map((c) => (
+              <SelectItem key={c} value={c}>
+                {c}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Button
+          variant="outline"
+          className="w-full sm:w-auto"
+          onClick={() => setSortKey((k) => (k === "name" ? "price" : "name"))}
+        >
+          <ArrowUpDown className="mr-1 h-4 w-4" />
+          Sort: {sortKey === "name" ? "Name" : "Price"}
+        </Button>
+      </div>
+
+      {loading && (
+        <p className="mt-6 text-center text-sm text-muted-foreground">Loading…</p>
+      )}
+      {!loading && filteredVehicles.length === 0 && (
+        <p className="mt-6 text-center text-sm text-muted-foreground">
+          {vehicles.length === 0 ? "No vehicles yet." : "No vehicles match your search."}
+        </p>
+      )}
+
+      {!loading && filteredVehicles.length > 0 && (
+        <>
+          {/* Table view (md and up) */}
+          <div className="mt-6 hidden rounded-lg border border-border bg-background md:block">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Vehicle</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Active</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredVehicles.map((v) => (
+                  <TableRow key={v.id}>
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-3">
+                        <VehicleThumb url={v.image_url} name={v.name} />
+                        {v.name}
+                      </div>
+                    </TableCell>
+                    <TableCell>{v.category}</TableCell>
+                    <TableCell>{v.price_label}</TableCell>
+                    <TableCell>
+                      <Switch
+                        checked={v.is_active}
+                        disabled={togglingId === v.id}
+                        onCheckedChange={() => toggleActive(v)}
+                      />
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="icon" onClick={() => openEdit(v)}>
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="icon" onClick={() => handleDelete(v)}>
+                        <Trash2 className="h-4 w-4 text-destructive" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+          {/* Card view (mobile) */}
+          <div className="mt-6 space-y-3 md:hidden">
+            {filteredVehicles.map((v) => (
+              <div
+                key={v.id}
+                className="flex items-center gap-3 rounded-lg border border-border bg-background p-3"
+              >
+                <VehicleThumb url={v.image_url} name={v.name} />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-medium text-foreground">{v.name}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {v.category} · {v.price_label}
+                  </p>
+                </div>
+                <div className="flex flex-shrink-0 items-center gap-1">
+                  <Switch
+                    checked={v.is_active}
+                    disabled={togglingId === v.id}
+                    onCheckedChange={() => toggleActive(v)}
+                  />
                   <Button variant="ghost" size="icon" onClick={() => openEdit(v)}>
                     <Pencil className="h-4 w-4" />
                   </Button>
                   <Button variant="ghost" size="icon" onClick={() => handleDelete(v)}>
                     <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
-                </TableCell>
-              </TableRow>
+                </div>
+              </div>
             ))}
-          </TableBody>
-        </Table>
-      </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
