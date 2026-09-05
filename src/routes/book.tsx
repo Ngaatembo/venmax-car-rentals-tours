@@ -11,6 +11,10 @@ import { whatsappLink } from "@/data/venmax";
 
 const searchSchema = z.object({
   vehicle: z.string().optional(),
+  service: z.string().optional(),
+  pickup: z.string().optional(),
+  start: z.string().optional(),
+  end: z.string().optional(),
 });
 
 export const Route = createFileRoute("/book")({
@@ -37,7 +41,7 @@ const fieldClass =
   "rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring";
 
 function BookPage() {
-  const { vehicle } = Route.useSearch();
+  const { vehicle, service, pickup, start, end } = Route.useSearch();
   const vehicles = useVehicles();
   const tours = useTours();
   const [pending, setPending] = useState(false);
@@ -48,6 +52,10 @@ function BookPage() {
   const defaultVehicle = useMemo(
     () => (vehicle && vehicles.some((v) => v.slug === vehicle) ? vehicle : ""),
     [vehicle, vehicles],
+  );
+  const defaultService = useMemo(
+    () => (service && serviceTypes.some((s) => s.value === service) ? service : "self-drive"),
+    [service],
   );
 
   function buildConfirmMessage(
@@ -163,7 +171,7 @@ function BookPage() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="grid gap-1.5 text-sm">
                   Service
-                  <select name="serviceType" className={fieldClass} defaultValue="self-drive">
+                  <select name="serviceType" className={fieldClass} defaultValue={defaultService}>
                     {serviceTypes.map((s) => (
                       <option key={s.value} value={s.value}>
                         {s.label}
@@ -198,14 +206,24 @@ function BookPage() {
                 </label>
                 <label className="grid gap-1.5 text-sm">
                   Start date
-                  <input name="startDate" type="date" className={fieldClass} />
+                  <input
+                    name="startDate"
+                    type="date"
+                    defaultValue={start ?? ""}
+                    className={fieldClass}
+                  />
                   {errors.startDate && (
                     <span className="text-xs text-destructive">{errors.startDate}</span>
                   )}
                 </label>
                 <label className="grid gap-1.5 text-sm">
                   End date
-                  <input name="endDate" type="date" className={fieldClass} />
+                  <input
+                    name="endDate"
+                    type="date"
+                    defaultValue={end ?? ""}
+                    className={fieldClass}
+                  />
                   {errors.endDate && (
                     <span className="text-xs text-destructive">{errors.endDate}</span>
                   )}
@@ -232,6 +250,7 @@ function BookPage() {
                   <input
                     name="pickupLocation"
                     placeholder="e.g. Harare Airport"
+                    defaultValue={pickup ?? ""}
                     className={fieldClass}
                   />
                   {errors.pickupLocation && (

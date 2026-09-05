@@ -4,10 +4,10 @@ import logo from "@/assets/logo.jpg";
 import { company, whatsappLink } from "@/data/venmax";
 
 const links = [
-  { to: "/#vehicles", label: "Vehicles" },
+  { to: "/#vehicles", label: "Fleet" },
   { to: "/#services", label: "Services" },
-  { to: "/#tours", label: "Tours" },
-  { to: "/#why-venmax", label: "About" },
+  { to: "/tours", label: "Tours" },
+  { to: "/#requirements", label: "Requirements" },
   { to: "/contact", label: "Contact" },
   { to: "/book", label: "Request a Booking" },
 ] as const;

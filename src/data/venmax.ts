@@ -57,6 +57,13 @@ export type Vehicle = {
   deposit: string;
   description: string;
   image: string;
+  // Manufacturer-typical specs for this model (not admin/DB-managed yet) —
+  // used for the fleet card spec row. badge is a short merchandising label.
+  seats?: number;
+  bags?: number;
+  transmission?: "Auto" | "Manual";
+  ac?: boolean;
+  badge?: string;
 };
 
 // TODO(lovable-cloud): replace with a `vehicles` table read once the backend is connected.
@@ -70,6 +77,11 @@ export const vehicles: Vehicle[] = [
     description:
       "Fuel-efficient hybrid, ideal for city driving and everyday errands around Harare.",
     image: note,
+    seats: 5,
+    bags: 2,
+    transmission: "Auto",
+    ac: true,
+    badge: "Best Value",
   },
   {
     slug: "toyota-aqua",
@@ -79,6 +91,11 @@ export const vehicles: Vehicle[] = [
     deposit: "$100 deposit",
     description: "Compact hybrid hatchback — easy to park and cheap to run around Harare.",
     image: aqua,
+    seats: 5,
+    bags: 2,
+    transmission: "Auto",
+    ac: true,
+    badge: "Budget Fuel Saver",
   },
   {
     slug: "honda-fit",
@@ -88,6 +105,10 @@ export const vehicles: Vehicle[] = [
     deposit: "$100 deposit",
     description: "Comfortable, fuel-efficient hatchback for personal or business use.",
     image: fit,
+    seats: 5,
+    bags: 2,
+    transmission: "Auto",
+    ac: true,
   },
   {
     slug: "nissan-xtrail",
@@ -97,6 +118,11 @@ export const vehicles: Vehicle[] = [
     deposit: "$100 refundable deposit",
     description: "Family-friendly SUV with a 600L boot and flat-folding rear seats.",
     image: xtrail,
+    seats: 5,
+    bags: 4,
+    transmission: "Auto",
+    ac: true,
+    badge: "SUV",
   },
   {
     slug: "nissan-serena",
@@ -107,6 +133,11 @@ export const vehicles: Vehicle[] = [
     description:
       "Spacious 8-seater multi-purpose vehicle for larger families and corporate groups.",
     image: serena,
+    seats: 8,
+    bags: 4,
+    transmission: "Auto",
+    ac: true,
+    badge: "Family Pick",
   },
   {
     slug: "mazda-cx5",
@@ -116,6 +147,11 @@ export const vehicles: Vehicle[] = [
     deposit: "$100 refundable deposit",
     description: "Refined, comfortable crossover for business travel and executive trips.",
     image: cx5,
+    seats: 5,
+    bags: 4,
+    transmission: "Auto",
+    ac: true,
+    badge: "SUV",
   },
   {
     slug: "toyota-d4d",
@@ -125,6 +161,10 @@ export const vehicles: Vehicle[] = [
     deposit: "$300 refundable deposit",
     description: "Rugged double-cab 4x4, built for long-distance travel and site visits.",
     image: d4d,
+    seats: 5,
+    bags: 3,
+    transmission: "Auto",
+    ac: true,
   },
   {
     slug: "toyota-fortuner",
@@ -135,6 +175,11 @@ export const vehicles: Vehicle[] = [
     description:
       "Capable 7-seater 4x4 SUV built for family travel, safaris and cross-country routes.",
     image: fortuner,
+    seats: 7,
+    bags: 5,
+    transmission: "Auto",
+    ac: true,
+    badge: "Model of the Month",
   },
   {
     slug: "toyota-prado",
@@ -144,6 +189,10 @@ export const vehicles: Vehicle[] = [
     deposit: "$300 deposit",
     description: "Premium 7-seater 4x4 with robust off-road performance and comfort.",
     image: prado,
+    seats: 7,
+    bags: 5,
+    transmission: "Auto",
+    ac: true,
   },
   {
     slug: "range-rover-sport",
@@ -153,6 +202,10 @@ export const vehicles: Vehicle[] = [
     deposit: "$500 deposit",
     description: "Executive luxury SUV for VIP travel and premium occasions.",
     image: sport,
+    seats: 5,
+    bags: 4,
+    transmission: "Auto",
+    ac: true,
   },
   {
     slug: "toyota-land-cruiser",
@@ -162,12 +215,20 @@ export const vehicles: Vehicle[] = [
     deposit: "$300 deposit",
     description: "Flagship 4x4, engineered for maximum durability and long hauls.",
     image: landCruiser,
+    seats: 7,
+    bags: 5,
+    transmission: "Auto",
+    ac: true,
   },
 ];
 
 export function getVehicle(slug: string) {
   return vehicles.find((v) => v.slug === slug);
 }
+
+// The one vehicle spotlighted in the homepage "Model of the Month" teaser.
+// Change this slug to rotate the feature — no other redesign needed.
+export const modelOfTheMonthSlug = "toyota-fortuner";
 
 export type Service = {
   slug: string;
@@ -308,6 +369,38 @@ export const requirements = [
     number: "04",
     title: "Refundable Deposit",
     description: "$100, $300 or $500 depending on the vehicle — refunded on safe return.",
+  },
+];
+
+// Sourced from VenMax's previous site content — carried forward, not new claims.
+export const faqs = [
+  {
+    question: "What documents do I need to rent a car?",
+    answer:
+      "A valid driver's licence (2+ years), a national ID or passport, and proof of residence or employment.",
+  },
+  {
+    question: "Is the security deposit refundable?",
+    answer:
+      "Yes — deposits ($100, $300 or $500 depending on the vehicle) are refunded on safe return of the vehicle.",
+  },
+  {
+    question: "How much free mileage do I get?",
+    answer: "200km free every day, with excess mileage billed at $0.60/km.",
+  },
+  {
+    question: "Do you offer airport pickup?",
+    answer:
+      "Yes — free pickup and handover at RGM International Airport, plus free vehicle delivery anywhere in Harare.",
+  },
+  {
+    question: "Can I hire a car with a driver?",
+    answer: "Yes — chauffeur service is available on any vehicle for an additional daily fee.",
+  },
+  {
+    question: "Can I book from outside Zimbabwe?",
+    answer:
+      "Yes — VenMax arranges bookings and deposits over WhatsApp for the diaspora or family back home, so you don't need to be in the country to get a vehicle sorted before you land.",
   },
 ];
 

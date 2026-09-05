@@ -16,9 +16,19 @@ import {
 } from "lucide-react";
 import { Section, SectionHeading } from "./Section";
 import { VehicleCard } from "./VehicleCard";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import airportImage from "@/assets/airport-pickup.jpg";
 import {
   company,
+  faqs,
+  getVehicle,
+  modelOfTheMonthSlug,
   requirements,
   rentalTerms,
   services,
@@ -54,6 +64,8 @@ export function TrustStrip() {
   );
 }
 
+// Kept for reuse (e.g. a future About page) but no longer rendered on the
+// homepage — its one-line message now lives in the hero subtext instead.
 export function WelcomeSection() {
   return (
     <Section tone="navy">
@@ -74,75 +86,71 @@ export function WelcomeSection() {
   );
 }
 
-const fleetGroups = [
-  { title: "Small & Economical", slugs: ["toyota-aqua", "nissan-note", "honda-fit"] },
-  { title: "Comfort & Family", slugs: ["nissan-xtrail", "nissan-serena", "mazda-cx5"] },
-  { title: "SUVs & Adventure", slugs: ["toyota-d4d", "toyota-fortuner"] },
-  { title: "Premium", slugs: ["range-rover-sport", "toyota-prado", "toyota-land-cruiser"] },
-] as const;
+// Small teaser for one spotlighted vehicle, shown right under the hero
+// booking widget. Change `modelOfTheMonthSlug` in src/data/venmax.ts to
+// rotate the feature — no redesign needed.
+export function ModelOfMonthSection() {
+  const vehicles = useVehicles();
+  const vehicle =
+    vehicles.find((v) => v.slug === modelOfTheMonthSlug) ?? getVehicle(modelOfTheMonthSlug);
+  if (!vehicle) return null;
+
+  return (
+    <div className="mx-auto max-w-3xl px-4 pt-6 sm:px-6 lg:px-8">
+      <Link
+        to="/book"
+        search={{ vehicle: vehicle.slug }}
+        className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-3 shadow-sm transition-shadow hover:shadow-md sm:p-4"
+      >
+        <div className="h-16 w-20 shrink-0 overflow-hidden rounded-xl bg-secondary sm:h-20 sm:w-28">
+          <img
+            src={vehicle.image}
+            alt={vehicle.name}
+            className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="eyebrow">Model of the Month</p>
+          <p className="mt-0.5 truncate text-sm font-semibold text-foreground sm:text-base">
+            {vehicle.name}
+          </p>
+          <p className="text-xs text-muted-foreground sm:text-sm">
+            {vehicle.priceLabel}
+            {vehicle.seats ? ` · ${vehicle.seats} seats` : ""}
+          </p>
+        </div>
+        <ArrowRight className="h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-1" />
+      </Link>
+    </div>
+  );
+}
 
 export function FleetSection({ limit }: { limit?: number }) {
   const vehicles = useVehicles();
-
-  if (limit) {
-    const list = vehicles.slice(0, limit);
-    return (
-      <Section tone="surface" id="vehicles">
-        <SectionHeading
-          eyebrow="The Fleet"
-          title="Choose the right vehicle for your Zimbabwe journey"
-          description="A curated fleet from economical hybrids to flagship 4x4s. Discounts available for longer rentals — every price is transparent, with no hidden charges."
-        />
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {list.map((vehicle) => (
-            <VehicleCard key={vehicle.slug} vehicle={vehicle} />
-          ))}
-        </div>
-        <div className="mt-10 text-center">
-          <a
-            href="/#vehicles"
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold transition-colors hover:bg-secondary"
-          >
-            View the full fleet
-            <ArrowRight className="h-4 w-4" />
-          </a>
-        </div>
-      </Section>
-    );
-  }
-
-  // Group vehicles by the fixed slug groups above; anything not in a group
-  // (e.g. a new vehicle added later via the admin panel) falls into "More Vehicles".
-  const grouped = fleetGroups.map((group) => ({
-    title: group.title as string,
-    vehicles: group.slugs
-      .map((slug) => vehicles.find((v) => v.slug === slug))
-      .filter((v): v is NonNullable<typeof v> => Boolean(v)),
-  }));
-  const groupedSlugs = new Set(fleetGroups.flatMap((g) => g.slugs));
-  const ungrouped = vehicles.filter((v) => !groupedSlugs.has(v.slug as never));
-  if (ungrouped.length) grouped.push({ title: "More Vehicles", vehicles: ungrouped });
+  const list = limit ? vehicles.slice(0, limit) : vehicles;
 
   return (
     <Section tone="surface" id="vehicles">
-      <SectionHeading
-        eyebrow="The Fleet"
-        title="Find the right vehicle for your journey"
-        description="A curated fleet from economical hybrids to flagship 4x4s. Discounts available for longer rentals — every price is transparent, with no hidden charges."
-      />
-      <div className="mt-12 space-y-14">
-        {grouped
-          .filter((g) => g.vehicles.length > 0)
-          .map((group) => (
-            <div key={group.title}>
-              <h3 className="text-lg font-semibold text-foreground">{group.title}</h3>
-              <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {group.vehicles.map((vehicle) => (
-                  <VehicleCard key={vehicle.slug} vehicle={vehicle} />
-                ))}
-              </div>
-            </div>
-          ))}
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <SectionHeading
+          eyebrow="The Fleet"
+          title="Vehicles for Every Journey"
+          description="From fuel-efficient city cars to rugged 4x4s for Zimbabwe's terrain — every vehicle is well maintained, with transparent pricing and a refundable deposit."
+        />
+        {limit && (
+          <a
+            href="/#vehicles"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-secondary"
+          >
+            View All Vehicles
+            <ArrowRight className="h-4 w-4" />
+          </a>
+        )}
+      </div>
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {list.map((vehicle) => (
+          <VehicleCard key={vehicle.slug} vehicle={vehicle} />
+        ))}
       </div>
       <p className="mt-10 text-center text-sm text-muted-foreground">
         Prices shown are starting daily rates. Final pricing depends on rental duration — message us
@@ -153,46 +161,107 @@ export function FleetSection({ limit }: { limit?: number }) {
 }
 
 export function ServicesSection() {
+  const tours = useTours();
+  const airport = services.find((s) => s.slug === "airport-transfer");
+  const chauffeur = services.find((s) => s.slug === "chauffeur");
+  const featuredTour = tours[0];
+
+  const cards = [
+    airport && {
+      key: "airport",
+      eyebrow: "RGM International Airport",
+      title: "Airport Transfers",
+      description: airport.description,
+      image: airportImage,
+      badge: "From $30",
+      cta: "Book Transfer",
+      href: whatsappLink(airport.whatsapp),
+    },
+    chauffeur && {
+      key: "chauffeur",
+      eyebrow: "Professional Drivers",
+      title: "Chauffeur Services",
+      description: chauffeur.description,
+      image: featuredTour?.image,
+      badge: "Fully Vetted",
+      cta: "Book Chauffeur",
+      href: whatsappLink(chauffeur.whatsapp),
+    },
+    featuredTour && {
+      key: "tours",
+      eyebrow: "Zimbabwe Experiences",
+      title: "Custom Tours",
+      description:
+        "Tailored travel packages to Victoria Falls, Hwange, Great Zimbabwe and beyond — corporate retreats or family safaris.",
+      image: featuredTour.image,
+      badge: "Custom Itinerary",
+      cta: "Plan Your Tour",
+      href: "/tours" as const,
+    },
+  ].filter((c): c is NonNullable<typeof c> => Boolean(c));
+
   return (
-    <Section tone="navy" id="services">
+    <Section id="services">
       <SectionHeading
-        eyebrow="Services"
-        title="Every way to travel with VenMax"
-        description="From independent self-drive to fully chauffeured journeys — tailored to how you want to experience Zimbabwe."
-        invert
+        eyebrow="Services & Tours"
+        title="Beyond Just Car Rental"
+        description="From airport pickups to custom safari itineraries, VenMax delivers end-to-end transportation across Zimbabwe."
       />
-      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {services.map((service) => {
-          const Icon = serviceIcons[service.icon];
-          return (
-            <article
-              key={service.slug}
-              className="flex flex-col rounded-2xl border border-navy-foreground/10 bg-navy-foreground/5 p-6"
-            >
-              <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-                <Icon className="h-5 w-5" />
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {cards.map((card) => (
+          <article
+            key={card.key}
+            className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-lg"
+          >
+            <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
+              {card.image && (
+                <img
+                  src={card.image}
+                  alt={card.title}
+                  loading="lazy"
+                  className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                />
+              )}
+              <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground">
+                {card.badge}
               </span>
-              <h3 className="mt-5 text-lg text-navy-foreground">{service.name}</h3>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-navy-foreground/70">
-                {service.description}
+            </div>
+            <div className="flex flex-1 flex-col p-6">
+              <p className="eyebrow">{card.eyebrow}</p>
+              <h3 className="mt-2 text-lg">{card.title}</h3>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+                {card.description}
               </p>
-              <a
-                href={whatsappLink(service.whatsapp)}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary"
-              >
-                Enquire
-                <ArrowRight className="h-4 w-4" />
-              </a>
-            </article>
-          );
-        })}
+              {card.href.startsWith("/") ? (
+                <Link
+                  to={card.href}
+                  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary"
+                >
+                  {card.cta}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              ) : (
+                <a
+                  href={card.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary"
+                >
+                  {card.cta}
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
       </div>
     </Section>
   );
 }
 
+// Kept for reuse but no longer rendered directly on the homepage — its
+// "free airport pickup" message now lives in the Services & Tours card and
+// the Why Choose Us feature row instead.
 export function AirportSection() {
   return (
     <Section>
@@ -246,6 +315,9 @@ export function AirportSection() {
   );
 }
 
+// Kept for reuse but no longer rendered on the homepage — its key points
+// (WhatsApp booking, no in-country presence needed) now live in the FAQ
+// accordion instead of a full standalone section.
 export function DiasporaSection() {
   return (
     <Section tone="navy">
@@ -385,36 +457,96 @@ export function ToursSection() {
   );
 }
 
+// Verified-only stats: fleet size and starting price come straight from the
+// live vehicle list; the other two tiles are real stated facts (not
+// invented customer/rating numbers, which VenMax hasn't supplied yet).
 export function WhySection() {
+  const vehicles = useVehicles();
+  const startingPrice = vehicles.reduce<number | null>((min, v) => {
+    const match = v.priceLabel.match(/\$(\d+)/);
+    if (!match) return min;
+    const price = Number(match[1]);
+    return min === null || price < min ? price : min;
+  }, null);
+
+  const stats = [
+    { value: `${vehicles.length}+`, label: "Vehicle Models" },
+    { value: startingPrice ? `$${startingPrice}` : "$40", label: "Starting Price/Day" },
+    { value: "Self-Drive", label: "or Chauffeur-Driven" },
+    { value: "WhatsApp", label: "First Support" },
+  ];
+
+  const featureRows = whyVenMax.slice(0, 4);
+
   return (
-    <Section tone="surface" id="why-venmax">
-      <div className="grid gap-12 lg:grid-cols-2">
-        <div>
-          <SectionHeading
-            eyebrow="Why VenMax"
-            title="A local partner you can trust on every road"
-            description="We're a Zimbabwean company built on straightforward, honest service. Real vehicles, real prices, and the local knowledge that makes travel here effortless."
-          />
-          <a
-            href={whatsappLink("Hello VenMax, I'd like to learn more about renting with you.")}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+    <Section tone="navy" id="why-venmax">
+      <SectionHeading
+        eyebrow="Why Choose Us"
+        title="Harare's Most Trusted Car Rental."
+        description="A Zimbabwean-owned company built on straightforward, honest service — real vehicles, real prices, and local knowledge that makes travel here effortless."
+        invert
+      />
+      <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {stats.map((stat) => (
+          <div
+            key={stat.label}
+            className="rounded-2xl border border-navy-foreground/10 bg-navy-foreground/5 p-5 text-center"
           >
-            <MessageCircle className="h-4 w-4" />
-            Talk to the VenMax Team
-          </a>
-        </div>
-        <ul className="grid gap-x-8 sm:grid-cols-2">
-          {whyVenMax.map((item) => (
-            <li key={item} className="flex items-start gap-3 border-b border-border py-4 text-sm">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-              {item}
-            </li>
-          ))}
-        </ul>
+            <p className="text-2xl font-semibold text-primary sm:text-3xl">{stat.value}</p>
+            <p className="mt-1 text-xs text-navy-foreground/70">{stat.label}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        {featureRows.map((item) => (
+          <div
+            key={item}
+            className="flex items-start gap-3 rounded-2xl border border-navy-foreground/10 bg-navy-foreground/5 p-5 text-sm text-navy-foreground/90"
+          >
+            <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            {item}
+          </div>
+        ))}
+      </div>
+      <div className="mt-8 text-center">
+        <a
+          href={whatsappLink("Hello VenMax, I'd like to learn more about renting with you.")}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+        >
+          <MessageCircle className="h-4 w-4" />
+          Talk to the VenMax Team
+        </a>
       </div>
     </Section>
+  );
+}
+
+// Full-bleed brand photo with an overlay quote — uses a real VenMax tour
+// photo rather than a new asset.
+export function BrandPromiseSection() {
+  const tours = useTours();
+  const image = tours[0]?.image;
+  if (!image) return null;
+
+  return (
+    <section className="relative flex min-h-[26rem] items-end overflow-hidden bg-navy text-navy-foreground sm:min-h-[32rem]">
+      <img
+        src={image}
+        alt="A VenMax vehicle on the road in Zimbabwe"
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-navy/10" />
+      <div className="relative mx-auto w-full max-w-4xl px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">
+        <p className="eyebrow text-primary">Our Promise</p>
+        <h2 className="mt-3 max-w-xl text-3xl leading-tight sm:text-4xl">
+          Drive More. Spend Less. Travel Better.
+        </h2>
+        <p className="mt-3 text-sm text-navy-foreground/80">VenMax Car Rental &amp; Tours</p>
+      </div>
+    </section>
   );
 }
 
@@ -423,57 +555,71 @@ export function TestimonialsSection() {
     <Section>
       <SectionHeading
         eyebrow="Customer Reviews"
-        title="Trusted by travellers across Zimbabwe"
+        title="Trusted by Zimbabweans Across the Country"
         description="Genuine reviews from VenMax customers on our Google Business Profile."
       />
-      <div className="mt-12 grid gap-6 lg:grid-cols-3">
-        {testimonials.map((t, i) => (
-          <figure key={i} className="rounded-2xl border border-border bg-card p-6">
-            <div className="flex gap-0.5">
-              {Array.from({ length: t.rating }).map((_, starIndex) => (
-                <Star key={starIndex} className="h-3.5 w-3.5 fill-primary text-primary" />
-              ))}
-            </div>
-            <blockquote className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              “{t.quote}”
-            </blockquote>
-            <figcaption className="mt-6 text-xs font-medium text-foreground">
-              {t.name} <span className="font-normal text-muted-foreground">· Verified Google review</span>
-            </figcaption>
-          </figure>
-        ))}
-        <a
-          href={company.googleReviews}
-          target="_blank"
-          rel="noreferrer"
-          className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border p-6 text-center transition-colors hover:bg-secondary"
-        >
-          <Star className="h-6 w-6 text-primary" />
-          <span className="text-sm font-semibold">See all our Google reviews</span>
-        </a>
-      </div>
+      <Carousel opts={{ align: "start", loop: true }} className="mt-12">
+        <CarouselContent>
+          {testimonials.map((t, i) => (
+            <CarouselItem key={i} className="sm:basis-1/2 lg:basis-1/3">
+              <figure className="flex h-full flex-col rounded-2xl border border-border bg-card p-6">
+                <div className="flex gap-0.5">
+                  {Array.from({ length: t.rating }).map((_, starIndex) => (
+                    <Star key={starIndex} className="h-3.5 w-3.5 fill-primary text-primary" />
+                  ))}
+                </div>
+                <blockquote className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
+                  "{t.quote}"
+                </blockquote>
+                <figcaption className="mt-6 text-xs font-medium text-foreground">
+                  {t.name}{" "}
+                  <span className="font-normal text-muted-foreground">
+                    · Verified Google review
+                  </span>
+                </figcaption>
+              </figure>
+            </CarouselItem>
+          ))}
+          <CarouselItem className="sm:basis-1/2 lg:basis-1/3">
+            <a
+              href={company.googleReviews}
+              target="_blank"
+              rel="noreferrer"
+              className="flex h-full flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border p-6 text-center transition-colors hover:bg-secondary"
+            >
+              <Star className="h-6 w-6 text-primary" />
+              <span className="text-sm font-semibold">See all our Google reviews</span>
+            </a>
+          </CarouselItem>
+        </CarouselContent>
+      </Carousel>
+      <p className="mt-4 text-center text-xs text-muted-foreground sm:hidden">
+        Swipe to see more reviews →
+      </p>
     </Section>
   );
 }
 
-export function RequirementsSection() {
+// Rental Requirements + FAQ, condensed into one accordion so the essential
+// information survives without taking up two full homepage sections.
+export function RequirementsFaqSection() {
   return (
-    <Section tone="surface">
+    <Section tone="surface" id="requirements">
       <SectionHeading
-        eyebrow="Rental Requirements"
-        title="What you need to rent"
+        eyebrow="Requirements & FAQ"
+        title="What you need to rent, and answers to common questions"
         description="Simple, straightforward requirements — kept easy to read so you can get on the road quickly."
       />
-      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {requirements.map((req) => (
           <article key={req.number} className="rounded-2xl border border-border bg-card p-6">
-            <span className="font-display text-2xl font-semibold text-primary">{req.number}</span>
+            <span className="text-2xl font-semibold text-primary">{req.number}</span>
             <h3 className="mt-3 text-base">{req.title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{req.description}</p>
           </article>
         ))}
       </div>
-      <div className="mt-8 grid gap-6 rounded-2xl border border-border bg-card p-6 sm:grid-cols-3">
+      <div className="mt-6 grid gap-6 rounded-2xl border border-border bg-card p-6 sm:grid-cols-3">
         {rentalTerms.map((term) => (
           <div key={term.label}>
             <p className="eyebrow">{term.label}</p>
@@ -481,6 +627,19 @@ export function RequirementsSection() {
           </div>
         ))}
       </div>
+
+      <div className="mx-auto mt-12 max-w-2xl">
+        <h3 className="text-center text-xl">Frequently Asked Questions</h3>
+        <Accordion type="single" collapsible className="mt-6">
+          {faqs.map((faq, i) => (
+            <AccordionItem key={faq.question} value={`item-${i}`}>
+              <AccordionTrigger>{faq.question}</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+
       <div className="mt-8 text-center">
         <a
           href={whatsappLink(
@@ -516,10 +675,10 @@ const platformLabel: Record<Exclude<EmbedPlatform, null>, string> = {
 export function SocialShowcaseSection() {
   const content = useSiteContent();
   const links = [
-    content.social_showcase_1,
-    content.social_showcase_2,
-    content.social_showcase_3,
-    content.social_showcase_4,
+    content["social_showcase_1"],
+    content["social_showcase_2"],
+    content["social_showcase_3"],
+    content["social_showcase_4"],
   ].filter((url): url is string => Boolean(url));
 
   return (
@@ -578,19 +737,18 @@ export function BookingCta() {
     <Section tone="navy">
       <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
         <SectionHeading
-          eyebrow="Ready When You Are"
+          eyebrow="Ready to Hit the Road?"
           title="Book your vehicle in minutes"
-          description="No complicated forms. Send us a booking request or message us directly and we'll confirm availability right away."
+          description="Call us directly or send a WhatsApp — we respond within minutes and confirm availability right away."
           invert
         />
         <div className="flex flex-wrap gap-3 lg:justify-end">
-          <Link
-            to="/book"
+          <a
+            href={`tel:${(company.phones[0] ?? "").replace(/\s+/g, "")}`}
             className="inline-flex items-center gap-2 rounded-full bg-navy-foreground px-6 py-3 text-sm font-semibold text-navy"
           >
-            Request a Booking
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+            {company.phones[0]}
+          </a>
           <a
             href={whatsappLink("Hello VenMax, I'd like to check availability and book a vehicle.")}
             target="_blank"
@@ -598,11 +756,8 @@ export function BookingCta() {
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
           >
             <MessageCircle className="h-4 w-4" />
-            Book via WhatsApp
+            WhatsApp Us
           </a>
-          <p className="w-full text-sm text-navy-foreground/70 lg:text-right">
-            {company.phones[0]}
-          </p>
         </div>
       </div>
     </Section>
