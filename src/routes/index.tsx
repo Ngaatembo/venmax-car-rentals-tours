@@ -6,6 +6,7 @@ import {
   BrandPromiseSection,
   DiasporaSection,
   FleetSection,
+  MissionVisionSection,
   ModelOfMonthSection,
   RequirementsFaqSection,
   ServicesSection,
@@ -43,7 +44,7 @@ function Index() {
             {company.tagline}
           </p>
           <h1 className="mt-3 max-w-2xl text-4xl leading-tight sm:text-6xl">
-            Experience Zimbabwe <span className="text-primary">on Your Own Terms</span>
+            {company.secondaryTagline}
           </h1>
           <p className="mt-5 max-w-xl text-lg text-navy-foreground/80">
             Premium vehicle rentals, chauffeur services and airport transfers in Harare.
@@ -88,6 +89,7 @@ function Index() {
       <ModelOfMonthSection />
       <WelcomeSection />
       <AboutSection />
+      <MissionVisionSection />
       <ServicesSection />
       <TrustStrip />
       <FleetSection limit={6} />

@@ -71,6 +71,32 @@ export function TrustStrip() {
 // homepage — its one-line message now lives in the hero subtext instead.
 // "About VenMax" — verbatim company copy the client asked to have visible
 // on the main page again (not a new claim; pulled from her own marketing).
+// Mission & Vision — verbatim from VenMax's official venmax.co.zw site.
+export function MissionVisionSection() {
+  return (
+    <Section tone="navy" id="mission-vision">
+      <SectionHeading
+        eyebrow="What Drives Us"
+        title="Our Mission & Vision"
+        invert
+        align="center"
+      />
+      <div className="mx-auto mt-10 grid max-w-5xl gap-6 lg:grid-cols-2">
+        <div className="rounded-2xl border border-navy-foreground/15 bg-navy-foreground/5 p-8">
+          <p className="eyebrow text-primary">Our Vision</p>
+          <p className="mt-4 text-lg leading-relaxed text-navy-foreground">{company.vision}</p>
+        </div>
+        <div className="rounded-2xl border border-navy-foreground/15 bg-navy-foreground/5 p-8">
+          <p className="eyebrow text-primary">Our Mission</p>
+          <p className="mt-4 text-sm leading-relaxed text-navy-foreground/85">
+            {company.mission}
+          </p>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
 export function AboutSection() {
   return (
     <Section id="about">

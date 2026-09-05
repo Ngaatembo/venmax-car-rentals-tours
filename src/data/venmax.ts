@@ -31,6 +31,12 @@ export const company = {
   name: "VenMax Car Rental & Tours",
   shortName: "VenMax",
   tagline: "Rent. Drive. Explore. Enjoy.",
+  secondaryTagline: "Driving a brighter future together.",
+  // Verbatim from VenMax's official site, venmax.co.zw/about-us.
+  vision:
+    "Transforming travel on the Southern African landscape with unmatched service, sustainability, and tech-driven mobility.",
+  mission:
+    "Our mission is to elevate the car rental experience in Southern Africa, surpassing our customers' expectations for service, quality, and value, and fostering a culture of excellence that inspires loyalty and growth. We strive to create a work environment where employees thrive, feel valued, and empowered to deliver exceptional, personalized service that delights our customers. By embracing our values of integrity, fairness, and community engagement, we aim to make a positive impact on the lives of our customers, employees, and the communities we serve.",
   addressLines: ["27 Lawson Avenue", "Milton Park, Harare", "Zimbabwe"],
   phones: ["+263 71 422 5314", "+263 78 047 5535"],
   whatsapp: "263714225314",
