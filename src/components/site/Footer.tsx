@@ -77,7 +77,16 @@ export function Footer() {
             <ul className="mt-5 space-y-4 text-sm text-navy-foreground/70">
               <li className="flex gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <span>{company.addressLines.join(", ")}</span>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                    company.addressLines.join(", ")
+                  )}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-navy-foreground hover:underline"
+                >
+                  {company.addressLines.join(", ")}
+                </a>
               </li>
               {company.phones.map((phone) => (
                 <li key={phone} className="flex gap-3">

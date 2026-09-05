@@ -73,9 +73,16 @@ function ContactPage() {
               <MapPin className="mt-1 h-5 w-5 shrink-0 text-primary" />
               <div>
                 <h3 className="text-base">Visit us</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                    company.addressLines.join(", ")
+                  )}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-1 block text-sm text-muted-foreground hover:text-foreground hover:underline"
+                >
                   {company.addressLines.join(", ")}
-                </p>
+                </a>
               </div>
             </div>
             <div className="flex gap-4">
