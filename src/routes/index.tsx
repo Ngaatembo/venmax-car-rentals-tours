@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, MessageCircle, Star, Zap } from "lucide-react
 import {
   BookingCta,
   BrandPromiseSection,
+  DiasporaSection,
   FleetSection,
   ModelOfMonthSection,
   RequirementsFaqSection,
@@ -84,6 +85,7 @@ function Index() {
       <FleetSection limit={6} />
       <WhySection />
       <BrandPromiseSection />
+      <DiasporaSection />
       <TestimonialsSection />
       <ServicesSection />
       <RequirementsFaqSection />
