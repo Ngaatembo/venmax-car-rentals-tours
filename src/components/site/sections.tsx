@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/accordion";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import airportImage from "@/assets/airport-pickup.jpg";
+import chauffeurImage from "@/assets/range-rover-sport.jpg";
 import {
   businessFacts,
   company,
@@ -183,7 +184,7 @@ export function ServicesSection() {
       eyebrow: "Professional Drivers",
       title: "Chauffeur Services",
       description: chauffeur.description,
-      image: featuredTour?.image,
+      image: chauffeurImage,
       badge: "Fully Vetted",
       cta: "Book Chauffeur",
       href: whatsappLink(chauffeur.whatsapp),
