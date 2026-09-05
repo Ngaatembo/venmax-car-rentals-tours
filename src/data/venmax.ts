@@ -460,8 +460,9 @@ export const testimonials = [
 ];
 
 // Real, verifiable business facts (not invented) — used in the homepage stat
-// strip. Update ratingValue/reviewCount here as new Google reviews come in.
+// strip. Sourced from VenMax's Google Business Profile panel — update as it changes.
 export const businessFacts = {
-  googleRating: 4.8,
+  googleRating: 4.9,
+  googleReviewCount: 82,
   facebookFollowers: "3.9K+",
 };

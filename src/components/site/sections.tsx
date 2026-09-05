@@ -574,7 +574,7 @@ export function TestimonialsSection() {
             />
           ))}
         </div>
-        {businessFacts.googleRating}★ on Google
+        {businessFacts.googleRating}★ on Google ({businessFacts.googleReviewCount} reviews)
       </div>
       <Carousel opts={{ align: "start", loop: true }} className="mt-8">
         <CarouselContent>
