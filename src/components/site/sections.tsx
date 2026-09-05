@@ -553,6 +553,8 @@ export function BrandPromiseSection() {
 }
 
 export function TestimonialsSection() {
+  const tours = useTours();
+  const bannerImage = tours[1]?.image ?? tours[0]?.image;
   const avatarPalette = ["bg-primary", "bg-navy", "bg-emerald-600", "bg-sky-600", "bg-amber-600"];
   return (
     <Section>
@@ -561,6 +563,25 @@ export function TestimonialsSection() {
         title="Trusted by Zimbabweans Across the Country"
         description="Genuine reviews from VenMax customers on our Google Business Profile."
       />
+      {bannerImage && (
+        <div className="relative mt-8 aspect-[16/7] overflow-hidden rounded-2xl sm:aspect-[16/5]">
+          <img
+            src={bannerImage}
+            alt="A destination VenMax customers have travelled to"
+            loading="lazy"
+            className="h-full w-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-navy/10 to-transparent" />
+          <div className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground sm:left-6 sm:top-6">
+            <div className="flex gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-3 w-3 fill-primary-foreground text-primary-foreground" />
+              ))}
+            </div>
+            {businessFacts.googleRating} ({businessFacts.googleReviewCount})
+          </div>
+        </div>
+      )}
       <div className="mt-6 flex items-center justify-center gap-2 text-sm font-medium text-foreground">
         <div className="flex gap-0.5">
           {Array.from({ length: 5 }).map((_, i) => (

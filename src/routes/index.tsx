@@ -11,6 +11,7 @@ import {
   SocialShowcaseSection,
   TestimonialsSection,
   TrustStrip,
+  WelcomeSection,
   WhySection,
 } from "@/components/site/sections";
 import { BookingWidget } from "@/components/site/BookingWidget";
@@ -81,6 +82,7 @@ function Index() {
         <BookingWidget />
       </div>
       <ModelOfMonthSection />
+      <WelcomeSection />
       <TrustStrip />
       <FleetSection limit={6} />
       <WhySection />
