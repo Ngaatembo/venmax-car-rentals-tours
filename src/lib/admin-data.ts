@@ -150,3 +150,46 @@ export async function uploadMedia(file: File, pathPrefix: string) {
   const { data } = supabase.storage.from("venmax-media").getPublicUrl(path);
   return data.publicUrl;
 }
+
+// ---------- Staff / roles ----------
+// Note: role-based access is enforced server-side via Postgres RLS policies
+// (has_role / has_min_role) — these calls are gated by the database, not
+// just by hiding UI. See migration admin_list_staff_function.
+export type AppRole = "admin" | "manager" | "staff";
+
+export type StaffMember = {
+  user_id: string;
+  email: string;
+  role: AppRole;
+  assigned_at: string;
+  last_sign_in_at: string | null;
+  created_at: string;
+};
+
+export async function listStaff() {
+  const { data, error } = await supabase.rpc("admin_list_staff");
+  if (error) throw error;
+  return data as StaffMember[];
+}
+
+export async function inviteStaff(email: string, role: AppRole) {
+  const { data, error } = await supabase.functions.invoke("admin-invite-staff", {
+    body: { email, role },
+  });
+  if (error) throw error;
+  if (data?.error) throw new Error(data.error);
+  return data as { success: true; user_id: string; email: string; role: AppRole };
+}
+
+export async function updateStaffRole(userId: string, role: AppRole) {
+  const { error } = await supabase.from("user_roles").update({ role }).eq("user_id", userId);
+  if (error) throw error;
+}
+
+// Removing the user_roles row immediately revokes all admin-panel access —
+// has_role()/has_min_role() both check this table, so this takes effect on
+// their very next request, not just on their next login.
+export async function removeStaffAccess(userId: string) {
+  const { error } = await supabase.from("user_roles").delete().eq("user_id", userId);
+  if (error) throw error;
+}

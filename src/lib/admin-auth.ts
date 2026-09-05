@@ -18,7 +18,7 @@ export function useAdminSession() {
 }
 
 // A logged-in session is not enough — Supabase anonymous sign-ins also count
-// as "authenticated". This checks the actual admin role via the has_role()
+// as "authenticated". This checks the actual role via the has_role()
 // security-definer function, so only accounts granted the admin role in
 // user_roles can reach the dashboard.
 export function useIsAdmin(session: Session | null | undefined) {
@@ -45,6 +45,35 @@ export function useIsAdmin(session: Session | null | undefined) {
 
   // undefined = still checking, boolean = resolved
   return isAdmin;
+}
+
+export type AppRole = "admin" | "manager" | "staff";
+
+// Returns the signed-in user's own role (admin/manager/staff), or null if
+// they have no role assigned (blocked from the admin panel entirely). Used
+// to gate navigation and page-level UI — the real enforcement still happens
+// server-side via RLS, this only controls what's shown.
+export function useMyRole(session: Session | null | undefined) {
+  const [role, setRole] = useState<AppRole | null | undefined>(undefined);
+
+  useEffect(() => {
+    if (session === undefined) return;
+    if (session === null) {
+      setRole(null);
+      return;
+    }
+    let cancelled = false;
+    setRole(undefined);
+    supabase.rpc("my_role").then(({ data, error }) => {
+      if (cancelled) return;
+      setRole(error ? null : (data as AppRole | null));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [session]);
+
+  return role;
 }
 
 export async function signInAdmin(email: string, password: string) {

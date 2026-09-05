@@ -9,8 +9,9 @@ import {
   FileText,
   LogOut,
   Menu,
+  Users,
 } from "lucide-react";
-import { useAdminSession, useIsAdmin, signOutAdmin } from "@/lib/admin-auth";
+import { useAdminSession, useMyRole, signOutAdmin, type AppRole } from "@/lib/admin-auth";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.jpg";
@@ -19,18 +20,30 @@ export const Route = createFileRoute("/admin")({
   component: AdminLayout,
 });
 
-const navItems = [
+// `minRole` follows the same hierarchy as the database's has_min_role():
+// admin > manager > staff. A nav item with no minRole is visible to anyone
+// with any role at all (i.e. staff and up). This only controls what's
+// *shown* — the real enforcement is the RLS policies on each table.
+const navItems: { to: string; label: string; icon: typeof LayoutDashboard; minRole?: AppRole }[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { to: "/admin/fleet", label: "Fleet", icon: Car },
   { to: "/admin/tours", label: "Tours", icon: MapPin },
   { to: "/admin/bookings", label: "Bookings", icon: CalendarCheck },
   { to: "/admin/inquiries", label: "Inquiries", icon: MessageSquare },
-  { to: "/admin/content", label: "Site Content", icon: FileText },
-] as const;
+  { to: "/admin/content", label: "Site Content", icon: FileText, minRole: "manager" },
+  { to: "/admin/staff", label: "Staff", icon: Users, minRole: "admin" },
+];
+
+const roleRank: Record<AppRole, number> = { staff: 0, manager: 1, admin: 2 };
+
+function canSeeNavItem(role: AppRole, minRole?: AppRole) {
+  if (!minRole) return true;
+  return roleRank[role] >= roleRank[minRole];
+}
 
 function AdminLayout() {
   const session = useAdminSession();
-  const isAdmin = useIsAdmin(session);
+  const role = useMyRole(session);
   const navigate = useNavigate();
   const location = useLocation();
   const onLoginPage = location.pathname === "/admin/login";
@@ -56,10 +69,10 @@ function AdminLayout() {
     return null;
   }
 
-  // Logged in, but still checking whether this account actually holds the
-  // admin role (a valid session alone — including anonymous sign-ins — is
-  // not sufficient).
-  if (isAdmin === undefined) {
+  // Logged in, but still checking whether this account actually holds a
+  // role (a valid session alone — including anonymous sign-ins — is not
+  // sufficient).
+  if (role === undefined) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">
         Checking permissions…
@@ -67,12 +80,13 @@ function AdminLayout() {
     );
   }
 
-  // Logged in, but not an admin — do not render the dashboard.
-  if (isAdmin === false) {
+  // Logged in, but no role assigned — do not render the dashboard. This is
+  // also what happens immediately after an admin removes someone's access.
+  if (role === null) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-background px-4 text-center">
         <p className="text-sm font-medium text-foreground">
-          This account doesn't have admin access.
+          This account doesn't have admin panel access.
         </p>
         <button
           onClick={async () => {
@@ -87,10 +101,12 @@ function AdminLayout() {
     );
   }
 
+  const visibleNavItems = navItems.filter((item) => canSeeNavItem(role, item.minRole));
+
   const NavLinks = ({ onNavigate }: { onNavigate?: () => void }) => (
     <>
       <nav className="flex-1 space-y-1 p-3">
-        {navItems.map((item) => (
+        {visibleNavItems.map((item) => (
           <Link
             key={item.to}
             to={item.to}
@@ -119,7 +135,7 @@ function AdminLayout() {
     </>
   );
 
-  const currentLabel = navItems.find((item) =>
+  const currentLabel = visibleNavItems.find((item) =>
     item.to === "/admin" ? location.pathname === "/admin" : location.pathname.startsWith(item.to)
   )?.label;
 
@@ -143,6 +159,9 @@ function AdminLayout() {
             <div className="border-b border-border px-5 py-4">
               <img src={logo} alt="VenMax Car Rental & Tours" className="h-8 w-auto" />
               <p className="mt-2 text-xs text-muted-foreground">{session.user.email}</p>
+              <span className="mt-1 inline-block rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
+                {role}
+              </span>
             </div>
             <NavLinks onNavigate={() => setMobileNavOpen(false)} />
           </SheetContent>
@@ -154,6 +173,9 @@ function AdminLayout() {
           <div className="border-b border-border px-5 py-4">
             <img src={logo} alt="VenMax Car Rental & Tours" className="h-8 w-auto" />
             <p className="mt-2 text-xs text-muted-foreground">{session.user.email}</p>
+            <span className="mt-1 inline-block rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
+              {role}
+            </span>
           </div>
           <NavLinks />
         </aside>
