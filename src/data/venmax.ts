@@ -43,6 +43,11 @@ export const company = {
     instagram: "https://www.instagram.com/venmax_car_rental__tours",
   },
   googleReviews: "https://share.google/7ZD8l8RK8UuGSEQRB",
+  // Verbatim from VenMax's own "Why Choose Venmax?" marketing material.
+  aboutParagraphs: [
+    "We pride ourselves on delivering quality service with a fleet of well-maintained vehicles, meticulously serviced to keep every journey safe and comfortable. We've served 521+ satisfied clients who trust and believe in our offerings.",
+    "VenMax has symbiotic partnerships with several car rental entities and travel agencies to meet every customer need. These synergies enable us to access services or vehicles which may not be in our own fleet, ensuring the best options for our clientele.",
+  ],
 };
 
 export function whatsappLink(message: string) {
@@ -361,15 +366,29 @@ export const requirements = [
   },
   {
     number: "03",
-    title: "Residence / Employment",
-    description:
-      "Proof of residence — a recent utility bill, tenancy agreement, or employer letter.",
+    title: "Next of Kin",
+    description: "Next of kin details, along with a copy of their ID.",
   },
   {
     number: "04",
+    title: "Residence / Employment",
+    description:
+      "Proof of residence or employment — a ZESA or water bill, tenancy agreement, or employer letter.",
+  },
+  {
+    number: "05",
     title: "Refundable Deposit",
     description: "$100, $300 or $500 depending on the vehicle — refunded on safe return.",
   },
+];
+
+// Real payment channels VenMax accepts — sourced directly from client materials.
+export const paymentMethods = [
+  "Ecocash / InnBucks / O'mari",
+  "Bank Transfer",
+  "Cash",
+  "Mukuru",
+  "Western Union",
 ];
 
 // Sourced from VenMax's previous site content — carried forward, not new claims.
@@ -465,4 +484,6 @@ export const businessFacts = {
   googleRating: 4.9,
   googleReviewCount: 82,
   facebookFollowers: "3.9K+",
+  // From VenMax's own "Why Choose Venmax" marketing copy.
+  happyClients: "521+",
 };

@@ -31,6 +31,7 @@ import {
   faqs,
   getVehicle,
   modelOfTheMonthSlug,
+  paymentMethods,
   requirements,
   rentalTerms,
   services,
@@ -68,6 +69,27 @@ export function TrustStrip() {
 
 // Kept for reuse (e.g. a future About page) but no longer rendered on the
 // homepage — its one-line message now lives in the hero subtext instead.
+// "About VenMax" — verbatim company copy the client asked to have visible
+// on the main page again (not a new claim; pulled from her own marketing).
+export function AboutSection() {
+  return (
+    <Section id="about">
+      <div className="mx-auto max-w-3xl text-center">
+        <SectionHeading
+          eyebrow="About VenMax"
+          title="Why Choose VenMax?"
+          align="center"
+        />
+        <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground">
+          {company.aboutParagraphs.map((para) => (
+            <p key={para}>{para}</p>
+          ))}
+        </div>
+      </div>
+    </Section>
+  );
+}
+
 export function WelcomeSection() {
   return (
     <Section tone="navy">
@@ -474,8 +496,8 @@ export function WhySection() {
   const stats = [
     { value: `${businessFacts.googleRating}★`, label: "Google Rating" },
     { value: startingPrice ? `$${startingPrice}` : "$40", label: "Starting Price/Day" },
+    { value: businessFacts.happyClients, label: "Happy Clients" },
     { value: `${vehicles.length}+`, label: "Vehicle Models" },
-    { value: businessFacts.facebookFollowers, label: "Facebook Community" },
   ];
 
   const featureRows = whyVenMax.slice(0, 4);
@@ -675,6 +697,22 @@ export function RequirementsFaqSection() {
             <p className="mt-2 text-sm">{term.value}</p>
           </div>
         ))}
+      </div>
+
+      <div className="mt-6">
+        <p className="text-center text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Our Payment Platforms Include
+        </p>
+        <div className="mt-4 flex flex-wrap justify-center gap-3">
+          {paymentMethods.map((method) => (
+            <span
+              key={method}
+              className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+            >
+              {method}
+            </span>
+          ))}
+        </div>
       </div>
 
       <div className="mx-auto mt-12 max-w-2xl">

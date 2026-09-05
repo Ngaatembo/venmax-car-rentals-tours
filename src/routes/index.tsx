@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2, MessageCircle, Star, Zap } from "lucide-react";
 import {
+  AboutSection,
   BookingCta,
   BrandPromiseSection,
   DiasporaSection,
@@ -15,7 +16,7 @@ import {
   WhySection,
 } from "@/components/site/sections";
 import { BookingWidget } from "@/components/site/BookingWidget";
-import { businessFacts, whatsappLink } from "@/data/venmax";
+import { businessFacts, company, whatsappLink } from "@/data/venmax";
 import heroImage from "@/assets/toyota-fortuner.jpg";
 
 export const Route = createFileRoute("/")({
@@ -38,7 +39,10 @@ function Index() {
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             Harare &middot; Zimbabwe
           </span>
-          <h1 className="mt-6 max-w-2xl text-4xl leading-tight sm:text-6xl">
+          <p className="mt-5 text-sm font-semibold uppercase tracking-[0.25em] text-primary">
+            {company.tagline}
+          </p>
+          <h1 className="mt-3 max-w-2xl text-4xl leading-tight sm:text-6xl">
             Experience Zimbabwe <span className="text-primary">on Your Own Terms</span>
           </h1>
           <p className="mt-5 max-w-xl text-lg text-navy-foreground/80">
@@ -83,13 +87,14 @@ function Index() {
       </div>
       <ModelOfMonthSection />
       <WelcomeSection />
+      <AboutSection />
+      <ServicesSection />
       <TrustStrip />
       <FleetSection limit={6} />
       <WhySection />
       <BrandPromiseSection />
       <DiasporaSection />
       <TestimonialsSection />
-      <ServicesSection />
       <RequirementsFaqSection />
       <SocialShowcaseSection />
       <BookingCta />
