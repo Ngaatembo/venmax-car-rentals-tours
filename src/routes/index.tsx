@@ -14,6 +14,7 @@ import {
 } from "@/components/site/sections";
 import { BookingWidget } from "@/components/site/BookingWidget";
 import { businessFacts, whatsappLink } from "@/data/venmax";
+import heroImage from "@/assets/toyota-fortuner.jpg";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -23,8 +24,14 @@ function Index() {
   return (
     <div>
       <section className="relative overflow-hidden bg-navy text-navy-foreground">
-        <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy to-black/40" />
-        <div className="relative mx-auto flex min-h-[min(600px,85svh)] max-w-7xl flex-col justify-center px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+        <img
+          src={heroImage}
+          alt="VenMax Toyota Fortuner available for hire in Harare"
+          className="absolute inset-0 h-full w-full object-cover object-[70%_center]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-navy/50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-navy/40" />
+        <div className="relative mx-auto flex min-h-[min(640px,88svh)] max-w-7xl flex-col justify-center px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           <span className="inline-flex items-center gap-2 rounded-full border border-navy-foreground/30 px-4 py-2 text-xs font-semibold uppercase tracking-widest">
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             Harare &middot; Zimbabwe
