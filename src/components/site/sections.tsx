@@ -72,6 +72,54 @@ export function TrustStrip() {
 // "About VenMax" — verbatim company copy the client asked to have visible
 // on the main page again (not a new claim; pulled from her own marketing).
 // Mission & Vision — verbatim from VenMax's official venmax.co.zw site.
+export function CoreValuesSection() {
+  return (
+    <Section id="values">
+      <SectionHeading
+        eyebrow="What Drives Us"
+        title="Our Core Values"
+        description="The principles that shape every rental, every trip, and every conversation with VenMax."
+      />
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {company.coreValues.map((value) => (
+          <article key={value.title} className="rounded-2xl border border-border bg-card p-6">
+            <h3 className="text-base">{value.title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              {value.description}
+            </p>
+          </article>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+export function OfferAndLeadershipSection() {
+  return (
+    <Section tone="surface">
+      <div className="grid gap-12 lg:grid-cols-2">
+        <div>
+          <SectionHeading eyebrow="What We Offer" title="Built around your convenience" />
+          <ul className="mt-6 space-y-4">
+            {company.whatWeOffer.map((item) => (
+              <li key={item} className="flex items-start gap-3 text-sm">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <SectionHeading eyebrow="Our Leadership" title="A team built for the road" />
+          <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+            {company.leadership}
+          </p>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
 export function MissionVisionSection() {
   return (
     <Section tone="navy" id="mission-vision">
@@ -97,7 +145,7 @@ export function MissionVisionSection() {
   );
 }
 
-export function AboutSection() {
+export function AboutSection({ showCta = false }: { showCta?: boolean } = {}) {
   return (
     <Section id="about">
       <div className="mx-auto max-w-3xl text-center">
@@ -111,6 +159,15 @@ export function AboutSection() {
             <p key={para}>{para}</p>
           ))}
         </div>
+        {showCta && (
+          <Link
+            to="/about"
+            className="mt-6 inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold transition-colors hover:bg-secondary"
+          >
+            Learn More About Us
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        )}
       </div>
     </Section>
   );

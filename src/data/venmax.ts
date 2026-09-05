@@ -37,6 +37,43 @@ export const company = {
     "Transforming travel on the Southern African landscape with unmatched service, sustainability, and tech-driven mobility.",
   mission:
     "Our mission is to elevate the car rental experience in Southern Africa, surpassing our customers' expectations for service, quality, and value, and fostering a culture of excellence that inspires loyalty and growth. We strive to create a work environment where employees thrive, feel valued, and empowered to deliver exceptional, personalized service that delights our customers. By embracing our values of integrity, fairness, and community engagement, we aim to make a positive impact on the lives of our customers, employees, and the communities we serve.",
+  // Verbatim from venmax.co.zw/about-us.
+  coreValues: [
+    {
+      title: "Customer & Service Focused",
+      description:
+        "Shaping decisions through the customer's perspective, going above and beyond, and tailoring solutions to unique needs to foster lifelong relationships.",
+    },
+    {
+      title: "Integrity & Trust",
+      description:
+        "Honesty, transparency and accountability in every interaction — nurturing fair, honest relationships with customers, partners and each other.",
+    },
+    {
+      title: "Innovation & Quality",
+      description:
+        "Harnessing new ideas to elevate service and satisfaction. Reliability: just like Elands, VenMax vehicles are adaptable, able to survive in diverse situations from city roads to mountainous terrains — because who needs a spa day when you can just drive anywhere and everywhere.",
+    },
+    {
+      title: "People & Culture",
+      description:
+        "Collaborating as one team, embracing dignity and professionalism, and fostering career growth and recognition for our people.",
+    },
+    {
+      title: "Safety Culture",
+      description:
+        "Insured, meticulously maintained vehicles and comprehensive training — safety built into daily operations, not just a rule but a core value.",
+    },
+  ],
+  whatWeOffer: [
+    "Special rates & discounts tailored to your needs",
+    "Flexible short- and long-term rental agreements",
+    "Driver hire services for convenience",
+    "24/7 customer support for uninterrupted assistance",
+    "Safe, clean, affordable, and reliable vehicles",
+  ],
+  leadership:
+    "A multi-disciplinary team of professionals — drivers, risk-compliance experts, digital product developers, customer-service specialists, mechanics, and operations managers — with decades of combined experience in car hiring, transport logistics, and technical industries.",
   addressLines: ["27 Lawson Avenue", "Milton Park, Harare", "Zimbabwe"],
   phones: ["+263 71 422 5314", "+263 78 047 5535"],
   whatsapp: "263714225314",

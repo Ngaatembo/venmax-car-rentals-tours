@@ -88,7 +88,7 @@ function Index() {
       </div>
       <ModelOfMonthSection />
       <WelcomeSection />
-      <AboutSection />
+      <AboutSection showCta />
       <MissionVisionSection />
       <ServicesSection />
       <TrustStrip />

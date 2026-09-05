@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as ChauffeurServiceHarareRouteImport } from './routes/chauffeur-service-harare'
@@ -28,6 +29,11 @@ import { Route as AdminToursRouteImport } from './routes/admin/tours'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRouteRoute = AdminRouteRouteImport.update({
@@ -104,6 +110,7 @@ const AdminToursRoute = AdminToursRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/book': typeof BookRoute
   '/chauffeur-service-harare': typeof ChauffeurServiceHarareRoute
   '/contact': typeof ContactRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/book': typeof BookRoute
   '/chauffeur-service-harare': typeof ChauffeurServiceHarareRoute
   '/contact': typeof ContactRoute
@@ -138,6 +146,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/book': typeof BookRoute
   '/chauffeur-service-harare': typeof ChauffeurServiceHarareRoute
   '/contact': typeof ContactRoute
@@ -157,6 +166,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/about'
     | '/book'
     | '/chauffeur-service-harare'
     | '/contact'
@@ -173,6 +183,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/book'
     | '/chauffeur-service-harare'
     | '/contact'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/about'
     | '/book'
     | '/chauffeur-service-harare'
     | '/contact'
@@ -208,6 +220,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  AboutRoute: typeof AboutRoute
   BookRoute: typeof BookRoute
   ChauffeurServiceHarareRoute: typeof ChauffeurServiceHarareRoute
   ContactRoute: typeof ContactRoute
@@ -223,6 +236,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -353,6 +373,7 @@ const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
+  AboutRoute: AboutRoute,
   BookRoute: BookRoute,
   ChauffeurServiceHarareRoute: ChauffeurServiceHarareRoute,
   ContactRoute: ContactRoute,

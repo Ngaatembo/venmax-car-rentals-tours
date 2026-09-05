@@ -4,6 +4,7 @@ import logo from "@/assets/logo.jpg";
 import { company, whatsappLink } from "@/data/venmax";
 
 const links = [
+  { to: "/about", label: "About" },
   { to: "/#vehicles", label: "Fleet" },
   { to: "/#services", label: "Services" },
   { to: "/tours", label: "Tours" },
