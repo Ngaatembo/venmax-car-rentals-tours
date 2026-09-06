@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
+import { PickupLocationField } from "@/components/site/PickupLocationField";
 import { bookingSchema, serviceTypes, submitBookingRequest } from "@/lib/bookings";
 import { useVehicles, useTours } from "@/lib/live-content";
 import { whatsappLink } from "@/data/venmax";
@@ -49,6 +50,7 @@ function BookPage() {
   const [confirmLink, setConfirmLink] = useState<string | null>(null);
   type BookingFields = keyof z.infer<typeof bookingSchema>;
   const [errors, setErrors] = useState<Partial<Record<BookingFields, string>>>({});
+  const [pickupLocation, setPickupLocation] = useState(pickup ?? "");
   const defaultVehicle = useMemo(
     () => (vehicle && vehicles.some((v) => v.slug === vehicle) ? vehicle : ""),
     [vehicle, vehicles],
@@ -103,6 +105,7 @@ function BookPage() {
       setConfirmLink(link);
       toast.success("Booking request received.");
       form.reset();
+      setPickupLocation("");
       // Open WhatsApp immediately so VenMax actually sees the request —
       // saving to the database alone isn't enough since WhatsApp is their
       // primary channel and nobody may be watching the admin panel live.
@@ -247,18 +250,13 @@ function BookPage() {
                 </label>
                 <label className="grid gap-1.5 text-sm">
                   Pickup / delivery location
-                  <input
-                    name="pickupLocation"
-                    placeholder="e.g. VenMax Office, Harare Airport"
-                    defaultValue={pickup ?? ""}
-                    list="pickup-location-options"
-                    className={fieldClass}
+                  <input type="hidden" name="pickupLocation" value={pickupLocation} />
+                  <PickupLocationField
+                    value={pickupLocation}
+                    onChange={setPickupLocation}
+                    selectClassName={fieldClass}
+                    inputClassName={fieldClass}
                   />
-                  <datalist id="pickup-location-options">
-                    <option value="VenMax Office - Milton Park, Harare" />
-                    <option value="RGM Airport" />
-                    <option value="Harare CBD" />
-                  </datalist>
                   {errors.pickupLocation && (
                     <span className="text-xs text-destructive">{errors.pickupLocation}</span>
                   )}

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PickupLocationField } from "@/components/site/PickupLocationField";
 
 /**
  * Hero "quick booking" card — a fast path into the real booking form at
@@ -40,21 +41,12 @@ export function BookingWidget() {
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <label className="grid gap-1.5 text-xs font-medium text-muted-foreground sm:col-span-2">
           Pick-up location
-          <span className="relative">
-            <MapPin className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <input
-              value={pickup}
-              onChange={(e) => setPickup(e.target.value)}
-              placeholder="e.g. VenMax Office, RGM Airport"
-              list="pickup-location-options"
-              className="w-full rounded-lg border border-input bg-background py-2.5 pl-9 pr-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
-            />
-            <datalist id="pickup-location-options">
-              <option value="VenMax Office - Milton Park, Harare" />
-              <option value="RGM Airport" />
-              <option value="Harare CBD" />
-            </datalist>
-          </span>
+          <PickupLocationField
+            value={pickup}
+            onChange={setPickup}
+            selectClassName="w-full rounded-lg border border-input bg-background py-2.5 pl-9 pr-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
+            inputClassName="w-full rounded-lg border border-input bg-background py-2.5 px-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
+          />
         </label>
         <label className="grid gap-1.5 text-xs font-medium text-muted-foreground">
           Pick-up date
