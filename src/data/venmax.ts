@@ -86,8 +86,15 @@ export const company = {
     instagram: "https://www.instagram.com/venmax_car_rental__tours",
   },
   googleReviews: "https://share.google/7ZD8l8RK8UuGSEQRB",
+  // Verbatim from VenMax's own printed "About Venmax" flyer.
+  targetMarket:
+    "Business travellers or families looking for a trusted, safe car or luxury travel.",
+  // Verbatim brand line from VenMax's own marketing material.
+  brandQuote:
+    "Just like Eland/Mhofu/Nhuka, VenMax is a total rockstar of strength and is ridiculously good at keeping up with the global craziness and customer whims!",
   // Verbatim from VenMax's own "Why Choose Venmax?" marketing material.
   aboutParagraphs: [
+    "VenMax is a bold start-up car hiring company driven by progressive entrepreneurs who are passionate about revolutionising the mobility sector. Anchored on innovation, customer satisfaction and a commitment to making a visible, positive impact that empowers all stakeholders, VenMax is poised to disrupt the market by redefining the standards of excellence and optimally balancing service provision and sustainability.",
     "We pride ourselves on delivering quality service with a fleet of well-maintained vehicles, meticulously serviced to keep every journey safe and comfortable. We've served 521+ satisfied clients who trust and believe in our offerings.",
     "VenMax has symbiotic partnerships with several car rental entities and travel agencies to meet every customer need. These synergies enable us to access services or vehicles which may not be in our own fleet, ensuring the best options for our clientele.",
   ],

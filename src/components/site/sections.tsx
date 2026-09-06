@@ -159,6 +159,13 @@ export function AboutSection({ showCta = false }: { showCta?: boolean } = {}) {
             <p key={para}>{para}</p>
           ))}
         </div>
+        <p className="mt-6 text-sm">
+          <span className="font-semibold text-foreground">Target Market: </span>
+          <span className="text-muted-foreground">{company.targetMarket}</span>
+        </p>
+        <blockquote className="mt-8 rounded-2xl border border-border bg-card px-6 py-5 text-base italic leading-relaxed text-foreground">
+          “{company.brandQuote}”
+        </blockquote>
         {showCta && (
           <Link
             to="/about"
