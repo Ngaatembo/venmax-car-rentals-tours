@@ -156,9 +156,22 @@ export function AboutSection({ showCta = false }: { showCta?: boolean } = {}) {
           align="center"
         />
         <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground">
-          {company.aboutParagraphs.map((para) => (
-            <p key={para}>{para}</p>
-          ))}
+          {company.aboutParagraphs.map((para) => {
+            const parts = para.split(/(1000\+)/);
+            return (
+              <p key={para}>
+                {parts.map((part, i) =>
+                  part === "1000+" ? (
+                    <strong key={i} className="font-semibold text-primary">
+                      {part}
+                    </strong>
+                  ) : (
+                    part
+                  )
+                )}
+              </p>
+            );
+          })}
         </div>
         <p className="mt-6 text-sm">
           <span className="font-semibold text-foreground">Target Market: </span>
