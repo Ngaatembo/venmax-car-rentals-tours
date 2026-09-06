@@ -1,7 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, MessageCircle, X } from "lucide-react";
-import logo from "@/assets/logo-header.png";
+import logo from "@/assets/logo.jpg";
 import { whatsappLink } from "@/data/venmax";
 import { cn } from "@/lib/utils";
 
@@ -42,12 +42,22 @@ export function Header() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <Link to="/" className="flex min-w-0 items-center gap-3">
-          <span className="flex h-9 shrink-0 items-center sm:h-11">
+          <span className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-background sm:size-12">
             <img
               src={logo}
               alt="VenMax Car Rental logo"
-              className="h-full w-auto object-contain"
+              width={48}
+              height={48}
+              className="size-full scale-[1.55] object-contain"
             />
+          </span>
+          <span className="min-w-0">
+            <span className="block truncate font-display text-base font-bold text-navy-foreground">
+              VenMax
+            </span>
+            <span className="block truncate text-[11px] uppercase tracking-[0.18em] text-navy-foreground/60">
+              Car Rental & Tours
+            </span>
           </span>
         </Link>
 
