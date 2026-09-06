@@ -45,7 +45,7 @@ export function BookingWidget() {
             <input
               value={pickup}
               onChange={(e) => setPickup(e.target.value)}
-              placeholder="e.g. RGM Airport, Harare CBD"
+              placeholder="e.g. VenMax Office, RGM Airport"
               list="pickup-location-options"
               className="w-full rounded-lg border border-input bg-background py-2.5 pl-9 pr-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
             />

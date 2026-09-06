@@ -249,7 +249,7 @@ function BookPage() {
                   Pickup / delivery location
                   <input
                     name="pickupLocation"
-                    placeholder="e.g. Harare Airport"
+                    placeholder="e.g. VenMax Office, Harare Airport"
                     defaultValue={pickup ?? ""}
                     list="pickup-location-options"
                     className={fieldClass}
