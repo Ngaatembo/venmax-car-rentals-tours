@@ -679,7 +679,7 @@ export function TestimonialsSection() {
           src={logo}
           alt="VenMax Car Rental logo"
           loading="lazy"
-          className="h-1/2 w-auto object-contain"
+          className="h-full w-full object-contain p-8 sm:p-14"
         />
         <div className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground sm:left-6 sm:top-6">
           <div className="flex gap-0.5">
