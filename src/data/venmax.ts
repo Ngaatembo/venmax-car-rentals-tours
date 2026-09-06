@@ -95,7 +95,7 @@ export const company = {
   // Verbatim from VenMax's own "Why Choose Venmax?" marketing material.
   aboutParagraphs: [
     "VenMax is a bold start-up car hiring company driven by progressive entrepreneurs who are passionate about revolutionising the mobility sector. Anchored on innovation, customer satisfaction and a commitment to making a visible, positive impact that empowers all stakeholders, VenMax is poised to disrupt the market by redefining the standards of excellence and optimally balancing service provision and sustainability.",
-    "We pride ourselves on delivering quality service with a fleet of well-maintained vehicles, meticulously serviced to keep every journey safe and comfortable. We've served 521+ satisfied clients who trust and believe in our offerings.",
+    "We pride ourselves on delivering quality service with a fleet of well-maintained vehicles, meticulously serviced to keep every journey safe and comfortable. We've served 1000+ satisfied clients who trust and believe in our offerings.",
     "VenMax has symbiotic partnerships with several car rental entities and travel agencies to meet every customer need. These synergies enable us to access services or vehicles which may not be in our own fleet, ensuring the best options for our clientele.",
   ],
 };
@@ -535,5 +535,5 @@ export const businessFacts = {
   googleReviewCount: 82,
   facebookFollowers: "3.9K+",
   // From VenMax's own "Why Choose Venmax" marketing copy.
-  happyClients: "521+",
+  happyClients: "1000+",
 };
