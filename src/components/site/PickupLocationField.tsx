@@ -50,7 +50,7 @@ export function PickupLocationField({
   function handleUseMyLocation() {
     setLocateError(null);
     if (!("geolocation" in navigator)) {
-      setLocateError("Location isn't available on this device/browser.");
+      setLocateError("This browser doesn't support location — please pick from the list above.");
       return;
     }
     setLocating(true);
@@ -72,11 +72,25 @@ export function PickupLocationField({
           setLocating(false);
         }
       },
-      () => {
+      (error) => {
         setLocating(false);
-        setLocateError("Couldn't get your location — check location permissions.");
+        if (error.code === error.PERMISSION_DENIED) {
+          setLocateError(
+            "Location access is turned off for this site. Allow it in your browser's site settings, or choose a location above.",
+          );
+        } else if (error.code === error.POSITION_UNAVAILABLE) {
+          setLocateError(
+            "Couldn't find your position — check that GPS/Location is turned on for your phone, or choose a location above.",
+          );
+        } else if (error.code === error.TIMEOUT) {
+          setLocateError(
+            "That took too long — check your GPS signal and try again, or choose a location above.",
+          );
+        } else {
+          setLocateError("Couldn't get your location — please choose a location above.");
+        }
       },
-      { enableHighAccuracy: true, timeout: 10000 },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 },
     );
   }
 
@@ -115,12 +129,16 @@ export function PickupLocationField({
         type="button"
         onClick={handleUseMyLocation}
         disabled={locating}
-        className="inline-flex w-fit items-center gap-1.5 text-xs font-semibold text-primary hover:opacity-80 disabled:opacity-60"
+        className="inline-flex w-fit items-center gap-1.5 rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/10 disabled:opacity-70"
       >
-        <LocateFixed className="h-3.5 w-3.5" />
-        {locating ? "Finding you…" : "Use my current location"}
+        <LocateFixed className={`h-3.5 w-3.5 ${locating ? "animate-spin" : ""}`} />
+        {locating ? "Finding your location…" : "Use my current location"}
       </button>
-      {locateError && <span className="text-xs text-destructive">{locateError}</span>}
+      {locateError && (
+        <span className="text-xs text-destructive" role="alert">
+          {locateError}
+        </span>
+      )}
     </div>
   );
 }
