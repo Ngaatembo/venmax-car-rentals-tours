@@ -674,21 +674,24 @@ export function TestimonialsSection() {
         title="Trusted by Zimbabweans Across the Country"
         description="Genuine reviews from VenMax customers on our Google Business Profile."
       />
-      <div className="relative mt-8 flex aspect-[16/7] items-center justify-center overflow-hidden rounded-2xl bg-navy sm:aspect-[16/5]">
-        <img
-          src={logo}
-          alt="VenMax Car Rental logo"
-          loading="lazy"
-          className="h-full w-full object-contain p-8 sm:p-14"
-        />
-        <div className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground sm:left-6 sm:top-6">
-          <div className="flex gap-0.5">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={i} className="h-3 w-3 fill-primary-foreground text-primary-foreground" />
-            ))}
+      <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-background px-6 py-8 sm:px-10 sm:py-10">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground">
+            <div className="flex gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-3 w-3 fill-primary-foreground text-primary-foreground" />
+              ))}
+            </div>
+            {businessFacts.googleRating} ({businessFacts.googleReviewCount})
           </div>
-          {businessFacts.googleRating} ({businessFacts.googleReviewCount})
+          <img
+            src={logo}
+            alt="VenMax Car Rental logo"
+            loading="lazy"
+            className="h-14 w-auto object-contain sm:h-16"
+          />
         </div>
+        <div className="mt-6 h-2.5 w-full rounded-full bg-navy sm:mt-8" />
       </div>
       <div className="mt-6 flex items-center justify-center gap-2 text-sm font-medium text-foreground">
         <div className="flex gap-0.5">
