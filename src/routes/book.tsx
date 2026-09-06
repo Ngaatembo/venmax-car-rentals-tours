@@ -251,8 +251,14 @@ function BookPage() {
                     name="pickupLocation"
                     placeholder="e.g. Harare Airport"
                     defaultValue={pickup ?? ""}
+                    list="pickup-location-options"
                     className={fieldClass}
                   />
+                  <datalist id="pickup-location-options">
+                    <option value="VenMax Office - Milton Park, Harare" />
+                    <option value="RGM Airport" />
+                    <option value="Harare CBD" />
+                  </datalist>
                   {errors.pickupLocation && (
                     <span className="text-xs text-destructive">{errors.pickupLocation}</span>
                   )}
