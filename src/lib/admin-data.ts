@@ -38,6 +38,10 @@ export type DbBooking = {
   notes: string | null;
   status: string;
   created_at: string;
+  customer_id: string | null;
+  total_amount: number | null;
+  amount_paid: number | null;
+  payment_status: string | null;
 };
 
 export type DbInquiry = {
@@ -137,6 +141,53 @@ export async function listSiteContent() {
 export async function setSiteContent(key: string, value: string) {
   const { error } = await supabase.from("site_content").upsert({ key, value });
   if (error) throw error;
+}
+
+// ---------- Customers ----------
+export type DbCustomer = {
+  id: string;
+  full_name: string;
+  phone: string;
+  email: string | null;
+  license_number: string | null;
+  license_expiry: string | null;
+  id_number: string | null;
+  address: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export async function listCustomers() {
+  const { data, error } = await supabase
+    .from("customers")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data as DbCustomer[];
+}
+
+export async function upsertCustomer(customer: Partial<DbCustomer> & { full_name: string; phone: string }) {
+  const { data, error } = await supabase.from("customers").upsert(customer).select().single();
+  if (error) throw error;
+  return data as DbCustomer;
+}
+
+export async function deleteCustomer(id: string) {
+  const { error } = await supabase.from("customers").delete().eq("id", id);
+  if (error) throw error;
+}
+
+// Bookings linked to a specific customer (via bookings.customer_id), most
+// recent first. Used on the customer detail view.
+export async function listBookingsForCustomer(customerId: string) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*")
+    .eq("customer_id", customerId)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data as DbBooking[];
 }
 
 // ---------- Media upload ----------
