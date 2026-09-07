@@ -84,3 +84,8 @@ export async function signInAdmin(email: string, password: string) {
 export async function signOutAdmin() {
   await supabase.auth.signOut();
 }
+
+export async function updateOwnPassword(newPassword: string) {
+  const { error } = await supabase.auth.updateUser({ password: newPassword });
+  if (error) throw error;
+}

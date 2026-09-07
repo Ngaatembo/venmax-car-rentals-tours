@@ -18,10 +18,21 @@ import {
   History,
   FolderOpen,
   FileBarChart,
+  KeyRound,
 } from "lucide-react";
-import { useAdminSession, useMyRole, signOutAdmin, type AppRole } from "@/lib/admin-auth";
+import { useAdminSession, useMyRole, signOutAdmin, updateOwnPassword, type AppRole } from "@/lib/admin-auth";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { supabase } from "@/lib/supabase";
 import { playNotificationChime } from "@/lib/notification-sound";
 import logo from "@/assets/logo.jpg";
@@ -56,6 +67,82 @@ const roleRank: Record<AppRole, number> = { staff: 0, manager: 1, admin: 2 };
 function canSeeNavItem(role: AppRole, minRole?: AppRole) {
   if (!minRole) return true;
   return roleRank[role] >= roleRank[minRole];
+}
+
+function ChangePasswordDialog() {
+  const [open, setOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  async function handleSave() {
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
+    if (password !== confirm) {
+      toast.error("Passwords don't match");
+      return;
+    }
+    setSaving(true);
+    try {
+      await updateOwnPassword(password);
+      toast.success("Password updated");
+      setOpen(false);
+      setPassword("");
+      setConfirm("");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to update password");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <button className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground">
+          <KeyRound className="h-4 w-4" />
+          Change password
+        </button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Change your password</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-2">
+          <div>
+            <Label htmlFor="new-password">New password</Label>
+            <Input
+              id="new-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="new-password"
+            />
+          </div>
+          <div>
+            <Label htmlFor="confirm-password">Confirm new password</Label>
+            <Input
+              id="confirm-password"
+              type="password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              autoComplete="new-password"
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button onClick={handleSave} disabled={saving}>
+            {saving ? "Saving…" : "Update password"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 function AdminLayout() {
@@ -164,7 +251,8 @@ function AdminLayout() {
           </Link>
         ))}
       </nav>
-      <div className="border-t border-border p-3">
+      <div className="border-t border-border p-3 space-y-1">
+        <ChangePasswordDialog />
         <button
           onClick={async () => {
             await signOutAdmin();

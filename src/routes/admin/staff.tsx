@@ -39,7 +39,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { UserPlus, ShieldOff } from "lucide-react";
+import { UserPlus, ShieldOff, Copy, Check } from "lucide-react";
 import {
   listStaff,
   inviteStaff,
@@ -82,6 +82,14 @@ function AdminStaff() {
   const [inviting, setInviting] = useState(false);
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<AppRole>("staff");
+  const [mode, setMode] = useState<"password" | "email_invite">("password");
+
+  // Result of the most recent "password" mode add — shown once in a
+  // dedicated dialog so the admin can copy it and share it with the person.
+  const [resultOpen, setResultOpen] = useState(false);
+  const [resultEmail, setResultEmail] = useState("");
+  const [resultPassword, setResultPassword] = useState("");
+  const [copied, setCopied] = useState(false);
 
   async function refresh() {
     setLoading(true);
@@ -105,16 +113,33 @@ function AdminStaff() {
     }
     setInviting(true);
     try {
-      await inviteStaff(email.trim(), role);
-      toast.success(`Invitation sent to ${email.trim()}`);
+      const result = await inviteStaff(email.trim(), role, mode);
+      if (mode === "password" && result.temp_password) {
+        setResultEmail(result.email);
+        setResultPassword(result.temp_password);
+        setCopied(false);
+        setResultOpen(true);
+      } else {
+        toast.success(`Invitation email sent to ${email.trim()}`);
+      }
       setOpen(false);
       setEmail("");
       setRole("staff");
       await refresh();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to send invitation");
+      toast.error(err instanceof Error ? err.message : "Failed to add staff member");
     } finally {
       setInviting(false);
+    }
+  }
+
+  async function copyPassword() {
+    try {
+      await navigator.clipboard.writeText(resultPassword);
+      setCopied(true);
+      toast.success("Password copied");
+    } catch {
+      toast.error("Couldn't copy — select and copy it manually");
     }
   }
 
@@ -159,9 +184,30 @@ function AdminStaff() {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Invite a staff member</DialogTitle>
+              <DialogTitle>Add a staff member</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 py-2">
+              <div>
+                <Label>How should they get access?</Label>
+                <Select value={mode} onValueChange={(v) => setMode(v as "password" | "email_invite")}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="password">
+                      Set a password now — share it with them yourself
+                    </SelectItem>
+                    <SelectItem value="email_invite">
+                      Send them an email to set their own password
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {mode === "password"
+                    ? "No email needs to be sent — you'll get a one-time password to share with them directly (WhatsApp, in person, etc.)."
+                    : "Requires email delivery to work — if invites aren't arriving, use the password option instead."}
+                </p>
+              </div>
               <div>
                 <Label htmlFor="staff-email">Email address</Label>
                 <Input
@@ -171,9 +217,6 @@ function AdminStaff() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
                 />
-                <p className="mt-1 text-xs text-muted-foreground">
-                  They'll receive an email to set their own password and sign in.
-                </p>
               </div>
               <div>
                 <Label>Role</Label>
@@ -196,12 +239,45 @@ function AdminStaff() {
                 Cancel
               </Button>
               <Button onClick={handleInvite} disabled={inviting}>
-                {inviting ? "Sending…" : "Send Invitation"}
+                {inviting ? "Adding…" : mode === "password" ? "Create Account" : "Send Invitation"}
               </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
+
+      {/* One-time display of a generated password (mode: "password") */}
+      <Dialog open={resultOpen} onOpenChange={setResultOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Account created</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 py-2 text-sm">
+            <p>
+              Share these sign-in details with <span className="font-medium">{resultEmail}</span> — send
+              them however you'd like (WhatsApp, in person, etc.). This password is shown only once.
+            </p>
+            <div className="rounded-lg border border-border bg-muted/40 p-3">
+              <p className="text-xs text-muted-foreground">Email</p>
+              <p className="font-mono text-sm">{resultEmail}</p>
+              <p className="mt-2 text-xs text-muted-foreground">Temporary password</p>
+              <div className="flex items-center gap-2">
+                <p className="flex-1 font-mono text-lg font-semibold tracking-wide">{resultPassword}</p>
+                <Button variant="outline" size="icon" onClick={copyPassword}>
+                  {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                </Button>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              They can sign in at venmax.co.zw/admin with this email and password right away, and should
+              change it after their first login.
+            </p>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setResultOpen(false)}>Done</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <div className="mt-6 rounded-lg border border-border bg-background">
         <Table>

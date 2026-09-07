@@ -533,13 +533,13 @@ export async function listStaff() {
   return data as StaffMember[];
 }
 
-export async function inviteStaff(email: string, role: AppRole) {
+export async function inviteStaff(email: string, role: AppRole, mode: "password" | "email_invite" = "password") {
   const { data, error } = await supabase.functions.invoke("admin-invite-staff", {
-    body: { email, role },
+    body: { email, role, mode },
   });
   if (error) throw error;
   if (data?.error) throw new Error(data.error);
-  return data as { success: true; user_id: string; email: string; role: AppRole };
+  return data as { success: true; user_id: string; email: string; role: AppRole; temp_password: string | null };
 }
 
 export async function updateStaffRole(userId: string, role: AppRole) {
