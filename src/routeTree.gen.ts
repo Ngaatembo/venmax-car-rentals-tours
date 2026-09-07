@@ -15,8 +15,11 @@ import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as ChauffeurServiceHarareRouteImport } from './routes/chauffeur-service-harare'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
 import { Route as FleetRouteImport } from './routes/fleet'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as SelfDriveCarHireHarareRouteImport } from './routes/self-drive-car-hire-harare'
+import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as ToursRouteImport } from './routes/tours'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminBookingsRouteImport } from './routes/admin/bookings'
@@ -59,14 +62,29 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CookiePolicyRoute = CookiePolicyRouteImport.update({
+  id: '/cookie-policy',
+  path: '/cookie-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FleetRoute = FleetRouteImport.update({
   id: '/fleet',
   path: '/fleet',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SelfDriveCarHireHarareRoute = SelfDriveCarHireHarareRouteImport.update({
   id: '/self-drive-car-hire-harare',
   path: '/self-drive-car-hire-harare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ToursRoute = ToursRouteImport.update({
@@ -132,8 +150,11 @@ export interface FileRoutesByFullPath {
   '/book': typeof BookRoute
   '/chauffeur-service-harare': typeof ChauffeurServiceHarareRoute
   '/contact': typeof ContactRoute
+  '/cookie-policy': typeof CookiePolicyRoute
   '/fleet': typeof FleetRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/self-drive-car-hire-harare': typeof SelfDriveCarHireHarareRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/tours': typeof ToursRoute
   '/admin/bookings': typeof AdminBookingsRoute
   '/admin/content': typeof AdminContentRoute
@@ -152,8 +173,11 @@ export interface FileRoutesByTo {
   '/book': typeof BookRoute
   '/chauffeur-service-harare': typeof ChauffeurServiceHarareRoute
   '/contact': typeof ContactRoute
+  '/cookie-policy': typeof CookiePolicyRoute
   '/fleet': typeof FleetRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/self-drive-car-hire-harare': typeof SelfDriveCarHireHarareRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/tours': typeof ToursRoute
   '/admin/bookings': typeof AdminBookingsRoute
   '/admin/content': typeof AdminContentRoute
@@ -174,8 +198,11 @@ export interface FileRoutesById {
   '/book': typeof BookRoute
   '/chauffeur-service-harare': typeof ChauffeurServiceHarareRoute
   '/contact': typeof ContactRoute
+  '/cookie-policy': typeof CookiePolicyRoute
   '/fleet': typeof FleetRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/self-drive-car-hire-harare': typeof SelfDriveCarHireHarareRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/tours': typeof ToursRoute
   '/admin/bookings': typeof AdminBookingsRoute
   '/admin/content': typeof AdminContentRoute
@@ -197,8 +224,11 @@ export interface FileRouteTypes {
     | '/book'
     | '/chauffeur-service-harare'
     | '/contact'
+    | '/cookie-policy'
     | '/fleet'
+    | '/privacy-policy'
     | '/self-drive-car-hire-harare'
+    | '/terms-of-service'
     | '/tours'
     | '/admin/bookings'
     | '/admin/content'
@@ -217,8 +247,11 @@ export interface FileRouteTypes {
     | '/book'
     | '/chauffeur-service-harare'
     | '/contact'
+    | '/cookie-policy'
     | '/fleet'
+    | '/privacy-policy'
     | '/self-drive-car-hire-harare'
+    | '/terms-of-service'
     | '/tours'
     | '/admin/bookings'
     | '/admin/content'
@@ -238,8 +271,11 @@ export interface FileRouteTypes {
     | '/book'
     | '/chauffeur-service-harare'
     | '/contact'
+    | '/cookie-policy'
     | '/fleet'
+    | '/privacy-policy'
     | '/self-drive-car-hire-harare'
+    | '/terms-of-service'
     | '/tours'
     | '/admin/bookings'
     | '/admin/content'
@@ -260,8 +296,11 @@ export interface RootRouteChildren {
   BookRoute: typeof BookRoute
   ChauffeurServiceHarareRoute: typeof ChauffeurServiceHarareRoute
   ContactRoute: typeof ContactRoute
+  CookiePolicyRoute: typeof CookiePolicyRoute
   FleetRoute: typeof FleetRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   SelfDriveCarHireHarareRoute: typeof SelfDriveCarHireHarareRoute
+  TermsOfServiceRoute: typeof TermsOfServiceRoute
   ToursRoute: typeof ToursRoute
 }
 
@@ -309,6 +348,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cookie-policy': {
+      id: '/cookie-policy'
+      path: '/cookie-policy'
+      fullPath: '/cookie-policy'
+      preLoaderRoute: typeof CookiePolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/fleet': {
       id: '/fleet'
       path: '/fleet'
@@ -316,11 +362,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FleetRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/self-drive-car-hire-harare': {
       id: '/self-drive-car-hire-harare'
       path: '/self-drive-car-hire-harare'
       fullPath: '/self-drive-car-hire-harare'
       preLoaderRoute: typeof SelfDriveCarHireHarareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms-of-service': {
+      id: '/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof TermsOfServiceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tours': {
@@ -440,8 +500,11 @@ const rootRouteChildren: RootRouteChildren = {
   BookRoute: BookRoute,
   ChauffeurServiceHarareRoute: ChauffeurServiceHarareRoute,
   ContactRoute: ContactRoute,
+  CookiePolicyRoute: CookiePolicyRoute,
   FleetRoute: FleetRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
   SelfDriveCarHireHarareRoute: SelfDriveCarHireHarareRoute,
+  TermsOfServiceRoute: TermsOfServiceRoute,
   ToursRoute: ToursRoute,
 }
 export const routeTree = rootRouteImport

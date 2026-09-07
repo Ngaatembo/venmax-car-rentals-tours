@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { FloatingWhatsApp } from "@/components/site/FloatingWhatsApp";
+import { CookieNotice } from "@/components/site/CookieNotice";
 
 function NotFoundComponent() {
   return (
@@ -142,6 +143,7 @@ function RootComponent() {
       </main>
       <Footer />
       <FloatingWhatsApp />
+      <CookieNotice />
     </QueryClientProvider>
   );
 }

@@ -144,8 +144,21 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 border-t border-navy-foreground/10 pt-6 text-xs text-navy-foreground/50">
-          © {new Date().getFullYear()} {company.name}. All rights reserved.
+        <div className="mt-14 flex flex-col gap-4 border-t border-navy-foreground/10 pt-6 text-xs text-navy-foreground/50 sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            © {new Date().getFullYear()} {company.name}. All rights reserved.
+          </p>
+          <div className="flex gap-4">
+            <a href="/privacy-policy" className="hover:text-navy-foreground hover:underline">
+              Privacy Policy
+            </a>
+            <a href="/terms-of-service" className="hover:text-navy-foreground hover:underline">
+              Terms of Service
+            </a>
+            <a href="/cookie-policy" className="hover:text-navy-foreground hover:underline">
+              Cookie Policy
+            </a>
+          </div>
         </div>
       </div>
     </footer>
