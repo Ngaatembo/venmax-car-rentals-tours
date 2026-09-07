@@ -39,6 +39,7 @@ export type DbBooking = {
   status: string;
   created_at: string;
   customer_id: string | null;
+  driver_id: string | null;
   total_amount: number | null;
   amount_paid: number | null;
   payment_status: string | null;
@@ -188,6 +189,62 @@ export async function listBookingsForCustomer(customerId: string) {
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data as DbBooking[];
+}
+
+// ---------- Drivers ----------
+export type DriverStatus = "available" | "assigned" | "on_trip" | "off_duty" | "suspended";
+
+export type DbDriver = {
+  id: string;
+  full_name: string;
+  phone: string;
+  email: string | null;
+  photo_url: string | null;
+  license_number: string | null;
+  license_expiry: string | null;
+  id_number: string | null;
+  assigned_vehicle_id: string | null;
+  status: DriverStatus;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export async function listDrivers() {
+  const { data, error } = await supabase
+    .from("drivers")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data as DbDriver[];
+}
+
+export async function upsertDriver(driver: Partial<DbDriver> & { full_name: string; phone: string }) {
+  const { data, error } = await supabase.from("drivers").upsert(driver).select().single();
+  if (error) throw error;
+  return data as DbDriver;
+}
+
+export async function deleteDriver(id: string) {
+  const { error } = await supabase.from("drivers").delete().eq("id", id);
+  if (error) throw error;
+}
+
+// Bookings currently assigned to a driver, most recent first — used on the
+// driver profile to show current + past trips.
+export async function listBookingsForDriver(driverId: string) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*")
+    .eq("driver_id", driverId)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data as DbBooking[];
+}
+
+export async function assignDriverToBooking(bookingId: string, driverId: string | null) {
+  const { error } = await supabase.from("bookings").update({ driver_id: driverId }).eq("id", bookingId);
+  if (error) throw error;
 }
 
 // ---------- Media upload ----------

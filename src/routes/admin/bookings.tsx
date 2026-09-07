@@ -17,7 +17,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { listBookings, updateBookingStatus, type DbBooking } from "@/lib/admin-data";
+import {
+  listBookings,
+  updateBookingStatus,
+  listDrivers,
+  assignDriverToBooking,
+  type DbBooking,
+  type DbDriver,
+} from "@/lib/admin-data";
 
 export const Route = createFileRoute("/admin/bookings")({
   component: AdminBookings,
@@ -34,12 +41,15 @@ function statusVariant(status: string): "default" | "secondary" | "destructive" 
 
 function AdminBookings() {
   const [bookings, setBookings] = useState<DbBooking[]>([]);
+  const [drivers, setDrivers] = useState<DbDriver[]>([]);
   const [loading, setLoading] = useState(true);
 
   async function refresh() {
     setLoading(true);
     try {
-      setBookings(await listBookings());
+      const [b, d] = await Promise.all([listBookings(), listDrivers()]);
+      setBookings(b);
+      setDrivers(d);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to load bookings");
     } finally {
@@ -61,6 +71,19 @@ function AdminBookings() {
     }
   }
 
+  async function handleDriverChange(booking: DbBooking, driverId: string) {
+    const nextDriverId = driverId === "unassigned" ? null : driverId;
+    try {
+      await assignDriverToBooking(booking.id, nextDriverId);
+      setBookings((prev) =>
+        prev.map((b) => (b.id === booking.id ? { ...b, driver_id: nextDriverId } : b))
+      );
+      toast.success(nextDriverId ? "Driver assigned" : "Driver unassigned");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to assign driver");
+    }
+  }
+
   return (
     <div>
       <h1 className="text-2xl font-semibold text-foreground">Bookings</h1>
@@ -77,20 +100,21 @@ function AdminBookings() {
               <TableHead>Service</TableHead>
               <TableHead>Dates</TableHead>
               <TableHead>Contact</TableHead>
+              <TableHead>Driver</TableHead>
               <TableHead>Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading && (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground">
+                <TableCell colSpan={7} className="text-center text-muted-foreground">
                   Loading…
                 </TableCell>
               </TableRow>
             )}
             {!loading && bookings.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground">
+                <TableCell colSpan={7} className="text-center text-muted-foreground">
                   No bookings yet.
                 </TableCell>
               </TableRow>
@@ -109,6 +133,26 @@ function AdminBookings() {
                 <TableCell className="text-xs">
                   <div>{b.email}</div>
                   <div>{b.phone}</div>
+                </TableCell>
+                <TableCell>
+                  <Select
+                    value={b.driver_id ?? "unassigned"}
+                    onValueChange={(v) => handleDriverChange(b, v)}
+                  >
+                    <SelectTrigger className="h-8 w-36">
+                      <SelectValue>
+                        {drivers.find((d) => d.id === b.driver_id)?.full_name ?? "Unassigned"}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="unassigned">Unassigned</SelectItem>
+                      {drivers.map((d) => (
+                        <SelectItem key={d.id} value={d.id}>
+                          {d.full_name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </TableCell>
                 <TableCell>
                   <Select value={b.status} onValueChange={(v) => handleStatusChange(b, v)}>

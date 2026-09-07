@@ -1,5 +1,6 @@
 import { createFileRoute, Link, Outlet, useNavigate, useLocation } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import {
   LayoutDashboard,
   Car,
@@ -11,10 +12,13 @@ import {
   Menu,
   Users,
   Contact,
+  IdCard,
 } from "lucide-react";
 import { useAdminSession, useMyRole, signOutAdmin, type AppRole } from "@/lib/admin-auth";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/lib/supabase";
+import { playNotificationChime } from "@/lib/notification-sound";
 import logo from "@/assets/logo.jpg";
 
 export const Route = createFileRoute("/admin")({
@@ -31,6 +35,7 @@ const navItems: { to: string; label: string; icon: typeof LayoutDashboard; minRo
   { to: "/admin/tours", label: "Tours", icon: MapPin },
   { to: "/admin/bookings", label: "Bookings", icon: CalendarCheck },
   { to: "/admin/customers", label: "Customers", icon: Contact },
+  { to: "/admin/drivers", label: "Drivers", icon: IdCard },
   { to: "/admin/inquiries", label: "Inquiries", icon: MessageSquare },
   { to: "/admin/content", label: "Site Content", icon: FileText, minRole: "manager" },
   { to: "/admin/staff", label: "Staff", icon: Users, minRole: "admin" },
@@ -50,6 +55,33 @@ function AdminLayout() {
   const location = useLocation();
   const onLoginPage = location.pathname === "/admin/login";
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  // New-booking notification: plays a chime + toast whenever a booking is
+  // inserted while any admin page is open. Only subscribes once the user
+  // actually holds a role (staff/manager/admin) — matches the RLS read
+  // policy on `bookings`, so it never subscribes for a logged-out visitor.
+  useEffect(() => {
+    if (!role) return;
+    const channel = supabase
+      .channel("admin-new-bookings")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "bookings" },
+        (payload) => {
+          playNotificationChime();
+          const name = (payload.new as { full_name?: string }).full_name ?? "A customer";
+          const service = (payload.new as { service_type?: string }).service_type ?? "booking";
+          toast.success(`New order from ${name}`, {
+            description: service.replace("-", " "),
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [role]);
 
   // The login page renders itself, with no sidebar and no auth requirement.
   if (onLoginPage) {
