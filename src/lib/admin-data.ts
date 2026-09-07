@@ -285,6 +285,52 @@ export async function deletePayment(id: string) {
   if (error) throw error;
 }
 
+// ---------- Pricing rules ----------
+export type PricingServiceType =
+  | "all"
+  | "self-drive"
+  | "chauffeur"
+  | "airport-transfer"
+  | "shuttle"
+  | "tour";
+
+export type PricingChargeType = "flat" | "percentage" | "discount_flat" | "discount_percentage";
+
+export type DbPricingRule = {
+  id: string;
+  name: string;
+  service_type: PricingServiceType;
+  charge_type: PricingChargeType;
+  amount: number;
+  description: string | null;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export async function listPricingRules() {
+  const { data, error } = await supabase
+    .from("pricing_rules")
+    .select("*")
+    .order("sort_order", { ascending: true });
+  if (error) throw error;
+  return data as DbPricingRule[];
+}
+
+export async function upsertPricingRule(
+  rule: Partial<DbPricingRule> & { name: string; charge_type: PricingChargeType; amount: number }
+) {
+  const { data, error } = await supabase.from("pricing_rules").upsert(rule).select().single();
+  if (error) throw error;
+  return data as DbPricingRule;
+}
+
+export async function deletePricingRule(id: string) {
+  const { error } = await supabase.from("pricing_rules").delete().eq("id", id);
+  if (error) throw error;
+}
+
 // ---------- Media upload ----------
 export async function uploadMedia(file: File, pathPrefix: string) {
   const ext = file.name.split(".").pop();

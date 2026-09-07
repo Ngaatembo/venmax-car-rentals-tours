@@ -14,6 +14,7 @@ import {
   Contact,
   IdCard,
   Wallet,
+  Percent,
 } from "lucide-react";
 import { useAdminSession, useMyRole, signOutAdmin, type AppRole } from "@/lib/admin-auth";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -38,6 +39,7 @@ const navItems: { to: string; label: string; icon: typeof LayoutDashboard; minRo
   { to: "/admin/customers", label: "Customers", icon: Contact },
   { to: "/admin/drivers", label: "Drivers", icon: IdCard },
   { to: "/admin/payments", label: "Payments", icon: Wallet, minRole: "staff" },
+  { to: "/admin/pricing", label: "Pricing", icon: Percent, minRole: "staff" },
   { to: "/admin/inquiries", label: "Inquiries", icon: MessageSquare },
   { to: "/admin/content", label: "Site Content", icon: FileText, minRole: "manager" },
   { to: "/admin/staff", label: "Staff", icon: Users, minRole: "admin" },
