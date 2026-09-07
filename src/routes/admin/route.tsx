@@ -182,7 +182,7 @@ function AdminLayout() {
           <br />
           <span className="font-semibold text-muted-foreground">VenMax Car Rental & Tours</span>
           <br />
-          Developed by Ngaatendwe Tembo
+          Developed by NWT Dev
         </p>
       </div>
     </>
