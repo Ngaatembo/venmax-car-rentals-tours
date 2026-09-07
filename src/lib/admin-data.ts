@@ -357,6 +357,71 @@ export async function listAuditLog(limit = 200) {
   return data as DbAuditLogEntry[];
 }
 
+// ---------- Documents ----------
+export type DocumentCategory =
+  | "driver_license"
+  | "vehicle_insurance"
+  | "vehicle_registration"
+  | "vehicle_other"
+  | "company";
+
+export type DbDocument = {
+  id: string;
+  category: DocumentCategory;
+  driver_id: string | null;
+  vehicle_id: string | null;
+  title: string;
+  file_url: string;
+  file_name: string | null;
+  expiry_date: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export async function listDocuments() {
+  const { data, error } = await supabase
+    .from("documents")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data as DbDocument[];
+}
+
+export async function createDocument(
+  doc: Partial<DbDocument> & { category: DocumentCategory; title: string; file_url: string }
+) {
+  const { data, error } = await supabase.from("documents").insert(doc).select().single();
+  if (error) throw error;
+  return data as DbDocument;
+}
+
+export async function updateDocument(id: string, updates: Partial<DbDocument>) {
+  const { error } = await supabase.from("documents").update(updates).eq("id", id);
+  if (error) throw error;
+}
+
+export async function deleteDocument(id: string) {
+  const { error } = await supabase.from("documents").delete().eq("id", id);
+  if (error) throw error;
+}
+
+export async function uploadDocumentFile(file: File) {
+  const ext = file.name.split(".").pop();
+  const path = `${crypto.randomUUID()}.${ext}`;
+  const { error } = await supabase.storage.from("venmax-documents").upload(path, file);
+  if (error) throw error;
+  return path; // stored path, not a public URL — this bucket is private
+}
+
+export async function getDocumentSignedUrl(path: string) {
+  const { data, error } = await supabase.storage
+    .from("venmax-documents")
+    .createSignedUrl(path, 60 * 5); // valid for 5 minutes
+  if (error) throw error;
+  return data.signedUrl;
+}
+
 // ---------- Media upload ----------
 export async function uploadMedia(file: File, pathPrefix: string) {
   const ext = file.name.split(".").pop();

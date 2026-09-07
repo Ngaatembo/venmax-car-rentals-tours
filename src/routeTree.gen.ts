@@ -26,6 +26,7 @@ import { Route as AdminAuditLogRouteImport } from './routes/admin/audit-log'
 import { Route as AdminBookingsRouteImport } from './routes/admin/bookings'
 import { Route as AdminContentRouteImport } from './routes/admin/content'
 import { Route as AdminCustomersRouteImport } from './routes/admin/customers'
+import { Route as AdminDocumentsRouteImport } from './routes/admin/documents'
 import { Route as AdminDriversRouteImport } from './routes/admin/drivers'
 import { Route as AdminFleetRouteImport } from './routes/admin/fleet'
 import { Route as AdminInquiriesRouteImport } from './routes/admin/inquiries'
@@ -120,6 +121,11 @@ const AdminCustomersRoute = AdminCustomersRouteImport.update({
   path: '/customers',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminDocumentsRoute = AdminDocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminDriversRoute = AdminDriversRouteImport.update({
   id: '/drivers',
   path: '/drivers',
@@ -178,6 +184,7 @@ export interface FileRoutesByFullPath {
   '/admin/bookings': typeof AdminBookingsRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/customers': typeof AdminCustomersRoute
+  '/admin/documents': typeof AdminDocumentsRoute
   '/admin/drivers': typeof AdminDriversRoute
   '/admin/fleet': typeof AdminFleetRoute
   '/admin/inquiries': typeof AdminInquiriesRoute
@@ -204,6 +211,7 @@ export interface FileRoutesByTo {
   '/admin/bookings': typeof AdminBookingsRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/customers': typeof AdminCustomersRoute
+  '/admin/documents': typeof AdminDocumentsRoute
   '/admin/drivers': typeof AdminDriversRoute
   '/admin/fleet': typeof AdminFleetRoute
   '/admin/inquiries': typeof AdminInquiriesRoute
@@ -232,6 +240,7 @@ export interface FileRoutesById {
   '/admin/bookings': typeof AdminBookingsRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/customers': typeof AdminCustomersRoute
+  '/admin/documents': typeof AdminDocumentsRoute
   '/admin/drivers': typeof AdminDriversRoute
   '/admin/fleet': typeof AdminFleetRoute
   '/admin/inquiries': typeof AdminInquiriesRoute
@@ -261,6 +270,7 @@ export interface FileRouteTypes {
     | '/admin/bookings'
     | '/admin/content'
     | '/admin/customers'
+    | '/admin/documents'
     | '/admin/drivers'
     | '/admin/fleet'
     | '/admin/inquiries'
@@ -287,6 +297,7 @@ export interface FileRouteTypes {
     | '/admin/bookings'
     | '/admin/content'
     | '/admin/customers'
+    | '/admin/documents'
     | '/admin/drivers'
     | '/admin/fleet'
     | '/admin/inquiries'
@@ -314,6 +325,7 @@ export interface FileRouteTypes {
     | '/admin/bookings'
     | '/admin/content'
     | '/admin/customers'
+    | '/admin/documents'
     | '/admin/drivers'
     | '/admin/fleet'
     | '/admin/inquiries'
@@ -461,6 +473,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCustomersRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/documents': {
+      id: '/admin/documents'
+      path: '/documents'
+      fullPath: '/admin/documents'
+      preLoaderRoute: typeof AdminDocumentsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/drivers': {
       id: '/admin/drivers'
       path: '/drivers'
@@ -525,6 +544,7 @@ interface AdminRouteRouteChildren {
   AdminBookingsRoute: typeof AdminBookingsRoute
   AdminContentRoute: typeof AdminContentRoute
   AdminCustomersRoute: typeof AdminCustomersRoute
+  AdminDocumentsRoute: typeof AdminDocumentsRoute
   AdminDriversRoute: typeof AdminDriversRoute
   AdminFleetRoute: typeof AdminFleetRoute
   AdminInquiriesRoute: typeof AdminInquiriesRoute
@@ -541,6 +561,7 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminBookingsRoute: AdminBookingsRoute,
   AdminContentRoute: AdminContentRoute,
   AdminCustomersRoute: AdminCustomersRoute,
+  AdminDocumentsRoute: AdminDocumentsRoute,
   AdminDriversRoute: AdminDriversRoute,
   AdminFleetRoute: AdminFleetRoute,
   AdminInquiriesRoute: AdminInquiriesRoute,
