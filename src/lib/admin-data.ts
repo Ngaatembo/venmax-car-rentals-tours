@@ -331,6 +331,32 @@ export async function deletePricingRule(id: string) {
   if (error) throw error;
 }
 
+// ---------- Audit log ----------
+export type AuditAction = "created" | "updated" | "deleted";
+
+export type DbAuditLogEntry = {
+  id: string;
+  actor_user_id: string | null;
+  actor_email: string | null;
+  action: AuditAction;
+  module: string;
+  record_id: string | null;
+  record_label: string | null;
+  old_value: Record<string, unknown> | null;
+  new_value: Record<string, unknown> | null;
+  created_at: string;
+};
+
+export async function listAuditLog(limit = 200) {
+  const { data, error } = await supabase
+    .from("audit_log")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return data as DbAuditLogEntry[];
+}
+
 // ---------- Media upload ----------
 export async function uploadMedia(file: File, pathPrefix: string) {
   const ext = file.name.split(".").pop();

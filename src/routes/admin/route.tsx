@@ -15,6 +15,7 @@ import {
   IdCard,
   Wallet,
   Percent,
+  History,
 } from "lucide-react";
 import { useAdminSession, useMyRole, signOutAdmin, type AppRole } from "@/lib/admin-auth";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -42,6 +43,7 @@ const navItems: { to: string; label: string; icon: typeof LayoutDashboard; minRo
   { to: "/admin/pricing", label: "Pricing", icon: Percent, minRole: "staff" },
   { to: "/admin/inquiries", label: "Inquiries", icon: MessageSquare },
   { to: "/admin/content", label: "Site Content", icon: FileText, minRole: "manager" },
+  { to: "/admin/audit-log", label: "Audit Log", icon: History, minRole: "admin" },
   { to: "/admin/staff", label: "Staff", icon: Users, minRole: "admin" },
 ];
 

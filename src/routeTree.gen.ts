@@ -22,6 +22,7 @@ import { Route as SelfDriveCarHireHarareRouteImport } from './routes/self-drive-
 import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as ToursRouteImport } from './routes/tours'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminAuditLogRouteImport } from './routes/admin/audit-log'
 import { Route as AdminBookingsRouteImport } from './routes/admin/bookings'
 import { Route as AdminContentRouteImport } from './routes/admin/content'
 import { Route as AdminCustomersRouteImport } from './routes/admin/customers'
@@ -99,6 +100,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminAuditLogRoute = AdminAuditLogRouteImport.update({
+  id: '/audit-log',
+  path: '/audit-log',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminBookingsRoute = AdminBookingsRouteImport.update({
   id: '/bookings',
   path: '/bookings',
@@ -168,6 +174,7 @@ export interface FileRoutesByFullPath {
   '/self-drive-car-hire-harare': typeof SelfDriveCarHireHarareRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/tours': typeof ToursRoute
+  '/admin/audit-log': typeof AdminAuditLogRoute
   '/admin/bookings': typeof AdminBookingsRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/customers': typeof AdminCustomersRoute
@@ -193,6 +200,7 @@ export interface FileRoutesByTo {
   '/self-drive-car-hire-harare': typeof SelfDriveCarHireHarareRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/tours': typeof ToursRoute
+  '/admin/audit-log': typeof AdminAuditLogRoute
   '/admin/bookings': typeof AdminBookingsRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/customers': typeof AdminCustomersRoute
@@ -220,6 +228,7 @@ export interface FileRoutesById {
   '/self-drive-car-hire-harare': typeof SelfDriveCarHireHarareRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/tours': typeof ToursRoute
+  '/admin/audit-log': typeof AdminAuditLogRoute
   '/admin/bookings': typeof AdminBookingsRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/customers': typeof AdminCustomersRoute
@@ -248,6 +257,7 @@ export interface FileRouteTypes {
     | '/self-drive-car-hire-harare'
     | '/terms-of-service'
     | '/tours'
+    | '/admin/audit-log'
     | '/admin/bookings'
     | '/admin/content'
     | '/admin/customers'
@@ -273,6 +283,7 @@ export interface FileRouteTypes {
     | '/self-drive-car-hire-harare'
     | '/terms-of-service'
     | '/tours'
+    | '/admin/audit-log'
     | '/admin/bookings'
     | '/admin/content'
     | '/admin/customers'
@@ -299,6 +310,7 @@ export interface FileRouteTypes {
     | '/self-drive-car-hire-harare'
     | '/terms-of-service'
     | '/tours'
+    | '/admin/audit-log'
     | '/admin/bookings'
     | '/admin/content'
     | '/admin/customers'
@@ -421,6 +433,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/audit-log': {
+      id: '/admin/audit-log'
+      path: '/audit-log'
+      fullPath: '/admin/audit-log'
+      preLoaderRoute: typeof AdminAuditLogRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/bookings': {
       id: '/admin/bookings'
       path: '/bookings'
@@ -502,6 +521,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteRouteChildren {
+  AdminAuditLogRoute: typeof AdminAuditLogRoute
   AdminBookingsRoute: typeof AdminBookingsRoute
   AdminContentRoute: typeof AdminContentRoute
   AdminCustomersRoute: typeof AdminCustomersRoute
@@ -517,6 +537,7 @@ interface AdminRouteRouteChildren {
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminAuditLogRoute: AdminAuditLogRoute,
   AdminBookingsRoute: AdminBookingsRoute,
   AdminContentRoute: AdminContentRoute,
   AdminCustomersRoute: AdminCustomersRoute,
