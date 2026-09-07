@@ -176,6 +176,15 @@ function AdminLayout() {
           Sign out
         </button>
       </div>
+      <div className="border-t border-border px-4 py-3">
+        <p className="text-[10px] leading-relaxed text-muted-foreground/70">
+          Custom admin system built exclusively for
+          <br />
+          <span className="font-semibold text-muted-foreground">VenMax Car Rental & Tours</span>
+          <br />
+          Developed by Ngaatendwe Tembo
+        </p>
+      </div>
     </>
   );
 

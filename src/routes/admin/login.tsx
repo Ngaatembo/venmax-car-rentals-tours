@@ -74,6 +74,11 @@ function AdminLogin() {
             {loading ? "Signing in…" : "Sign in"}
           </Button>
         </form>
+        <p className="mt-8 text-center text-[10px] leading-relaxed text-muted-foreground/70">
+          Custom admin system built exclusively for VenMax Car Rental & Tours
+          <br />
+          Developed by Ngaatendwe Tembo
+        </p>
       </div>
     </div>
   );
