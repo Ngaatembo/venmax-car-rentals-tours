@@ -17,6 +17,7 @@ import {
   Percent,
   History,
   FolderOpen,
+  FileBarChart,
 } from "lucide-react";
 import { useAdminSession, useMyRole, signOutAdmin, type AppRole } from "@/lib/admin-auth";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -43,6 +44,7 @@ const navItems: { to: string; label: string; icon: typeof LayoutDashboard; minRo
   { to: "/admin/payments", label: "Payments", icon: Wallet, minRole: "staff" },
   { to: "/admin/pricing", label: "Pricing", icon: Percent, minRole: "staff" },
   { to: "/admin/documents", label: "Documents", icon: FolderOpen, minRole: "staff" },
+  { to: "/admin/reports", label: "Reports", icon: FileBarChart, minRole: "manager" },
   { to: "/admin/inquiries", label: "Inquiries", icon: MessageSquare },
   { to: "/admin/content", label: "Site Content", icon: FileText, minRole: "manager" },
   { to: "/admin/audit-log", label: "Audit Log", icon: History, minRole: "admin" },

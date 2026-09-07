@@ -3,8 +3,12 @@ import { supabase } from "./supabase";
 import {
   vehicles as staticVehicles,
   tours as staticTours,
+  services as staticServices,
+  faqs as staticFaqs,
+  testimonials as staticTestimonials,
   type Vehicle,
   type Tour,
+  type Service,
 } from "@/data/venmax";
 
 const staticVehicleImages = new Map(staticVehicles.map((v) => [v.slug, v.image]));
@@ -94,4 +98,78 @@ export function useSiteContent(): Record<string, string> {
   }, []);
 
   return content;
+}
+
+export function useServices(): Service[] {
+  const [services, setServices] = useState<Service[]>(staticServices);
+
+  useEffect(() => {
+    let cancelled = false;
+    supabase
+      .from("services")
+      .select("*")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true })
+      .then(({ data, error }) => {
+        if (cancelled || error || !data || data.length === 0) return;
+        setServices(
+          data.map((s) => ({
+            slug: s.slug,
+            name: s.name,
+            description: s.description,
+            icon: s.icon,
+            whatsapp: s.whatsapp_message || "",
+          })),
+        );
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return services;
+}
+
+export function useFaqs(): { question: string; answer: string }[] {
+  const [faqs, setFaqs] = useState(staticFaqs);
+
+  useEffect(() => {
+    let cancelled = false;
+    supabase
+      .from("faqs")
+      .select("question, answer")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true })
+      .then(({ data, error }) => {
+        if (cancelled || error || !data || data.length === 0) return;
+        setFaqs(data);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return faqs;
+}
+
+export function useTestimonials(): { name: string; rating: number; quote: string }[] {
+  const [testimonials, setTestimonials] = useState(staticTestimonials);
+
+  useEffect(() => {
+    let cancelled = false;
+    supabase
+      .from("testimonials")
+      .select("customer_name, rating, quote")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true })
+      .then(({ data, error }) => {
+        if (cancelled || error || !data || data.length === 0) return;
+        setTestimonials(data.map((t) => ({ name: t.customer_name, rating: t.rating, quote: t.quote })));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return testimonials;
 }

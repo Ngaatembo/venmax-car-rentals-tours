@@ -422,6 +422,84 @@ export async function getDocumentSignedUrl(path: string) {
   return data.signedUrl;
 }
 
+// ---------- Website content: Services, FAQs, Testimonials ----------
+export type ServiceIcon = "key" | "user" | "plane" | "users";
+
+export type DbService = {
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  icon: ServiceIcon;
+  whatsapp_message: string | null;
+  sort_order: number;
+  is_active: boolean;
+};
+
+export async function listServices() {
+  const { data, error } = await supabase.from("services").select("*").order("sort_order");
+  if (error) throw error;
+  return data as DbService[];
+}
+export async function upsertService(s: Partial<DbService> & { slug: string; name: string }) {
+  const { data, error } = await supabase.from("services").upsert(s).select().single();
+  if (error) throw error;
+  return data as DbService;
+}
+export async function deleteService(id: string) {
+  const { error } = await supabase.from("services").delete().eq("id", id);
+  if (error) throw error;
+}
+
+export type DbFaq = {
+  id: string;
+  question: string;
+  answer: string;
+  sort_order: number;
+  is_active: boolean;
+};
+
+export async function listFaqs() {
+  const { data, error } = await supabase.from("faqs").select("*").order("sort_order");
+  if (error) throw error;
+  return data as DbFaq[];
+}
+export async function upsertFaq(f: Partial<DbFaq> & { question: string; answer: string }) {
+  const { data, error } = await supabase.from("faqs").upsert(f).select().single();
+  if (error) throw error;
+  return data as DbFaq;
+}
+export async function deleteFaq(id: string) {
+  const { error } = await supabase.from("faqs").delete().eq("id", id);
+  if (error) throw error;
+}
+
+export type DbTestimonial = {
+  id: string;
+  customer_name: string;
+  rating: number;
+  quote: string;
+  sort_order: number;
+  is_active: boolean;
+};
+
+export async function listTestimonials() {
+  const { data, error } = await supabase.from("testimonials").select("*").order("sort_order");
+  if (error) throw error;
+  return data as DbTestimonial[];
+}
+export async function upsertTestimonial(
+  t: Partial<DbTestimonial> & { customer_name: string; rating: number; quote: string }
+) {
+  const { data, error } = await supabase.from("testimonials").upsert(t).select().single();
+  if (error) throw error;
+  return data as DbTestimonial;
+}
+export async function deleteTestimonial(id: string) {
+  const { error } = await supabase.from("testimonials").delete().eq("id", id);
+  if (error) throw error;
+}
+
 // ---------- Media upload ----------
 export async function uploadMedia(file: File, pathPrefix: string) {
   const ext = file.name.split(".").pop();

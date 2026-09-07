@@ -29,19 +29,16 @@ import logo from "@/assets/logo-header.png";
 import {
   businessFacts,
   company,
-  faqs,
   getVehicle,
   modelOfTheMonthSlug,
   paymentMethods,
   requirements,
   rentalTerms,
-  services,
-  testimonials,
   trustPoints,
   whatsappLink,
   whyVenMax,
 } from "@/data/venmax";
-import { useVehicles, useTours, useSiteContent } from "@/lib/live-content";
+import { useVehicles, useTours, useSiteContent, useServices, useFaqs, useTestimonials } from "@/lib/live-content";
 import { cn } from "@/lib/utils";
 
 const serviceIcons = {
@@ -290,6 +287,7 @@ export function FleetSection({ limit }: { limit?: number }) {
 
 export function ServicesSection() {
   const tours = useTours();
+  const services = useServices();
   const airport = services.find((s) => s.slug === "airport-transfer");
   const chauffeur = services.find((s) => s.slug === "chauffeur");
   const featuredTour = tours[0];
@@ -679,6 +677,7 @@ export function BrandPromiseSection() {
 }
 
 export function TestimonialsSection() {
+  const testimonials = useTestimonials();
   const avatarPalette = ["bg-primary", "bg-navy", "bg-emerald-600", "bg-sky-600", "bg-amber-600"];
   return (
     <Section>
@@ -776,6 +775,7 @@ export function TestimonialsSection() {
 // Rental Requirements + FAQ, condensed into one accordion so the essential
 // information survives without taking up two full homepage sections.
 export function RequirementsFaqSection() {
+  const faqs = useFaqs();
   return (
     <Section tone="surface" id="requirements">
       <SectionHeading
