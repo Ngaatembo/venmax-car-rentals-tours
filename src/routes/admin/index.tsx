@@ -40,8 +40,10 @@ import {
   listTours,
   listBookings,
   listInquiries,
+  listPayments,
   type DbBooking,
   type DbInquiry,
+  type DbPayment,
 } from "@/lib/admin-data";
 
 export const Route = createFileRoute("/admin/")({
@@ -114,21 +116,24 @@ function AdminDashboard() {
   const [tours, setTours] = useState<Awaited<ReturnType<typeof listTours>>>([]);
   const [bookings, setBookings] = useState<DbBooking[]>([]);
   const [inquiries, setInquiries] = useState<DbInquiry[]>([]);
+  const [payments, setPayments] = useState<DbPayment[]>([]);
   const [loading, setLoading] = useState(true);
   const [range, setRange] = useState<RangeKey>("month");
 
   useEffect(() => {
     (async () => {
-      const [v, t, b, i] = await Promise.all([
+      const [v, t, b, i, p] = await Promise.all([
         listVehicles(),
         listTours(),
         listBookings(),
         listInquiries(),
+        listPayments(),
       ]);
       setVehicles(v);
       setTours(t);
       setBookings(b);
       setInquiries(i);
+      setPayments(p);
       setLoading(false);
     })();
   }, []);
@@ -142,6 +147,13 @@ function AdminDashboard() {
   const filteredInquiries = useMemo(
     () => inquiries.filter((i) => inRange(i.created_at, activeRange)),
     [inquiries, activeRange]
+  );
+  const filteredRevenue = useMemo(
+    () =>
+      payments
+        .filter((p) => p.status === "paid" && inRange(p.payment_date, activeRange))
+        .reduce((sum, p) => sum + p.amount, 0),
+    [payments, activeRange]
   );
 
   const bookingCounts = useMemo(() => {
@@ -194,6 +206,7 @@ function AdminDashboard() {
     { label: "Confirmed", value: bookingCounts["confirmed"], to: "/admin/bookings" },
     { label: "Completed", value: bookingCounts["completed"], to: "/admin/bookings" },
     { label: "Cancelled", value: bookingCounts["cancelled"], to: "/admin/bookings" },
+    { label: "Revenue", value: `$${filteredRevenue.toFixed(2)}`, to: "/admin/payments" },
     { label: "Fleet vehicles", value: `${activeVehicles}/${vehicles.length} active`, to: "/admin/fleet" },
     { label: "Tour destinations", value: `${activeTours}/${tours.length} active`, to: "/admin/tours" },
     { label: "New inquiries", value: inquiryCounts["new"], to: "/admin/inquiries" },

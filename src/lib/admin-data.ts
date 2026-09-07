@@ -247,6 +247,44 @@ export async function assignDriverToBooking(bookingId: string, driverId: string 
   if (error) throw error;
 }
 
+// ---------- Payments ----------
+export type PaymentStatus = "pending" | "paid" | "failed" | "refunded";
+
+export type DbPayment = {
+  id: string;
+  booking_id: string | null;
+  customer_id: string | null;
+  amount: number;
+  method: string;
+  reference: string | null;
+  payment_date: string;
+  status: PaymentStatus;
+  notes: string | null;
+  created_at: string;
+};
+
+export async function listPayments() {
+  const { data, error } = await supabase
+    .from("payments")
+    .select("*")
+    .order("payment_date", { ascending: false });
+  if (error) throw error;
+  return data as DbPayment[];
+}
+
+export async function recordPayment(
+  payment: Partial<DbPayment> & { amount: number; method: string }
+) {
+  const { data, error } = await supabase.from("payments").upsert(payment).select().single();
+  if (error) throw error;
+  return data as DbPayment;
+}
+
+export async function deletePayment(id: string) {
+  const { error } = await supabase.from("payments").delete().eq("id", id);
+  if (error) throw error;
+}
+
 // ---------- Media upload ----------
 export async function uploadMedia(file: File, pathPrefix: string) {
   const ext = file.name.split(".").pop();
