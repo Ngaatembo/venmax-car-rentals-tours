@@ -588,6 +588,7 @@ export function ToursSection() {
 // invented customer/rating numbers, which VenMax hasn't supplied yet).
 export function WhySection() {
   const vehicles = useVehicles();
+  const content = useSiteContent();
   const startingPrice = vehicles.reduce<number | null>((min, v) => {
     const match = v.priceLabel.match(/\$(\d+)/);
     if (!match) return min;
@@ -599,7 +600,7 @@ export function WhySection() {
     { value: `${businessFacts.googleRating}★`, label: "Google Rating" },
     { value: startingPrice ? `$${startingPrice}` : "$40", label: "Starting Price/Day" },
     { value: businessFacts.happyClients, label: "Happy Clients" },
-    { value: businessFacts.vehicleModelsDisplay, label: "Vehicle Models" },
+    { value: content["vehicle_models_display"] || businessFacts.vehicleModelsDisplay, label: "Vehicle Models" },
   ];
 
   const featureRows = whyVenMax.slice(0, 4);

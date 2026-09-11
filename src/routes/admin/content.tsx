@@ -70,6 +70,7 @@ const fieldLabels: Record<string, string> = {
   social_showcase_2: "Featured post/reel #2 (Instagram, TikTok or Facebook link)",
   social_showcase_3: "Featured post/reel #3 (Instagram, TikTok or Facebook link)",
   social_showcase_4: "Featured post/reel #4 (Instagram, TikTok or Facebook link)",
+  vehicle_models_display: "\"Vehicle Models\" homepage stat (e.g. 40+)",
 };
 
 type Tab = "general" | "services" | "faq" | "testimonials";
