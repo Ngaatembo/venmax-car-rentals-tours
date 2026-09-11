@@ -599,7 +599,7 @@ export function WhySection() {
     { value: `${businessFacts.googleRating}★`, label: "Google Rating" },
     { value: startingPrice ? `$${startingPrice}` : "$40", label: "Starting Price/Day" },
     { value: businessFacts.happyClients, label: "Happy Clients" },
-    { value: `${vehicles.length}+`, label: "Vehicle Models" },
+    { value: businessFacts.vehicleModelsDisplay, label: "Vehicle Models" },
   ];
 
   const featureRows = whyVenMax.slice(0, 4);

@@ -536,4 +536,7 @@ export const businessFacts = {
   facebookFollowers: "3.9K+",
   // From VenMax's own "Why Choose Venmax" marketing copy.
   happyClients: "1000+",
+  // Displayed "Vehicle Models" stat on the homepage. Set independently of the
+  // live vehicle list length (client's marketing figure) — update here.
+  vehicleModelsDisplay: "40+",
 };
