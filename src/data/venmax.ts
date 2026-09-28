@@ -12,6 +12,7 @@ import fit from "@/assets/honda-fit.jpg";
 import serena from "@/assets/nissan-serena.jpg";
 import cx5 from "@/assets/mazda-cx5.jpg";
 import d4d from "@/assets/toyota-d4d.jpg";
+import vezel from "@/assets/honda-vezel.jpg";
 import xtrail from "@/assets/nissan-xtrail.jpg";
 import fortuner from "@/assets/toyota-fortuner.jpg";
 import prado from "@/assets/toyota-prado.jpg";
@@ -195,6 +196,20 @@ export const vehicles: Vehicle[] = [
     badge: "Family Pick",
   },
   {
+    slug: "honda-vezel",
+    name: "Honda Vezel",
+    category: "SUV",
+    priceLabel: "From $80/day",
+    deposit: "$100 refundable deposit",
+    description:
+      "Stylish, fuel-efficient compact crossover — comfortable for city driving and out-of-town trips.",
+    image: vezel,
+    seats: 5,
+    bags: 3,
+    transmission: "Auto",
+    ac: true,
+  },
+  {
     slug: "mazda-cx5",
     name: "Mazda CX-5",
     category: "SUV",
@@ -212,7 +227,7 @@ export const vehicles: Vehicle[] = [
     slug: "toyota-d4d",
     name: "Toyota D4D",
     category: "Pickup",
-    priceLabel: "From $130/day",
+    priceLabel: "From $120/day",
     deposit: "$300 refundable deposit",
     description: "Rugged double-cab 4x4, built for long-distance travel and site visits.",
     image: d4d,
