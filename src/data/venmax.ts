@@ -301,7 +301,7 @@ export const vehicles: Vehicle[] = [
     priceLabel: "$400/day",
     deposit: "$500 deposit",
     description:
-      "Flagship 4x4, engineered for maximum durability and long hauls.",
+      "Powerful 4x4, engineered for maximum durability and long hauls.",
     image: landCruiser,
     seats: 7,
     bags: 5,
