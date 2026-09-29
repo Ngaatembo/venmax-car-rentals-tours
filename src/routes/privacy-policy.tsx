@@ -1,112 +1,312 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { company } from "@/data/venmax";
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Bullets, LegalLink, LegalPage, type LegalSection } from "@/components/site/LegalPage";
+import { company, whatsappLink } from "@/data/venmax";
 
 export const Route = createFileRoute("/privacy-policy")({
+  head: () => ({
+    meta: [
+      { title: "Privacy Policy | VenMax Car Rental & Tours" },
+      {
+        name: "description",
+        content:
+          "How VenMax Car Rental & Tours collects, uses and looks after the personal information you share through this website, WhatsApp, email or phone.",
+      },
+    ],
+  }),
   component: PrivacyPolicyPage,
 });
 
+const address = company.addressLines.join(", ");
+
+// Only states what VenMax has confirmed or what this website demonstrably does.
+// No retention periods, security certifications or data-sharing arrangements are
+// claimed — add them here only once VenMax confirms them.
+const sections: LegalSection[] = [
+  {
+    id: "who-we-are",
+    title: "Who We Are",
+    content: (
+      <>
+        <p>
+          {company.name} ("VenMax", "we", "us") is a car rental and tours company based at{" "}
+          {address}.
+        </p>
+        <p>
+          This policy explains what personal information we collect when you use this website or
+          contact us about a rental, chauffeur hire, airport service, shuttle or tour, why we use
+          it, and the choices you have.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: "information-we-collect",
+    title: "Information We Collect",
+    content: (
+      <>
+        <p>We only ask for what we need to handle your enquiry or booking:</p>
+        <Bullets
+          items={[
+            <>
+              <strong>Contact details</strong> — your name, phone number and email address.
+            </>,
+            <>
+              <strong>Booking details</strong> — the service, vehicle or tour you're interested in,
+              your dates, pick-up or delivery location, and any notes you add.
+            </>,
+            <>
+              <strong>Your messages</strong> — what you send us through the website forms,
+              WhatsApp, email or phone.
+            </>,
+            <>
+              <strong>Rental requirements</strong> — for self-drive hire, the documents and details
+              listed in our <LegalLink href="/terms-of-service#rental-eligibility">Rental Terms &amp; Conditions</LegalLink>{" "}
+              (ID and passport, driver's licence, proof of residence or employment, and next of kin
+              details). These are shared with the VenMax team when your rental is arranged — the
+              website forms do not ask you to upload documents.
+            </>,
+            <>
+              <strong>Your location, only if you choose</strong> — if you tap "Use my current
+              location" on a booking form, your browser asks your permission and then shares your
+              position once to fill in the pick-up address.
+            </>,
+          ]}
+        />
+        <p>
+          This website does not take payments online and never asks for card or bank details.
+          Payments are arranged directly with the VenMax team.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: "why-we-use-it",
+    title: "Why We Use It",
+    content: (
+      <>
+        <Bullets
+          items={[
+            "To reply to your enquiry and arrange your booking — availability, dates, price, delivery or pick-up.",
+            "To check that you meet the rental requirements for self-drive hire.",
+            "To keep in touch with you about your booking before, during and after the rental.",
+            "To contact your next of kin in an emergency.",
+            "To handle deposits, cancellations, refunds, excess mileage, traffic fines, tolls or damage connected with a rental.",
+            "To meet our legal obligations.",
+          ]}
+        />
+        <p>VenMax does not sell your personal information.</p>
+      </>
+    ),
+  },
+  {
+    id: "who-may-receive-it",
+    title: "Who May Receive It",
+    content: (
+      <>
+        <Bullets
+          items={[
+            <>
+              <strong>The VenMax team</strong> — the staff who arrange and manage your booking.
+            </>,
+            <>
+              <strong>The services this website runs on</strong> — the website's hosting and
+              database providers store form submissions for VenMax.
+            </>,
+            <>
+              <strong>WhatsApp</strong> — messages you send us on WhatsApp are carried by WhatsApp
+              under its own{" "}
+              <LegalLink href="https://www.whatsapp.com/legal/privacy-policy" external>
+                privacy policy
+              </LegalLink>
+              .
+            </>,
+            <>
+              <strong>OpenStreetMap</strong> — only if you use "Use my current location": your
+              position is sent to OpenStreetMap's address look-up service to turn it into a street
+              address.
+            </>,
+            <>
+              <strong>Your chosen payment provider</strong> — for example Mukuru, Western Union,
+              WorldRemit, your bank, EcoCash or InnBucks, which process your payment under their
+              own terms.
+            </>,
+            <>
+              <strong>Authorities or other parties</strong> — where the law requires it, or where
+              it's needed to deal with an accident, damage, traffic fine or toll involving a
+              rented vehicle.
+            </>,
+          ]}
+        />
+      </>
+    ),
+  },
+  {
+    id: "whatsapp-communications",
+    title: "WhatsApp & Communications",
+    content: (
+      <>
+        <p>
+          VenMax is WhatsApp-first: most bookings are discussed with our team on WhatsApp, and you
+          can also reach us by email or phone.
+        </p>
+        <Bullets
+          items={[
+            "When you send the enquiry or quote form, your details are saved for the VenMax team and WhatsApp opens with your message ready. Nothing is sent on WhatsApp until you press send.",
+            "We use your contact details to talk to you about your enquiry and booking.",
+            "If you'd prefer to be contacted a different way, or want us to stop messaging you, just tell us.",
+          ]}
+        />
+      </>
+    ),
+  },
+  {
+    id: "where-information-is-stored",
+    title: "Where Information Is Stored",
+    content: (
+      <>
+        <Bullets
+          items={[
+            <>
+              <strong>Website forms</strong> — saved in the online database behind this website.
+              Only signed-in VenMax staff accounts can view submitted forms; they are not
+              publicly visible. The database is hosted by a cloud provider, so it may be stored
+              on servers outside Zimbabwe.
+            </>,
+            <>
+              <strong>WhatsApp, email and phone</strong> — conversations stay in VenMax's WhatsApp
+              and email accounts.
+            </>,
+            <>
+              <strong>Information shared when arranging a rental</strong> — kept by the VenMax
+              team with your booking records.
+            </>,
+          ]}
+        />
+      </>
+    ),
+  },
+  {
+    id: "retention",
+    title: "Retention",
+    content: (
+      <>
+        <p>
+          We keep your information only for as long as it's needed to handle your enquiry or
+          booking and any follow-up — such as deposit refunds, cancellations, excess mileage,
+          traffic fines or damage — and for VenMax's business records.
+        </p>
+        <p>
+          You can ask us to delete your information at any time (see{" "}
+          <LegalLink href="#your-rights">Customer / Data Subject Rights</LegalLink>). We'll delete
+          what we are not required to keep.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: "your-rights",
+    title: "Customer / Data Subject Rights",
+    content: (
+      <>
+        <p>
+          Under Zimbabwe's Cyber and Data Protection Act [Chapter 12:07], you can ask VenMax to:
+        </p>
+        <Bullets
+          items={[
+            "Tell you whether we hold personal information about you, and give you a copy.",
+            "Correct information that is wrong or incomplete.",
+            "Delete your information, where we don't need to keep it.",
+            "Stop using your information for a particular purpose, or withdraw a consent you've given.",
+          ]}
+        />
+        <p>
+          Send your request by WhatsApp or email using the details in{" "}
+          <LegalLink href="#contact-us">Contact Us</LegalLink>. We may need to confirm who you are
+          before acting on it.
+        </p>
+        <p>
+          If you're unhappy with how your information has been handled, you can complain to the
+          Postal and Telecommunications Regulatory Authority of Zimbabwe (POTRAZ), Zimbabwe's data
+          protection authority.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: "cookies",
+    title: "Cookies",
+    content: (
+      <>
+        <p>
+          This website uses only the essential browser storage it needs to work — for example,
+          remembering that you've closed the cookie notice. There are no advertising or tracking
+          cookies.
+        </p>
+        <p>
+          Read the full <LegalLink href="/cookie-policy">Cookie Policy</LegalLink>.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: "contact-us",
+    title: "Contact Us",
+    content: (
+      <>
+        <p>For any privacy question or request:</p>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <a
+            href={whatsappLink("Hello VenMax, I have a question about my personal information.")}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-start gap-3 rounded-xl border border-border p-4 hover:bg-secondary"
+          >
+            <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <span>
+              <span className="block font-semibold text-foreground">WhatsApp</span>
+              {company.phones[0]}
+            </span>
+          </a>
+          <a
+            href={`mailto:${company.emails[0]}`}
+            className="flex items-start gap-3 rounded-xl border border-border p-4 hover:bg-secondary"
+          >
+            <Mail className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <span className="min-w-0">
+              <span className="block font-semibold text-foreground">Email</span>
+              <span className="break-words">{company.emails[0]}</span>
+            </span>
+          </a>
+          <div className="flex items-start gap-3 rounded-xl border border-border p-4">
+            <Phone className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <span>
+              <span className="block font-semibold text-foreground">Phone</span>
+              {company.phones.join(" · ")}
+            </span>
+          </div>
+          <div className="flex items-start gap-3 rounded-xl border border-border p-4">
+            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <span>
+              <span className="block font-semibold text-foreground">Office</span>
+              {address}
+            </span>
+          </div>
+        </div>
+      </>
+    ),
+  },
+];
+
 function PrivacyPolicyPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
-      <h1 className="font-display text-3xl font-bold text-foreground">Privacy Policy</h1>
-      <p className="mt-2 text-sm text-muted-foreground">Last updated: September 2026</p>
-
-      <div className="prose prose-sm mt-8 max-w-none text-foreground/90 [&_h2]:mt-8 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_p]:mt-3 [&_p]:leading-relaxed [&_li]:mt-1">
-        <p>
-          {company.name} ("VenMax", "we", "us") respects your privacy. This policy explains what
-          personal information we collect when you use our website or book a vehicle, tour, or
-          transfer with us, why we collect it, and what rights you have over it.
-        </p>
-
-        <h2>Information we collect</h2>
-        <p>When you make a booking or contact us, we may collect:</p>
-        <ul>
-          <li>Full name, phone number, and email address</li>
-          <li>Pickup/drop-off location and rental or travel dates</li>
-          <li>
-            For self-drive rentals: driver's license number and expiry, and a form of
-            identification (national ID or passport number)
-          </li>
-          <li>Residential or business address</li>
-          <li>Any message or notes you provide with a booking or enquiry</li>
-          <li>Payment confirmation details relevant to your booking (we do not store full card numbers)</li>
-        </ul>
-        <p>
-          We only collect what is reasonably needed to process a rental, tour booking, or
-          enquiry — we do not collect this information for advertising or resell it to third
-          parties.
-        </p>
-
-        <h2>How we use your information</h2>
-        <ul>
-          <li>To confirm and manage your booking, including vehicle handover and return</li>
-          <li>To verify eligibility to drive (license validity) for self-drive rentals</li>
-          <li>To contact you about your booking via phone, WhatsApp, or email</li>
-          <li>To respond to enquiries submitted through our contact form</li>
-          <li>To meet legal or insurance obligations connected to vehicle rental</li>
-        </ul>
-
-        <h2>Where your information is stored</h2>
-        <p>
-          Booking and customer data is stored in a secured, access-controlled database
-          (Supabase, hosted in the EU/UK region) and is only accessible to authorized VenMax
-          staff who need it to fulfil your booking. Access is protected by account-level
-          permissions and is not publicly accessible.
-        </p>
-
-        <h2>How long we keep it</h2>
-        <p>
-          We retain booking and customer records for as long as needed to fulfil the rental
-          relationship and to meet reasonable business, insurance, or legal record-keeping needs.
-          You may request deletion of your data at any time (see "Your rights" below), subject to
-          any records we are legally required to keep.
-        </p>
-
-        <h2>Who we share it with</h2>
-        <p>
-          We do not sell your personal information. We may share limited details with insurance
-          providers or relevant authorities where required by law, or in connection with an
-          accident, dispute, or claim involving a rented vehicle.
-        </p>
-
-        <h2>Your rights</h2>
-        <p>You can ask us at any time to:</p>
-        <ul>
-          <li>Provide a copy of the personal information we hold about you</li>
-          <li>Correct inaccurate information</li>
-          <li>Delete your information, where we are not required to keep it</li>
-        </ul>
-        <p>
-          To make a request, contact us using the details below. We will respond within a
-          reasonable time.
-        </p>
-
-        <h2>Cookies</h2>
-        <p>
-          Our website uses only essential cookies needed for the site and admin panel to
-          function (such as keeping you signed in). See our{" "}
-          <a href="/cookie-policy" className="text-primary underline underline-offset-2">
-            Cookie Policy
-          </a>{" "}
-          for details.
-        </p>
-
-        <h2>Contact us</h2>
-        <p>
-          For any privacy question or request, contact us at{" "}
-          <a href={`mailto:${company.emails[0]}`} className="text-primary underline underline-offset-2">
-            {company.emails[0]}
-          </a>{" "}
-          or {company.phones[0]}.
-        </p>
-
-        <p className="mt-8 text-xs text-muted-foreground">
-          This policy is provided as a good-faith summary of our data practices and is not a
-          substitute for legal advice. VenMax recommends this policy be reviewed by a qualified
-          lawyer in Zimbabwe to confirm alignment with the Cyber and Data Protection Act [Chapter
-          12:07] and any other applicable law before relying on it as a binding legal document.
-        </p>
-      </div>
-    </div>
+    <LegalPage
+      title="Privacy Policy"
+      description="What personal information VenMax collects, why, and the choices you have — in plain language."
+      updated="September 2026"
+      currentHref="/privacy-policy"
+      sections={sections}
+      whatsappMessage="Hello VenMax, I have a question about your Privacy Policy."
+    />
   );
 }

@@ -449,7 +449,7 @@ export const whyVenMax = [
   "All vehicles insured and well maintained",
   "Transparent pricing, no hidden fees",
   "Free vehicle pickup at the airport for hired vehicles",
-  "Free vehicle delivery within Harare",
+  "Free vehicle delivery within all Harare areas",
   "Self-drive and chauffeur options",
   "Flexible rental durations",
   "Friendly WhatsApp-first support",
@@ -511,7 +511,7 @@ export const paymentMethods = [
 
 export const chauffeurFeeNote =
   "Chauffeur service is available on any vehicle for an additional US$20/day. The client covers the driver's food and accommodation.";
-export const deliveryNote = "Free vehicle delivery within Harare.";
+export const deliveryNote = "Free vehicle delivery within all Harare areas.";
 
 // Confirmed by VenMax: standard rentals include 200 km/day free mileage, excess $0.60/km.
 export const standardMileagePolicy =
@@ -552,7 +552,7 @@ export const faqs = [
   {
     question: "Do you deliver vehicles?",
     answer:
-      "Yes — free vehicle delivery within Harare for rental customers. This is separate from the airport shuttle ($30 per trip).",
+      "Yes — free vehicle delivery within all Harare areas for rental customers. This is separate from the airport shuttle ($30 per trip).",
   },
   {
     question: "Can I hire a car with a driver?",

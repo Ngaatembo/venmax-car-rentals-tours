@@ -9,6 +9,7 @@ import { PickupLocationField } from "@/components/site/PickupLocationField";
 import { bookingSchema, serviceTypes, submitBookingRequest } from "@/lib/bookings";
 import { useVehicles, useTours } from "@/lib/live-content";
 import { whatsappLink } from "@/data/venmax";
+import { FormPrivacyNotice } from "@/components/site/LegalPage";
 
 const searchSchema = z.object({
   vehicle: z.string().optional(),
@@ -273,6 +274,7 @@ function BookPage() {
               >
                 {pending ? "Sending…" : "Send enquiry"}
               </button>
+              <FormPrivacyNotice opensWhatsApp className="mt-4" />
             </form>
           )}
         </div>

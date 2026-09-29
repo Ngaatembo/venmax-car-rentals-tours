@@ -81,6 +81,12 @@ export function BookingWidget() {
         Request a Quote
         <ArrowRight className="h-4 w-4" />
       </Link>
+      <p className="mt-3 text-center text-[11px] text-muted-foreground">
+        How VenMax uses booking details:{" "}
+        <a href="/privacy-policy" className="font-medium text-primary underline underline-offset-2">
+          Privacy Policy
+        </a>
+      </p>
     </div>
   );
 }

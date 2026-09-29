@@ -7,6 +7,7 @@ import { Section } from "@/components/site/Section";
 import { company, whatsappLink } from "@/data/venmax";
 import { submitInquiry } from "@/lib/bookings";
 import receptionImage from "@/assets/venmax-reception.jpg";
+import { FormPrivacyNotice } from "@/components/site/LegalPage";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -255,6 +256,7 @@ function ContactPage() {
                 Open WhatsApp again
               </a>
             )}
+            <FormPrivacyNotice opensWhatsApp className="mt-4" />
           </form>
         </div>
       </Section>

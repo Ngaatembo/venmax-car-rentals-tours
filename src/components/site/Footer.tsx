@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, Linkedin, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 import { company, whatsappLink } from "@/data/venmax";
+import { legalLinks } from "./LegalPage";
 
 const links = [
   { to: "/fleet", label: "Fleet" },
@@ -154,17 +155,23 @@ export function Footer() {
           <p>
             © {new Date().getFullYear()} {company.name}. All rights reserved.
           </p>
-          <div className="flex gap-4">
-            <a href="/privacy-policy" className="hover:text-navy-foreground hover:underline">
-              Privacy Policy
-            </a>
-            <a href="/terms-of-service" className="hover:text-navy-foreground hover:underline">
-              Terms of Service
-            </a>
-            <a href="/cookie-policy" className="hover:text-navy-foreground hover:underline">
-              Cookie Policy
-            </a>
-          </div>
+          <nav aria-label="Legal" className="flex flex-wrap items-center gap-y-2">
+            {legalLinks.map((l, i) => (
+              <span key={l.href} className="inline-flex items-center whitespace-nowrap">
+                <a
+                  href={l.href}
+                  className="text-navy-foreground/70 hover:text-navy-foreground hover:underline"
+                >
+                  {l.label}
+                </a>
+                {i < legalLinks.length - 1 && (
+                  <span aria-hidden="true" className="px-2.5 text-navy-foreground/25">
+                    |
+                  </span>
+                )}
+              </span>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>

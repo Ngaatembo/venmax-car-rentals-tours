@@ -1,61 +1,98 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Bullets, LegalLink, LegalPage, type LegalSection } from "@/components/site/LegalPage";
 import { company } from "@/data/venmax";
 
 export const Route = createFileRoute("/cookie-policy")({
+  head: () => ({
+    meta: [
+      { title: "Cookie Policy | VenMax Car Rental & Tours" },
+      {
+        name: "description",
+        content:
+          "VenMax's website uses only essential browser storage — no advertising or tracking cookies.",
+      },
+    ],
+  }),
   component: CookiePolicyPage,
 });
 
+const sections: LegalSection[] = [
+  {
+    id: "what-are-cookies",
+    title: "What Are Cookies?",
+    content: (
+      <p>
+        Cookies, and similar browser storage, are small pieces of data saved in your browser when
+        you visit a website. They help the site remember information about your visit.
+      </p>
+    ),
+  },
+  {
+    id: "what-we-use",
+    title: "What This Website Uses",
+    content: (
+      <>
+        <p>Only essential storage that the website needs to work:</p>
+        <Bullets
+          items={[
+            <>
+              <strong>Cookie notice choice</strong> — once you close the cookie notice, your
+              browser remembers it so the notice doesn't appear on every page.
+            </>,
+            <>
+              <strong>Staff sign-in</strong> — used only in the VenMax admin area to keep staff
+              signed in between pages. It is not set for visitors browsing the public site.
+            </>,
+          ]}
+        />
+      </>
+    ),
+  },
+  {
+    id: "what-we-dont-use",
+    title: "What We Don't Use",
+    content: (
+      <p>
+        This website does not use Google Analytics, advertising pixels, or any other third-party
+        tracking or marketing cookies. If that changes, this policy will be updated and, where
+        required, we will ask for your consent first.
+      </p>
+    ),
+  },
+  {
+    id: "managing-cookies",
+    title: "Managing Cookies",
+    content: (
+      <p>
+        As there are no tracking or advertising cookies, there's nothing to opt out of. You can
+        clear this site's data in your browser settings at any time, or use a private/incognito
+        window.
+      </p>
+    ),
+  },
+  {
+    id: "questions",
+    title: "Questions",
+    content: (
+      <p>
+        Contact us at{" "}
+        <LegalLink href={`mailto:${company.emails[0]}`}>{company.emails[0]}</LegalLink> or on
+        WhatsApp. How we handle personal information is explained in our{" "}
+        <LegalLink href="/privacy-policy">Privacy Policy</LegalLink>.
+      </p>
+    ),
+  },
+];
+
 function CookiePolicyPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
-      <h1 className="font-display text-3xl font-bold text-foreground">Cookie Policy</h1>
-      <p className="mt-2 text-sm text-muted-foreground">Last updated: September 2026</p>
-
-      <div className="prose prose-sm mt-8 max-w-none text-foreground/90 [&_h2]:mt-8 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_p]:mt-3 [&_p]:leading-relaxed [&_li]:mt-1">
-        <p>
-          This policy explains how {company.name} uses cookies and similar storage technology on
-          this website.
-        </p>
-
-        <h2>What are cookies?</h2>
-        <p>
-          Cookies are small pieces of data stored in your browser when you visit a website. They
-          help the site remember information about your visit.
-        </p>
-
-        <h2>What we use cookies for</h2>
-        <p>
-          Our public website does not use advertising or third-party tracking cookies. We use:
-        </p>
-        <ul>
-          <li>
-            <strong>Essential/functional storage</strong> — used only within the VenMax admin
-            panel to keep staff securely signed in between page visits. This is not set for
-            regular visitors browsing the public site.
-          </li>
-        </ul>
-        <p>
-          We do not currently use Google Analytics, advertising pixels, or any other third-party
-          tracking or marketing cookies on this website. If that changes in the future, this
-          policy will be updated and, where required, we will ask for your consent first.
-        </p>
-
-        <h2>Managing cookies</h2>
-        <p>
-          Since we don't use tracking or advertising cookies, there's nothing to opt out of on
-          the public site. If you'd prefer not to have the admin panel keep you signed in, you
-          can clear your browser's site data or use a private/incognito window.
-        </p>
-
-        <h2>Questions</h2>
-        <p>
-          Contact us at{" "}
-          <a href={`mailto:${company.emails[0]}`} className="text-primary underline underline-offset-2">
-            {company.emails[0]}
-          </a>{" "}
-          if you have any questions about this policy.
-        </p>
-      </div>
-    </div>
+    <LegalPage
+      title="Cookie Policy"
+      description="How this website uses cookies and similar browser storage."
+      updated="September 2026"
+      currentHref="/cookie-policy"
+      sections={sections}
+      whatsappMessage="Hello VenMax, I have a question about your Cookie Policy."
+    />
   );
 }
