@@ -16,6 +16,8 @@ function getSpecs(vehicle: Vehicle) {
 
 export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
   const [open, setOpen] = useState(false);
+  const [activePhoto, setActivePhoto] = useState(0);
+  const photos = [vehicle.image, ...(vehicle.gallery ?? [])];
   const specs = getSpecs(vehicle);
   const isTruck = /truck/i.test(vehicle.category);
   const availabilityNote =
@@ -94,19 +96,47 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
         </div>
       </div>
 
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog
+        open={open}
+        onOpenChange={(next) => {
+          setOpen(next);
+          if (!next) setActivePhoto(0);
+        }}
+      >
         <DialogContent className="max-h-[92svh] overflow-y-auto p-0 sm:max-w-lg">
           <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
             <img
-              src={vehicle.image}
+              src={photos[activePhoto] ?? vehicle.image}
               alt={vehicle.name}
-              style={vehicle.imagePosition ? { objectPosition: vehicle.imagePosition } : undefined}
+              style={
+                activePhoto === 0 && vehicle.imagePosition
+                  ? { objectPosition: vehicle.imagePosition }
+                  : undefined
+              }
               className="h-full w-full object-cover"
             />
             <span className="absolute left-4 top-4 rounded-full bg-navy/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy-foreground">
               {isTruck ? "Truck" : vehicle.category}
             </span>
           </div>
+          {photos.length > 1 && (
+            <div className="flex gap-2 px-6 pt-4">
+              {photos.map((src, i) => (
+                <button
+                  key={src}
+                  type="button"
+                  onClick={() => setActivePhoto(i)}
+                  aria-label={`Show photo ${i + 1} of ${vehicle.name}`}
+                  aria-current={i === activePhoto}
+                  className={`h-14 w-20 overflow-hidden rounded-lg border-2 ${
+                    i === activePhoto ? "border-primary" : "border-transparent opacity-70 hover:opacity-100"
+                  }`}
+                >
+                  <img src={src} alt="" className="h-full w-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
           <div className="p-6 pt-2">
             <DialogTitle className="text-xl">{vehicle.name}</DialogTitle>
             <DialogDescription className="mt-2">{vehicle.description}</DialogDescription>

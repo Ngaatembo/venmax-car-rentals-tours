@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -864,8 +864,45 @@ const marketFlags: Record<string, string> = {
  * Swap for a real photo by replacing this component's body with an <img>.
  */
 function DiasporaVisual() {
+  // Real footage of Harare International Arrivals sits over the illustration once it can
+  // play; the illustration remains the fallback (slow connection, reduced motion, error).
+  const [videoReady, setVideoReady] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(true);
+  useEffect(() => {
+    try {
+      setReduceMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    } catch {
+      setReduceMotion(true);
+    }
+  }, []);
   return (
     <div className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-2xl bg-gradient-to-br from-[#16213a] via-navy to-[#0b1220] lg:mx-0 lg:ml-auto">
+      {!reduceMotion && (
+        <>
+          <video
+            className={`absolute inset-0 z-10 h-full w-full object-cover transition-opacity duration-500 ${
+              videoReady ? "opacity-100" : "opacity-0"
+            }`}
+            poster="/videos/harare-arrivals-poster.jpg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-label="Harare International Airport, International Arrivals entrance"
+            onCanPlay={() => setVideoReady(true)}
+            onError={() => setVideoReady(false)}
+          >
+            <source src="/videos/harare-arrivals.webm" type="video/webm" />
+            <source src="/videos/harare-arrivals.mp4" type="video/mp4" />
+          </video>
+          {videoReady && (
+            <span className="absolute bottom-4 left-4 z-20 rounded-full bg-navy/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy-foreground">
+              Harare International Arrivals
+            </span>
+          )}
+        </>
+      )}
       <svg
         viewBox="0 0 400 500"
         className="absolute inset-0 h-full w-full"

@@ -10,6 +10,7 @@ import aqua from "@/assets/toyota-aqua.jpg";
 import note from "@/assets/nissan-note.jpg";
 import fit from "@/assets/honda-fit.jpg";
 import serena from "@/assets/nissan-serena.jpg";
+import serenaSide from "@/assets/nissan-serena-side.jpg";
 import cx5 from "@/assets/mazda-cx5.jpg";
 import d4d from "@/assets/toyota-d4d.jpg";
 // TODO(venmax-image): VenMax wants a 2017 Honda Vezel photo. To replace, overwrite
@@ -130,6 +131,8 @@ export type Vehicle = {
   deposit: string;
   description: string;
   image: string;
+  /** Extra photos shown in the "View details" dialog (real VenMax vehicle photos). */
+  gallery?: string[] | undefined;
   // Manufacturer-typical specs for this model (not admin/DB-managed yet) —
   // used for the fleet card spec row. badge is a short merchandising label.
   seats?: number | undefined;
@@ -194,7 +197,6 @@ export const vehicles: Vehicle[] = [
   },
   {
     slug: "nissan-serena",
-    imagePosition: "50% 55%",
     name: "Nissan Serena Hybrid",
     category: "Family MPV",
     priceLabel: "$70/day",
@@ -202,6 +204,7 @@ export const vehicles: Vehicle[] = [
     description:
       "Spacious 8-seater multi-purpose vehicle for larger families and corporate groups.",
     image: serena,
+    gallery: [serenaSide],
     seats: 8,
     bags: 4,
     transmission: "Auto",
