@@ -5,11 +5,11 @@ import { FleetSection, BookingCta } from "@/components/site/sections";
 export const Route = createFileRoute("/fleet")({
   head: () => ({
     meta: [
-      { title: "Our Fleet | VenMax Car Rental & Tours" },
+      { title: "Car Rental Fleet Harare | Daily Rates from $40 | VenMax" },
       {
         name: "description",
         content:
-          "The full VenMax fleet — economy hybrids, family SUVs, 4x4 pickups and premium 4x4s available for self-drive or chauffeur-driven hire in Harare.",
+          "Browse the VenMax fleet — hybrids, SUVs, a Hilux D4D truck and premium 4x4s with clear daily rates and deposits. Book on WhatsApp.",
       },
     ],
   }),
@@ -22,7 +22,7 @@ function FleetPage() {
       <PageHero
         eyebrow="The Fleet"
         title="Vehicles for Every Journey"
-        description="From fuel-efficient city cars to rugged 4x4s for Zimbabwe's terrain — every vehicle is well maintained, with transparent pricing and a refundable deposit."
+        description="From fuel-efficient city cars to rugged 4x4s for Zimbabwe's terrain — every vehicle is insured, with clear daily rates and deposits."
       />
       <FleetSection />
       <BookingCta />

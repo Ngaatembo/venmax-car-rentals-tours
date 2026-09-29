@@ -13,13 +13,13 @@ export const Route = createFileRoute("/self-drive-car-hire-harare")({
       {
         name: "description",
         content:
-          "Self-drive car hire in Harare, Zimbabwe with transparent pricing, free airport pickup and free vehicle delivery. Book any vehicle in the VenMax fleet on WhatsApp.",
+          "Self-drive car hire in Harare, Zimbabwe with transparent pricing, free airport vehicle pickup with a hired vehicle and free vehicle delivery. Book any vehicle in the VenMax fleet on WhatsApp.",
       },
       { property: "og:title", content: "Self-Drive Car Hire in Harare | VenMax" },
       {
         property: "og:description",
         content:
-          "Self-drive car hire in Harare with transparent pricing and free airport pickup. Book on WhatsApp.",
+          "Self-drive car hire in Harare with transparent pricing and free airport vehicle pickup with a hired vehicle. Book on WhatsApp.",
       },
     ],
   }),
@@ -46,7 +46,7 @@ function SelfDrivePage() {
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             "Every price and deposit shown upfront — no back-and-forth for a quote",
-            "Free airport pickup on arrival",
+            "Free airport vehicle pickup when you hire a VenMax vehicle",
             "Free vehicle delivery anywhere in Harare",
             "Multi-day hire discounts available",
           ].map((item) => (

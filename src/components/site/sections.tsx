@@ -3,6 +3,7 @@ import {
   ArrowRight,
   Check,
   Compass,
+  CalendarDays,
   Globe,
   Instagram,
   KeyRound,
@@ -11,6 +12,7 @@ import {
   Plane,
   Play,
   Star,
+  Tag,
   User,
   Users,
 } from "lucide-react";
@@ -29,6 +31,10 @@ import logo from "@/assets/logo-header.png";
 import {
   businessFacts,
   company,
+  diasporaBenefits,
+  diasporaMarkets,
+  howItWorks,
+  valueCards,
   getVehicle,
   modelOfTheMonthSlug,
   paymentMethods,
@@ -260,7 +266,7 @@ export function FleetSection({ limit }: { limit?: number }) {
         <SectionHeading
           eyebrow="The Fleet"
           title="Vehicles for Every Journey"
-          description="From fuel-efficient city cars to rugged 4x4s for Zimbabwe's terrain — every vehicle is well maintained, with transparent pricing and a refundable deposit."
+          description="From fuel-efficient city cars to rugged 4x4s for Zimbabwe's terrain — every vehicle is well maintained, with clear daily pricing shown up front."
         />
         {limit && (
           <a
@@ -278,8 +284,8 @@ export function FleetSection({ limit }: { limit?: number }) {
         ))}
       </div>
       <p className="mt-10 text-center text-sm text-muted-foreground">
-        Prices shown are starting daily rates. Final pricing depends on rental duration — message us
-        for a tailored quote.
+        Daily rates shown. Discounts are available for longer rental periods — message us on WhatsApp
+        for details.
       </p>
     </Section>
   );
@@ -299,7 +305,7 @@ export function ServicesSection() {
       title: "Airport Transfers",
       description: airport.description,
       image: airportImage,
-      badge: "From $30",
+      badge: "$30 per trip",
       cta: "Book Transfer",
       href: whatsappLink(airport.whatsapp),
     },
@@ -309,7 +315,7 @@ export function ServicesSection() {
       title: "Chauffeur Services",
       description: chauffeur.description,
       image: chauffeurImage,
-      badge: "Fully Vetted",
+      badge: "With a Driver",
       cta: "Book Chauffeur",
       href: whatsappLink(chauffeur.whatsapp),
     },
@@ -390,7 +396,7 @@ export function ServicesSection() {
 // the Why Choose Us feature row instead.
 export function AirportSection() {
   return (
-    <Section>
+    <Section id="airport">
       <div className="grid items-center gap-12 lg:grid-cols-2">
         <div className="relative aspect-[3/4] overflow-hidden rounded-2xl sm:aspect-[3/4] lg:aspect-auto lg:min-h-[28rem]">
           <img
@@ -401,39 +407,147 @@ export function AirportSection() {
             height={1600}
             className="h-full w-full object-cover object-center"
           />
-          <span className="absolute left-6 top-6 rounded-full bg-primary px-4 py-2 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground">
-            Complimentary · Airport Pickup
-          </span>
         </div>
         <div>
           <SectionHeading
-            eyebrow="Airport & Delivery"
-            title="Arriving in Zimbabwe? Start your journey the easy way."
-            description="We meet you at the airport and bring your vehicle to you — so your trip begins the moment you land."
+            eyebrow="Airport Services"
+            title="Airport Services"
+            description="Two separate services — please note the difference."
           />
-          <ul className="mt-8 space-y-4">
-            {[
-              "Free airport pickup on arrival",
-              "Vehicle delivery anywhere in Harare",
-              "Easy WhatsApp booking",
-              "Flexible rental options",
-            ].map((item) => (
-              <li key={item} className="flex items-start gap-3 text-sm">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                {item}
-              </li>
-            ))}
-          </ul>
+          <div className="mt-8 space-y-4">
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+                Free vehicle pickup
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Airport pickup is FREE when a customer has hired a vehicle from VenMax and requires
+                the vehicle at the airport.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+                Airport shuttle · $30 per trip
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Harare airport shuttle services are available at $30 per trip. Ask about airport
+                drop-off, or a pickup-and-drop-off service, when you message us.
+              </p>
+            </div>
+          </div>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href={whatsappLink(
+                "Hi VenMax, I'd like to arrange airport pickup with my vehicle rental. Please help me with the arrangements.",
+              )}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Arrange Airport Pickup
+            </a>
+            <a
+              href={whatsappLink("Hello VenMax, I'd like to enquire about the Harare airport shuttle.")}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold transition-colors hover:bg-secondary"
+            >
+              Ask About the Shuttle
+            </a>
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+const valueIcons = { tag: Tag, calendar: CalendarDays, message: MessageCircle, globe: Globe };
+
+export function ValueCardsSection() {
+  return (
+    <Section>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {valueCards.map((card) => {
+          const Icon = valueIcons[card.icon];
+          return (
+            <article key={card.title} className="rounded-2xl border border-border bg-card p-6">
+              <span className="flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Icon className="h-5 w-5" />
+              </span>
+              <h3 className="mt-4 text-base uppercase tracking-wide">{card.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                {card.description}
+              </p>
+            </article>
+          );
+        })}
+      </div>
+    </Section>
+  );
+}
+
+export function HowItWorksSection() {
+  return (
+    <Section tone="surface" id="how-it-works">
+      <SectionHeading
+        eyebrow="How It Works"
+        title="Four simple steps"
+        description="Everything can be arranged conveniently through WhatsApp."
+      />
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {howItWorks.map((item) => (
+          <article key={item.step} className="rounded-2xl border border-border bg-card p-6">
+            <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+              Step {item.step}
+            </span>
+            <h3 className="mt-3 text-base uppercase tracking-wide">{item.title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              {item.description}
+            </p>
+          </article>
+        ))}
+      </div>
+      <div className="mt-8 text-center">
+        <a
+          href={whatsappLink("Hello VenMax, I'd like to start a rental enquiry.")}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
+        >
+          <MessageCircle className="h-4 w-4" />
+          Book on WhatsApp
+        </a>
+      </div>
+    </Section>
+  );
+}
+
+export function MileageSection() {
+  return (
+    <Section tone="surface" id="mileage">
+      <div className="grid items-center gap-8 lg:grid-cols-2">
+        <SectionHeading
+          eyebrow="Long-Distance"
+          title="Flexible Mileage for Longer Trips"
+          description="Planning a longer journey? VenMax can discuss customized mileage arrangements based on your trip."
+        />
+        <div className="space-y-3 text-sm">
+          <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5">
+            <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            For rentals of one month or more, unlimited mileage is available.
+          </div>
+          <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5">
+            <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            Customized mileage packages are available based on individual trip requirements.
+          </div>
           <a
-            href={whatsappLink(
-              "Hello VenMax, I'd like to arrange a free airport pickup for my arrival in Harare.",
-            )}
+            href={whatsappLink("Hello VenMax, I'm planning a longer trip and would like to discuss mileage.")}
             target="_blank"
             rel="noreferrer"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary"
           >
-            <MessageCircle className="h-4 w-4" />
-            Arrange Airport Pickup
+            Discuss my trip on WhatsApp
+            <ArrowRight className="h-4 w-4" />
           </a>
         </div>
       </div>
@@ -441,68 +555,111 @@ export function AirportSection() {
   );
 }
 
-// Kept for reuse but no longer rendered on the homepage — its key points
-// (WhatsApp booking, no in-country presence needed) now live in the FAQ
-// accordion instead of a full standalone section.
-export function DiasporaSection() {
+export function BookingPaymentSection() {
   return (
-    <Section tone="navy">
+    <Section id="booking-payment">
+      <SectionHeading
+        eyebrow="Booking & Payment"
+        title="Simple Booking. Direct Communication."
+        description="Bookings are currently handled through WhatsApp or email, allowing customers to discuss their rental directly with the VenMax team."
+      />
+      <div className="mt-8">
+        <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Confirmed payment methods include
+        </p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          {paymentMethods.map((method) => (
+            <span
+              key={method}
+              className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+            >
+              {method}
+            </span>
+          ))}
+        </div>
+        <p className="mt-4 text-sm text-muted-foreground">
+          Payment arrangements are agreed directly with the VenMax team.
+        </p>
+      </div>
+    </Section>
+  );
+}
+
+// Reused on the homepage teaser and (with `full`) the dedicated /diaspora page.
+export function DiasporaSection({ full = false }: { full?: boolean } = {}) {
+  return (
+    <Section tone="navy" id="diaspora">
       <div className="grid items-center gap-12 lg:grid-cols-2">
         <div>
           <SectionHeading
-            eyebrow="Booking From Abroad"
-            title="Sorting a car for family back home? We make it simple."
-            description="Whether you're arranging a vehicle for relatives visiting Zimbabwe or securing a car ahead of your own trip home, VenMax handles bookings and deposits over WhatsApp — you don't need to be in the country to get it sorted."
+            eyebrow="For Diaspora"
+            title="Serving Customers Around the World"
+            description="Whether you're visiting family, attending an event, travelling for business or exploring Zimbabwe, you can contact VenMax before your trip and arrange your rental remotely."
             invert
           />
-          <ul className="mt-8 space-y-4">
-            {[
-              "Confirm your vehicle and dates over WhatsApp from anywhere",
-              "Secure your booking with a refundable deposit",
-              "Free airport pickup so family — or you — are covered on arrival",
-              "Clear, upfront pricing before you commit",
-            ].map((item) => (
-              <li key={item} className="flex items-start gap-3 text-sm text-navy-foreground/90">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                {item}
-              </li>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {diasporaMarkets.map((m) => (
+              <span
+                key={m}
+                className="rounded-full border border-navy-foreground/30 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-navy-foreground"
+              >
+                {m}
+              </span>
             ))}
-          </ul>
-          <a
-            href={whatsappLink(
-              "Hello VenMax, I'm based outside Zimbabwe and would like to arrange a vehicle booking. Can you help me sort this over WhatsApp?",
+          </div>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href={whatsappLink(
+                "Hi VenMax, I'm travelling to Zimbabwe from [COUNTRY] and would like to arrange a rental before my trip. Please help me with the options.",
+              )}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Plan My Rental on WhatsApp
+            </a>
+            {!full && (
+              <a
+                href="/diaspora"
+                className="inline-flex items-center gap-2 rounded-full border border-navy-foreground/30 px-6 py-3 text-sm font-semibold text-navy-foreground"
+              >
+                Learn More
+                <ArrowRight className="h-4 w-4" />
+              </a>
             )}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-          >
-            <MessageCircle className="h-4 w-4" />
-            Book From Abroad on WhatsApp
-          </a>
+          </div>
         </div>
         <div className="relative aspect-[3/4] overflow-hidden rounded-2xl sm:aspect-[3/4] lg:aspect-auto lg:min-h-[24rem]">
           <img
             src={airportImage}
-            alt="VenMax meeting an arriving traveller at Harare's Robert Gabriel Mugabe International Airport"
+            alt="VenMax vehicle pickup for an arriving traveller at the airport"
             loading="lazy"
             width={1200}
             height={1600}
             className="h-full w-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/10 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-            <div className="flex items-center gap-2 text-navy-foreground/90">
-              <Globe className="h-4 w-4 text-primary" />
-              <span className="text-xs font-semibold uppercase tracking-wider">
-                Wherever you're booking from
-              </span>
-            </div>
-            <p className="mt-2 text-sm text-navy-foreground/80">
-              Zimbabweans in the diaspora trust VenMax to arrange rentals for family and
-              homecoming trips — no in-person visit required to get started.
-            </p>
-          </div>
         </div>
+      </div>
+    </Section>
+  );
+}
+
+export function DiasporaBenefitsSection() {
+  return (
+    <Section>
+      <SectionHeading
+        eyebrow="Why Arrange Ahead"
+        title="Made for customers travelling in"
+        description="Everything can be arranged conveniently through WhatsApp."
+      />
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {diasporaBenefits.map((b) => (
+          <article key={b.title} className="rounded-2xl border border-border bg-card p-6">
+            <h3 className="text-base uppercase tracking-wide">{b.title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{b.description}</p>
+          </article>
+        ))}
       </div>
     </Section>
   );
@@ -684,7 +841,7 @@ export function TestimonialsSection() {
     <Section>
       <SectionHeading
         eyebrow="Customer Reviews"
-        title="Trusted by Zimbabweans Across the Country"
+        title="Trusted by Customers Across Zimbabwe"
         description="Genuine reviews from VenMax customers on our Google Business Profile."
       />
       <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-background px-6 py-8 sm:px-10 sm:py-10">
@@ -695,7 +852,7 @@ export function TestimonialsSection() {
                 <Star key={i} className="h-3 w-3 fill-primary-foreground text-primary-foreground" />
               ))}
             </div>
-            {businessFacts.googleRating} ({businessFacts.googleReviewCount})
+            100+ Positive Ratings
           </div>
           <img
             src={logo}
@@ -709,17 +866,10 @@ export function TestimonialsSection() {
       <div className="mt-6 flex items-center justify-center gap-2 text-sm font-medium text-foreground">
         <div className="flex gap-0.5">
           {Array.from({ length: 5 }).map((_, i) => (
-            <Star
-              key={i}
-              className={
-                i < Math.round(businessFacts.googleRating)
-                  ? "h-4 w-4 fill-primary text-primary"
-                  : "h-4 w-4 text-muted-foreground/30"
-              }
-            />
+            <Star key={i} className="h-4 w-4 fill-primary text-primary" />
           ))}
         </div>
-        {businessFacts.googleRating}★ on Google ({businessFacts.googleReviewCount} reviews)
+        100+ Positive Ratings
       </div>
       <Carousel opts={{ align: "start", loop: true }} className="mt-8">
         <CarouselContent>
@@ -730,10 +880,10 @@ export function TestimonialsSection() {
                   <span
                     className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white ${avatarPalette[i % avatarPalette.length]}`}
                   >
-                    {t.name.charAt(0)}
+                    {"V"}
                   </span>
                   <div>
-                    <p className="text-sm font-medium text-foreground">{t.name}</p>
+                    <p className="text-sm font-medium text-foreground">Verified Customer</p>
                     <div className="flex gap-0.5">
                       {Array.from({ length: t.rating }).map((_, starIndex) => (
                         <Star
@@ -748,7 +898,7 @@ export function TestimonialsSection() {
                   "{t.quote}"
                 </blockquote>
                 <figcaption className="mt-4 text-xs font-normal text-muted-foreground">
-                  Verified Google review
+                  Customer Review
                 </figcaption>
               </figure>
             </CarouselItem>
@@ -781,7 +931,7 @@ export function RequirementsFaqSection() {
     <Section tone="surface" id="requirements">
       <SectionHeading
         eyebrow="Requirements & FAQ"
-        title="What you need to rent, and answers to common questions"
+        title="Rental requirements and common questions"
         description="Simple, straightforward requirements — kept easy to read so you can get on the road quickly."
       />
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -800,22 +950,6 @@ export function RequirementsFaqSection() {
             <p className="mt-2 text-sm">{term.value}</p>
           </div>
         ))}
-      </div>
-
-      <div className="mt-6">
-        <p className="text-center text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Our Payment Platforms Include
-        </p>
-        <div className="mt-4 flex flex-wrap justify-center gap-3">
-          {paymentMethods.map((method) => (
-            <span
-              key={method}
-              className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
-            >
-              {method}
-            </span>
-          ))}
-        </div>
       </div>
 
       <div className="mx-auto mt-12 max-w-2xl">
@@ -928,8 +1062,8 @@ export function BookingCta() {
       <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
         <SectionHeading
           eyebrow="Ready to Hit the Road?"
-          title="Book your vehicle in minutes"
-          description="Call us directly or send a WhatsApp — we respond within minutes and confirm availability right away."
+          title="Ready to book? Message us on WhatsApp"
+          description="Send your vehicle choice and dates — the VenMax team will confirm availability and the next steps with you directly."
           invert
         />
         <div className="flex flex-wrap gap-3 lg:justify-end">
@@ -946,8 +1080,36 @@ export function BookingCta() {
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
           >
             <MessageCircle className="h-4 w-4" />
-            WhatsApp Us
+            Book on WhatsApp
           </a>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+export function CancellationSection() {
+  return (
+    <Section id="cancellation">
+      <div className="grid items-start gap-8 lg:grid-cols-2">
+        <SectionHeading
+          eyebrow="Cancellation & Refunds"
+          title="Flexible Cancellation"
+          description="In the event of an emergency or change of plans, customers can cancel their rental. VenMax does not charge a cancellation fee and refunds the exact amount paid."
+        />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="rounded-2xl border border-border bg-card p-6">
+            <h3 className="text-base uppercase tracking-wide">Affordable Rental Rates</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              Value-focused rental options for local and diaspora customers.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-border bg-card p-6">
+            <h3 className="text-base uppercase tracking-wide">Competitive Deposits</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              Clear deposit amounts are shown on every vehicle.
+            </p>
+          </div>
         </div>
       </div>
     </Section>

@@ -1,26 +1,34 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2, MessageCircle, Star, Zap } from "lucide-react";
+import { ArrowRight, Globe, MessageCircle, Star } from "lucide-react";
 import {
-  AboutSection,
+  AirportSection,
   BookingCta,
-  BrandPromiseSection,
+  BookingPaymentSection,
+  CancellationSection,
   DiasporaSection,
   FleetSection,
-  MissionVisionSection,
-  ModelOfMonthSection,
+  HowItWorksSection,
+  MileageSection,
   RequirementsFaqSection,
   ServicesSection,
-  SocialShowcaseSection,
   TestimonialsSection,
-  TrustStrip,
-  WelcomeSection,
-  WhySection,
+  ValueCardsSection,
 } from "@/components/site/sections";
 import { BookingWidget } from "@/components/site/BookingWidget";
-import { businessFacts, company, whatsappLink } from "@/data/venmax";
+import { whatsappLink } from "@/data/venmax";
 import heroImage from "@/assets/toyota-fortuner.jpg";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Car Rental Zimbabwe | Affordable Car Hire in Harare | VenMax" },
+      {
+        name: "description",
+        content:
+          "Affordable car rental in Zimbabwe with easy WhatsApp booking. Vehicles from $40/day for local and diaspora customers. Arrange your Harare car hire before you arrive.",
+      },
+    ],
+  }),
   component: Index,
 });
 
@@ -30,55 +38,48 @@ function Index() {
       <section className="relative overflow-hidden bg-navy text-navy-foreground">
         <img
           src={heroImage}
-          alt="VenMax Toyota Fortuner available for hire in Harare"
+          alt="VenMax Toyota GD6 available for hire in Zimbabwe"
           className="absolute inset-0 h-full w-full object-cover object-[70%_center]"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-navy/50" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-navy/40" />
         <div className="relative mx-auto flex min-h-[min(640px,88svh)] max-w-7xl flex-col justify-center px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <span className="inline-flex items-center gap-2 rounded-full border border-navy-foreground/30 px-4 py-2 text-xs font-semibold uppercase tracking-widest">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            Harare &middot; Zimbabwe
-          </span>
-          <p className="mt-5 text-sm font-semibold uppercase tracking-[0.25em] text-primary">
-            {company.tagline}
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-primary">
+            Affordable car rental in Zimbabwe &middot; Easy WhatsApp booking
           </p>
           <h1 className="mt-3 max-w-2xl text-4xl leading-tight sm:text-6xl">
-            {company.secondaryTagline}
+            Reliable Car Rental in Zimbabwe, Made Simple.
           </h1>
           <p className="mt-5 max-w-xl text-lg text-navy-foreground/80">
-            Premium vehicle rentals, chauffeur services and airport transfers in Harare.
+            Choose your vehicle, send us a WhatsApp message and let our team help arrange your
+            rental — whether you're in Zimbabwe or planning your trip from abroad.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <a
-              href="#vehicles"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground"
-            >
-              Browse Our Fleet
-              <ArrowRight className="h-4 w-4" />
-            </a>
-            <a
-              href={whatsappLink("Hello VenMax, I'd like to book a vehicle.")}
+              href={whatsappLink("Hi VenMax, I'd like to enquire about renting a vehicle. Please help me with the available options.")}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-navy-foreground/30 bg-navy-foreground/10 px-7 py-3.5 text-sm font-semibold text-navy-foreground"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground"
             >
               <MessageCircle className="h-4 w-4" />
-              Chat on WhatsApp
+              Book on WhatsApp
+            </a>
+            <a
+              href="/fleet"
+              className="inline-flex items-center gap-2 rounded-full border border-navy-foreground/30 bg-navy-foreground/10 px-7 py-3.5 text-sm font-semibold text-navy-foreground"
+            >
+              View Our Fleet
+              <ArrowRight className="h-4 w-4" />
             </a>
           </div>
           <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-navy-foreground/80">
             <span className="inline-flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 fill-primary text-primary" />
-              No Hidden Fees
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <Zap className="h-4 w-4 fill-primary text-primary" />
-              Flexible Terms
+              <Globe className="h-4 w-4 text-primary" />
+              Serving local and diaspora customers
             </span>
             <span className="inline-flex items-center gap-2">
               <Star className="h-4 w-4 fill-primary text-primary" />
-              {businessFacts.googleRating}★ Rated
+              100+ Positive Ratings
             </span>
           </div>
         </div>
@@ -86,19 +87,17 @@ function Index() {
       <div className="relative z-10 mx-auto -mt-10 max-w-3xl px-4 sm:-mt-12 sm:px-6 lg:px-8">
         <BookingWidget />
       </div>
-      <ModelOfMonthSection />
-      <WelcomeSection />
-      <AboutSection showCta />
-      <MissionVisionSection />
-      <ServicesSection />
-      <TrustStrip />
+      <ValueCardsSection />
       <FleetSection limit={6} />
-      <WhySection />
-      <BrandPromiseSection />
+      <HowItWorksSection />
+      <AirportSection />
       <DiasporaSection />
+      <MileageSection />
+      <BookingPaymentSection />
+      <CancellationSection />
+      <ServicesSection />
       <TestimonialsSection />
       <RequirementsFaqSection />
-      <SocialShowcaseSection />
       <BookingCta />
     </div>
   );

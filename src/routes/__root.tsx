@@ -86,14 +86,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Reliable, affordable self-drive and chauffeur car hire in Harare, Zimbabwe. Free airport pickup, free Harare delivery, 11 vehicles from $40/day. Book on WhatsApp.",
+          "Affordable car rental in Zimbabwe with easy WhatsApp booking — for local and diaspora customers. Vehicles from $40/day.",
       },
       { name: "author", content: "VenMax Car Rental & Tours" },
       { property: "og:title", content: "VenMax Car Rental & Tours | Harare, Zimbabwe" },
       {
         property: "og:description",
         content:
-          "Rent. Drive. Explore. Enjoy. Self-drive & chauffeur car hire in Harare, Zimbabwe.",
+          "Affordable car rental in Zimbabwe with easy WhatsApp booking, for local and diaspora customers.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

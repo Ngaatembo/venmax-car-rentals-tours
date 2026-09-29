@@ -28,7 +28,7 @@ export function CookieNotice() {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 px-4 py-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] backdrop-blur sm:px-6">
+    <div className="fixed inset-x-0 bottom-[68px] z-50 border-t border-border bg-background/95 px-4 py-4 sm:bottom-0 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] backdrop-blur sm:px-6">
       <div className="mx-auto flex max-w-5xl flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-foreground/80">
           We use only essential cookies needed for this site to work — no advertising or

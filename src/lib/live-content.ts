@@ -28,6 +28,8 @@ export function useVehicles(): Vehicle[] {
         if (cancelled || error || !data || data.length === 0) return;
         setVehicles(
           data.map((v) => ({
+            // Keep specs/badge from the code-defined fleet (not stored in the DB yet).
+            ...(staticVehicles.find((sv) => sv.slug === v.slug) ?? {}),
             slug: v.slug,
             name: v.name,
             category: v.category,

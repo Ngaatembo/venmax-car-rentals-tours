@@ -16,6 +16,7 @@ import { Route as BookRouteImport } from './routes/book'
 import { Route as ChauffeurServiceHarareRouteImport } from './routes/chauffeur-service-harare'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
+import { Route as DiasporaRouteImport } from './routes/diaspora'
 import { Route as FleetRouteImport } from './routes/fleet'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as SelfDriveCarHireHarareRouteImport } from './routes/self-drive-car-hire-harare'
@@ -70,6 +71,11 @@ const ContactRoute = ContactRouteImport.update({
 const CookiePolicyRoute = CookiePolicyRouteImport.update({
   id: '/cookie-policy',
   path: '/cookie-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiasporaRoute = DiasporaRouteImport.update({
+  id: '/diaspora',
+  path: '/diaspora',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FleetRoute = FleetRouteImport.update({
@@ -181,6 +187,7 @@ export interface FileRoutesByFullPath {
   '/chauffeur-service-harare': typeof ChauffeurServiceHarareRoute
   '/contact': typeof ContactRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/diaspora': typeof DiasporaRoute
   '/fleet': typeof FleetRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/self-drive-car-hire-harare': typeof SelfDriveCarHireHarareRoute
@@ -209,6 +216,7 @@ export interface FileRoutesByTo {
   '/chauffeur-service-harare': typeof ChauffeurServiceHarareRoute
   '/contact': typeof ContactRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/diaspora': typeof DiasporaRoute
   '/fleet': typeof FleetRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/self-drive-car-hire-harare': typeof SelfDriveCarHireHarareRoute
@@ -239,6 +247,7 @@ export interface FileRoutesById {
   '/chauffeur-service-harare': typeof ChauffeurServiceHarareRoute
   '/contact': typeof ContactRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/diaspora': typeof DiasporaRoute
   '/fleet': typeof FleetRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/self-drive-car-hire-harare': typeof SelfDriveCarHireHarareRoute
@@ -270,6 +279,7 @@ export interface FileRouteTypes {
     | '/chauffeur-service-harare'
     | '/contact'
     | '/cookie-policy'
+    | '/diaspora'
     | '/fleet'
     | '/privacy-policy'
     | '/self-drive-car-hire-harare'
@@ -298,6 +308,7 @@ export interface FileRouteTypes {
     | '/chauffeur-service-harare'
     | '/contact'
     | '/cookie-policy'
+    | '/diaspora'
     | '/fleet'
     | '/privacy-policy'
     | '/self-drive-car-hire-harare'
@@ -327,6 +338,7 @@ export interface FileRouteTypes {
     | '/chauffeur-service-harare'
     | '/contact'
     | '/cookie-policy'
+    | '/diaspora'
     | '/fleet'
     | '/privacy-policy'
     | '/self-drive-car-hire-harare'
@@ -357,6 +369,7 @@ export interface RootRouteChildren {
   ChauffeurServiceHarareRoute: typeof ChauffeurServiceHarareRoute
   ContactRoute: typeof ContactRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
+  DiasporaRoute: typeof DiasporaRoute
   FleetRoute: typeof FleetRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   SelfDriveCarHireHarareRoute: typeof SelfDriveCarHireHarareRoute
@@ -413,6 +426,13 @@ declare module '@tanstack/react-router' {
       path: '/cookie-policy'
       fullPath: '/cookie-policy'
       preLoaderRoute: typeof CookiePolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/diaspora': {
+      id: '/diaspora'
+      path: '/diaspora'
+      fullPath: '/diaspora'
+      preLoaderRoute: typeof DiasporaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fleet': {
@@ -606,6 +626,7 @@ const rootRouteChildren: RootRouteChildren = {
   ChauffeurServiceHarareRoute: ChauffeurServiceHarareRoute,
   ContactRoute: ContactRoute,
   CookiePolicyRoute: CookiePolicyRoute,
+  DiasporaRoute: DiasporaRoute,
   FleetRoute: FleetRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   SelfDriveCarHireHarareRoute: SelfDriveCarHireHarareRoute,

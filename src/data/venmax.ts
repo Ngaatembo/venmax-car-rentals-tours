@@ -70,7 +70,7 @@ export const company = {
     "Special rates & discounts tailored to your needs",
     "Flexible short- and long-term rental agreements",
     "Driver hire services for convenience",
-    "24/7 customer support for uninterrupted assistance",
+    "Easy WhatsApp booking, for local and diaspora customers",
     "Safe, clean, affordable, and reliable vehicles",
   ],
   leadership:
@@ -95,7 +95,7 @@ export const company = {
     "Just like Eland/Mhofu/Nhuka, VenMax is a total rockstar of strength and is ridiculously good at keeping up with the global craziness and customer whims!",
   // Verbatim from VenMax's own "Why Choose Venmax?" marketing material.
   aboutParagraphs: [
-    "VenMax is a bold start-up car hiring company driven by progressive entrepreneurs who are passionate about revolutionising the mobility sector. Anchored on innovation, customer satisfaction and a commitment to making a visible, positive impact that empowers all stakeholders, VenMax is poised to disrupt the market by redefining the standards of excellence and optimally balancing service provision and sustainability.",
+    "VenMax is a Zimbabwean car hiring company driven by progressive entrepreneurs who are passionate about revolutionising the mobility sector. Anchored on innovation, customer satisfaction and a commitment to making a visible, positive impact that empowers all stakeholders, VenMax is committed to redefining the standards of excellence and optimally balancing service provision and sustainability.",
     "We pride ourselves on delivering quality service with a fleet of well-maintained vehicles, meticulously serviced to keep every journey safe and comfortable. We've served 1000+ satisfied clients who trust and believe in our offerings.",
     "VenMax has symbiotic partnerships with several car rental entities and travel agencies to meet every customer need. These synergies enable us to access services or vehicles which may not be in our own fleet, ensuring the best options for our clientele.",
   ],
@@ -103,6 +103,20 @@ export const company = {
 
 export function whatsappLink(message: string) {
   return `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(message)}`;
+}
+
+function cleanRate(priceLabel: string) {
+  return priceLabel.replace(/^from\s+/i, "");
+}
+
+/** WhatsApp message used by the fleet grid card. Never promises availability. */
+export function vehicleCardMessage(v: { name: string; priceLabel: string }) {
+  return `Hi VenMax, I am interested in renting the ${v.name} at ${cleanRate(v.priceLabel)}. Please help me with availability, requirements and booking.`;
+}
+
+/** WhatsApp message used on the vehicle detail view (asks for dates + requirements). */
+export function vehicleDetailMessage(v: { name: string; priceLabel: string; deposit: string }) {
+  return `Hi VenMax, I'd like to rent the ${v.name} at ${cleanRate(v.priceLabel)} with a ${v.deposit}. My intended rental dates are ____. Please let me know availability and the requirements to confirm the booking.`;
 }
 
 export type Vehicle = {
@@ -128,8 +142,8 @@ export const vehicles: Vehicle[] = [
     slug: "nissan-note",
     name: "Nissan Note Hybrid",
     category: "Economy",
-    priceLabel: "From $40/day",
-    deposit: "$100 deposit",
+    priceLabel: "$40/day",
+    deposit: "$100 refundable deposit",
     description:
       "Fuel-efficient hybrid, ideal for city driving and everyday errands around Harare.",
     image: note,
@@ -141,11 +155,12 @@ export const vehicles: Vehicle[] = [
   },
   {
     slug: "toyota-aqua",
-    name: "Toyota Aqua Hybrid",
+    name: "Toyota Aqua",
     category: "Economy",
-    priceLabel: "From $40/day",
+    priceLabel: "$40/day",
     deposit: "$100 deposit",
-    description: "Compact hybrid hatchback — easy to park and cheap to run around Harare.",
+    description:
+      "Compact hybrid hatchback — easy to park and cheap to run around Harare.",
     image: aqua,
     seats: 5,
     bags: 2,
@@ -157,9 +172,10 @@ export const vehicles: Vehicle[] = [
     slug: "honda-fit",
     name: "Honda Fit Hybrid",
     category: "Economy",
-    priceLabel: "From $45/day",
-    deposit: "$100 deposit",
-    description: "Comfortable, fuel-efficient hatchback for personal or business use.",
+    priceLabel: "$45/day",
+    deposit: "$100 refundable deposit",
+    description:
+      "Comfortable, fuel-efficient hatchback for personal or business use.",
     image: fit,
     seats: 5,
     bags: 2,
@@ -167,25 +183,11 @@ export const vehicles: Vehicle[] = [
     ac: true,
   },
   {
-    slug: "nissan-xtrail",
-    name: "Nissan X-Trail T31",
-    category: "SUV",
-    priceLabel: "From $55/day",
-    deposit: "$100 refundable deposit",
-    description: "Family-friendly SUV with a 600L boot and flat-folding rear seats.",
-    image: xtrail,
-    seats: 5,
-    bags: 4,
-    transmission: "Auto",
-    ac: true,
-    badge: "SUV",
-  },
-  {
     slug: "nissan-serena",
-    name: "Nissan Serena C27 Hybrid",
+    name: "Nissan Serena Hybrid",
     category: "Family MPV",
-    priceLabel: "From $70/day",
-    deposit: "$100 refundable deposit",
+    priceLabel: "$70/day",
+    deposit: "$100 deposit",
     description:
       "Spacious 8-seater multi-purpose vehicle for larger families and corporate groups.",
     image: serena,
@@ -196,11 +198,41 @@ export const vehicles: Vehicle[] = [
     badge: "Family Pick",
   },
   {
+    slug: "nissan-xtrail",
+    name: "Nissan X-Trail T30",
+    category: "SUV",
+    priceLabel: "$55/day",
+    deposit: "$100 refundable deposit",
+    description:
+      "Family-friendly SUV with a 600L boot and flat-folding rear seats.",
+    image: xtrail,
+    seats: 5,
+    bags: 4,
+    transmission: "Auto",
+    ac: true,
+    badge: "SUV",
+  },
+  {
+    slug: "mazda-cx5",
+    name: "Mazda CX-5",
+    category: "SUV",
+    priceLabel: "$80/day",
+    deposit: "$100 deposit",
+    description:
+      "Refined, comfortable crossover for business travel and executive trips.",
+    image: cx5,
+    seats: 5,
+    bags: 4,
+    transmission: "Auto",
+    ac: true,
+    badge: "SUV",
+  },
+  {
     slug: "honda-vezel",
     name: "Honda Vezel",
     category: "SUV",
-    priceLabel: "From $80/day",
-    deposit: "$100 refundable deposit",
+    priceLabel: "$80/day",
+    deposit: "$100 deposit",
     description:
       "Stylish, fuel-efficient compact crossover — comfortable for city driving and out-of-town trips.",
     image: vezel,
@@ -210,38 +242,26 @@ export const vehicles: Vehicle[] = [
     ac: true,
   },
   {
-    slug: "mazda-cx5",
-    name: "Mazda CX-5",
-    category: "SUV",
-    priceLabel: "From $80/day",
-    deposit: "$100 refundable deposit",
-    description: "Refined, comfortable crossover for business travel and executive trips.",
-    image: cx5,
-    seats: 5,
-    bags: 4,
-    transmission: "Auto",
-    ac: true,
-    badge: "SUV",
-  },
-  {
     slug: "toyota-d4d",
-    name: "Toyota D4D",
-    category: "Pickup",
-    priceLabel: "From $120/day",
-    deposit: "$300 refundable deposit",
-    description: "Rugged double-cab 4x4, built for long-distance travel and site visits.",
+    name: "Toyota Hilux D4D Truck",
+    category: "Truck",
+    priceLabel: "$120/day",
+    deposit: "$300 deposit",
+    description:
+      "Rugged double-cab 4x4 truck, built for long-distance travel and site visits.",
     image: d4d,
     seats: 5,
     bags: 3,
     transmission: "Auto",
     ac: true,
+    badge: "Truck",
   },
   {
     slug: "toyota-fortuner",
-    name: "Toyota Fortuner GD6",
+    name: "Toyota GD6",
     category: "SUV",
-    priceLabel: "From $170/day",
-    deposit: "$300 deposit",
+    priceLabel: "$140/day",
+    deposit: "$500 deposit",
     description:
       "Capable 7-seater 4x4 SUV built for family travel, safaris and cross-country routes.",
     image: fortuner,
@@ -255,9 +275,10 @@ export const vehicles: Vehicle[] = [
     slug: "toyota-prado",
     name: "Toyota Prado",
     category: "Premium 4x4",
-    priceLabel: "From $400/day",
-    deposit: "$300 deposit",
-    description: "Premium 7-seater 4x4 with robust off-road performance and comfort.",
+    priceLabel: "$300/day",
+    deposit: "$500 deposit",
+    description:
+      "Premium 7-seater 4x4 with robust off-road performance and comfort.",
     image: prado,
     seats: 7,
     bags: 5,
@@ -265,28 +286,30 @@ export const vehicles: Vehicle[] = [
     ac: true,
   },
   {
-    slug: "range-rover-sport",
-    name: "Range Rover Sport",
-    category: "Luxury SUV",
-    priceLabel: "From $400/day",
+    slug: "toyota-land-cruiser",
+    name: "Toyota Land Cruiser",
+    category: "Premium 4x4",
+    priceLabel: "$400/day",
     deposit: "$500 deposit",
-    description: "Executive luxury SUV for VIP travel and premium occasions.",
-    image: sport,
-    seats: 5,
-    bags: 4,
+    description:
+      "Flagship 4x4, engineered for maximum durability and long hauls.",
+    image: landCruiser,
+    seats: 7,
+    bags: 5,
     transmission: "Auto",
     ac: true,
   },
   {
-    slug: "toyota-land-cruiser",
-    name: "Toyota Land Cruiser",
-    category: "Premium 4x4",
-    priceLabel: "From $700/day",
-    deposit: "$300 deposit",
-    description: "Flagship 4x4, engineered for maximum durability and long hauls.",
-    image: landCruiser,
-    seats: 7,
-    bags: 5,
+    slug: "range-rover-sport",
+    name: "Range Rover Autobiography",
+    category: "Luxury SUV",
+    priceLabel: "$400/day",
+    deposit: "$500 deposit",
+    description:
+      "Executive luxury SUV for VIP travel and premium occasions.",
+    image: sport,
+    seats: 5,
+    bags: 4,
     transmission: "Auto",
     ac: true,
   },
@@ -313,7 +336,7 @@ export const services: Service[] = [
     slug: "self-drive",
     name: "Self-Drive Car Rental",
     description:
-      "Take the wheel yourself with a well-maintained vehicle, full insurance options and 24/7 support.",
+      "Take the wheel yourself with a well-maintained vehicle, all vehicles insured.",
     icon: "key",
     whatsapp: "Hello VenMax, I'd like to enquire about a self-drive rental.",
   },
@@ -329,7 +352,7 @@ export const services: Service[] = [
     slug: "airport-transfer",
     name: "Airport Transfers",
     description:
-      "RGM International Airport shuttle from $30 one-way, Harare CBD to hotels, BnBs and lodges — no waiting, no sharing, door to door.",
+      "Harare airport shuttle services are available at $30 per trip. Airport vehicle pickup is free when you have hired a VenMax vehicle.",
     icon: "plane",
     whatsapp: "Hello VenMax, I'd like to arrange an airport transfer.",
   },
@@ -390,28 +413,28 @@ export const tours: Tour[] = [
 
 export const trustPoints = [
   {
-    title: "Free Airport Pickup",
-    description: "We meet you on arrival — your vehicle is ready the moment you land.",
+    title: "Affordable Daily Rates",
+    description: "Competitive daily rental rates across a range of vehicles.",
   },
   {
-    title: "Harare Vehicle Delivery",
-    description: "Any vehicle delivered to your door, office or hotel anywhere in Harare.",
+    title: "Airport Vehicle Pickup",
+    description: "Free vehicle pickup at the airport when you have hired a VenMax vehicle.",
   },
   {
-    title: "Transparent Pricing",
-    description: "Clear daily rates with no hidden charges — discounts on longer rentals.",
+    title: "Easy WhatsApp Booking",
+    description: "Discuss your vehicle, dates and requirements directly with the VenMax team.",
   },
   {
-    title: "Self-Drive & Chauffeur",
-    description: "Take the wheel yourself or travel with a professional VenMax driver.",
+    title: "Local & Diaspora Customers",
+    description: "Serving residents of Zimbabwe and customers travelling in from abroad.",
   },
 ];
 
 export const whyVenMax = [
   "Zimbabwean-owned, local knowledge",
-  "Well-maintained, insured vehicles",
+  "All vehicles insured and well maintained",
   "Transparent pricing, no hidden fees",
-  "Free airport pickup on arrival",
+  "Free vehicle pickup at the airport for hired vehicles",
   "Vehicle delivery across Harare",
   "Self-drive and chauffeur options",
   "Flexible rental durations",
@@ -421,80 +444,184 @@ export const whyVenMax = [
 export const requirements = [
   {
     number: "01",
-    title: "Valid Driver's Licence",
-    description: "Valid driver's licence with at least 2 years' validity.",
+    title: "Driver Age",
+    description: "Drivers must be 25 years or older.",
   },
   {
     number: "02",
-    title: "Identification",
-    description: "National ID card, or a valid international passport for visitors.",
+    title: "Driver's Licence",
+    description: "The driver's licence must have been held for at least 2 years.",
   },
   {
     number: "03",
-    title: "Next of Kin",
-    description: "Next of kin details, along with a copy of their ID.",
+    title: "Identification",
+    description: "Customers are required to provide both a valid ID and passport.",
   },
   {
     number: "04",
-    title: "Residence / Employment",
-    description:
-      "Proof of residence or employment — a ZESA or water bill, tenancy agreement, or employer letter.",
+    title: "Insurance",
+    description: "All VenMax vehicles are insured.",
   },
   {
     number: "05",
-    title: "Refundable Deposit",
-    description: "$100, $300 or $500 depending on the vehicle — refunded on safe return.",
+    title: "Fuel",
+    description: "Customers are responsible for fuel used during their rental.",
+  },
+  {
+    number: "06",
+    title: "Cross-Border Travel",
+    description: "Cross-border travel is currently not offered.",
+  },
+  {
+    number: "07",
+    title: "Vehicle Items",
+    description: "Lost vehicle items may be charged at applicable market rates.",
   },
 ];
 
-// Real payment channels VenMax accepts — sourced directly from client materials.
+// Confirmed payment methods, as supplied by VenMax. There is no online payment
+// gateway — payments are arranged directly with the VenMax team.
 export const paymentMethods = [
-  "Ecocash / InnBucks / O'mari",
-  "Bank Transfer",
   "Cash",
   "Mukuru",
   "Western Union",
+  "WorldRemit",
+  "Bank transfer",
+  "EcoCash",
+  "InnBucks",
+  "Other applicable local payment arrangements",
 ];
 
-// Sourced from VenMax's previous site content — carried forward, not new claims.
 export const faqs = [
   {
-    question: "What documents do I need to rent a car?",
+    question: "What do I need to rent a car?",
     answer:
-      "A valid driver's licence (2+ years), a national ID or passport, and proof of residence or employment.",
+      "Drivers must be 25 or older, have held a driver's licence for at least 2 years, and provide both a valid ID and passport.",
   },
   {
-    question: "Is the security deposit refundable?",
+    question: "How does booking work?",
     answer:
-      "Yes — deposits ($100, $300 or $500 depending on the vehicle) are refunded on safe return of the vehicle.",
+      "Choose a vehicle and message VenMax on WhatsApp (or email). The team will discuss your dates, requirements, mileage arrangements and payment options with you directly.",
   },
   {
-    question: "How much free mileage do I get?",
-    answer: "200km free every day, with excess mileage billed at $0.60/km.",
+    question: "Which payment methods do you accept?",
+    answer:
+      "Cash, Mukuru, Western Union, WorldRemit, bank transfer, EcoCash, InnBucks and other applicable local payment arrangements.",
   },
   {
     question: "Do you offer airport pickup?",
     answer:
-      "Yes — free pickup and handover at RGM International Airport, plus free vehicle delivery anywhere in Harare.",
+      "Vehicle pickup at the airport is free when you have hired a VenMax vehicle and require it at the airport. Separate Harare airport shuttle services are available at $30 per trip.",
   },
   {
     question: "Can I hire a car with a driver?",
     answer: "Yes — chauffeur service is available on any vehicle for an additional daily fee.",
   },
   {
-    question: "Can I book from outside Zimbabwe?",
+    question: "Can I arrange a rental from outside Zimbabwe?",
     answer:
-      "Yes — VenMax arranges bookings and deposits over WhatsApp for the diaspora or family back home, so you don't need to be in the country to get a vehicle sorted before you land.",
+      "Yes — you can contact VenMax on WhatsApp before your trip and arrange your rental remotely, so your vehicle is sorted before you land.",
+  },
+  {
+    question: "Can I take the vehicle across the border?",
+    answer: "Cross-border travel is currently not offered.",
   },
 ];
 
 export const rentalTerms = [
   {
     label: "Rental Period",
-    value: "Flexible daily, weekly and multi-day rentals — discounts for longer hires",
+    value: "Flexible rentals — discounts are available for longer hiring periods",
   },
-  { label: "Free Mileage", value: "200km free daily mileage, with excess billed at $0.60/km" },
+  {
+    label: "Mileage",
+    value:
+      "200km free daily mileage (excess $0.60/km). Unlimited mileage for rentals of one month or more.",
+  },
   { label: "Chauffeur Option", value: "Available on any vehicle for an additional daily fee" },
+];
+
+// ---------------------------------------------------------------------------
+// Conversion-focused copy blocks (client-approved wording).
+// ---------------------------------------------------------------------------
+
+export const valueCards = [
+  {
+    icon: "tag",
+    title: "Affordable Rates",
+    description: "Competitive daily rental rates across a range of vehicles.",
+  },
+  {
+    icon: "calendar",
+    title: "Flexible Rentals",
+    description: "Discounts are available for longer rental periods.",
+  },
+  {
+    icon: "message",
+    title: "Easy WhatsApp Booking",
+    description:
+      "Discuss your vehicle, dates, requirements and arrangements directly with VenMax on WhatsApp.",
+  },
+  {
+    icon: "globe",
+    title: "Diaspora Friendly",
+    description: "Arrange your rental before travelling to Zimbabwe.",
+  },
+] as const;
+
+export const howItWorks = [
+  {
+    step: "1",
+    title: "Choose Your Vehicle",
+    description: "Browse the VenMax fleet and choose the vehicle that suits your trip.",
+  },
+  {
+    step: "2",
+    title: "Contact VenMax",
+    description: "Send your enquiry through WhatsApp or email.",
+  },
+  {
+    step: "3",
+    title: "Confirm Your Details",
+    description:
+      "Discuss your dates, requirements, mileage arrangements and payment options with the VenMax team.",
+  },
+  {
+    step: "4",
+    title: "Get Ready to Drive",
+    description: "Once your rental arrangements are confirmed, prepare for your trip.",
+  },
+];
+
+export const diasporaMarkets = ["UK", "USA", "Canada", "Australia", "South Africa", "Sweden", "Europe"];
+
+export const diasporaBenefits = [
+  {
+    title: "Arrange Before You Travel",
+    description: "Start your rental arrangements before arriving in Zimbabwe.",
+  },
+  {
+    title: "WhatsApp Convenience",
+    description: "Discuss your vehicle, dates, requirements and arrangements directly with VenMax.",
+  },
+  {
+    title: "Airport Vehicle Pickup",
+    description:
+      "Vehicle pickup at the airport is complimentary when you have hired a VenMax vehicle and require it at the airport.",
+  },
+  {
+    title: "Longer Rental Options",
+    description: "Discounts are available for longer hiring periods.",
+  },
+  {
+    title: "Monthly Unlimited Mileage",
+    description: "For rentals of one month or more, unlimited mileage is available.",
+  },
+  {
+    title: "Flexible Long-Distance Options",
+    description:
+      "Customized mileage arrangements for longer trips can be discussed with VenMax on a customer-by-customer basis.",
+  },
 ];
 
 // Genuine reviews sourced from VenMax's Google Business Profile.

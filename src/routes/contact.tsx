@@ -10,13 +10,13 @@ import { submitInquiry } from "@/lib/bookings";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact VenMax | Harare, Zimbabwe" },
+      { title: "Contact VenMax | Car Rental Harare Airport & City" },
       {
         name: "description",
         content:
-          "Message VenMax on WhatsApp, call or email us. 27 Lawson Avenue, Milton Park, Harare — free airport pickup available.",
+          "Message VenMax on WhatsApp, call or email us. 27 Lawson Avenue, Milton Park, Harare — free airport vehicle pickup with a hired vehicle.",
       },
-      { property: "og:title", content: "Contact VenMax | Harare, Zimbabwe" },
+      { property: "og:title", content: "Contact VenMax | Car Rental Harare Airport & City" },
       {
         property: "og:description",
         content: "Message VenMax on WhatsApp, call or email us in Harare.",

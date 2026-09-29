@@ -4,18 +4,19 @@ import logo from "@/assets/logo.jpg";
 import { company, whatsappLink } from "@/data/venmax";
 
 const links = [
-  { to: "/about", label: "About" },
-  { to: "/#vehicles", label: "Fleet" },
+  { to: "/fleet", label: "Fleet" },
+  { to: "/#how-it-works", label: "How It Works" },
+  { to: "/diaspora", label: "For Diaspora" },
   { to: "/#services", label: "Services" },
+  { to: "/#requirements", label: "Rental Requirements" },
+  { to: "/about", label: "About" },
   { to: "/tours", label: "Tours" },
-  { to: "/#requirements", label: "Requirements" },
   { to: "/contact", label: "Contact" },
-  { to: "/book", label: "Request a Booking" },
 ] as const;
 
 export function Footer() {
   return (
-    <footer className="bg-ink text-navy-foreground">
+    <footer className="bg-ink pb-16 text-navy-foreground sm:pb-0">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-3">
           <div>
@@ -38,8 +39,8 @@ export function Footer() {
               </div>
             </div>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-navy-foreground/70">
-              Premium vehicle rentals, chauffeur services, airport transfers and tours across
-              Zimbabwe — run by a local team you can reach any time.
+              Affordable car rental in Zimbabwe with easy WhatsApp booking — for local and
+              diaspora customers.
             </p>
             <a
               href={whatsappLink("Hello VenMax, I'd like to enquire about a rental.")}
@@ -48,7 +49,7 @@ export function Footer() {
               className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
             >
               <MessageCircle className="h-4 w-4" />
-              WhatsApp Us
+              Book on WhatsApp
             </a>
           </div>
 

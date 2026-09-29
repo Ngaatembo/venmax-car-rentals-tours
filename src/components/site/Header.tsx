@@ -7,11 +7,11 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/#vehicles", label: "Fleet" },
+  { to: "/fleet", label: "Fleet" },
+  { to: "/#how-it-works", label: "How It Works" },
+  { to: "/diaspora", label: "For Diaspora" },
   { to: "/#services", label: "Services" },
-  { to: "/tours", label: "Tours" },
-  { to: "/#requirements", label: "Requirements" },
+  { to: "/#requirements", label: "Rental Requirements" },
   { to: "/contact", label: "Contact" },
 ] as const;
 
@@ -62,7 +62,7 @@ export function Header() {
         </Link>
 
         <div className="flex items-center gap-2">
-          <nav className="hidden items-center gap-1 lg:flex">
+          <nav className="hidden items-center gap-1 xl:flex">
             {navItems.map((item) => (
               <a
                 key={item.to}
@@ -81,14 +81,14 @@ export function Header() {
             className="hidden items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 sm:inline-flex"
           >
             <MessageCircle className="h-4 w-4" />
-            WhatsApp Us
+            Book on WhatsApp
           </a>
 
           <button
             type="button"
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((v) => !v)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-navy-foreground lg:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-navy-foreground xl:hidden"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -96,7 +96,7 @@ export function Header() {
       </div>
 
       {open && (
-        <nav className="border-t border-navy-foreground/10 bg-navy px-4 pb-6 pt-2 sm:px-6 lg:hidden">
+        <nav className="border-t border-navy-foreground/10 bg-navy px-4 pb-6 pt-2 sm:px-6 xl:hidden">
           {navItems.map((item) => (
             <a
               key={item.to}
@@ -106,11 +106,20 @@ export function Header() {
               {item.label}
             </a>
           ))}
-          <Link
-            to="/book"
-            className="mt-5 flex items-center justify-center rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
+          <a
+            href={whatsappLink("Hello VenMax, I'd like to enquire about a rental.")}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-5 flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
           >
-            Request a Booking
+            <MessageCircle className="h-4 w-4" />
+            Book on WhatsApp
+          </a>
+          <Link
+            to="/fleet"
+            className="mt-3 flex items-center justify-center rounded-full border border-navy-foreground/30 px-5 py-3 text-sm font-semibold text-navy-foreground"
+          >
+            View Vehicles
           </Link>
         </nav>
       )}
