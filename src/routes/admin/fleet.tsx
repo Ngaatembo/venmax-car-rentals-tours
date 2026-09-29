@@ -274,7 +274,7 @@ function AdminFleet() {
                   <Input
                     value={form.deposit ?? ""}
                     onChange={(e) => setForm((f) => ({ ...f, deposit: e.target.value }))}
-                    placeholder="$300 deposit"
+                    placeholder="$300 refundable deposit"
                   />
                 </div>
               </div>

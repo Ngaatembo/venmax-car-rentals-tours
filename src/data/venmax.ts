@@ -168,7 +168,7 @@ export const vehicles: Vehicle[] = [
     name: "Toyota Aqua",
     category: "Economy",
     priceLabel: "$40/day",
-    deposit: "$100 deposit",
+    deposit: "$100 refundable deposit",
     description:
       "Compact hybrid hatchback — easy to park and cheap to run around Harare.",
     image: aqua,
@@ -198,7 +198,7 @@ export const vehicles: Vehicle[] = [
     name: "Nissan Serena Hybrid",
     category: "Family MPV",
     priceLabel: "$70/day",
-    deposit: "$100 deposit",
+    deposit: "$100 refundable deposit",
     description:
       "Spacious 8-seater multi-purpose vehicle for larger families and corporate groups.",
     image: serena,
@@ -229,7 +229,7 @@ export const vehicles: Vehicle[] = [
     name: "Mazda CX-5",
     category: "SUV",
     priceLabel: "$80/day",
-    deposit: "$100 deposit",
+    deposit: "$100 refundable deposit",
     description:
       "Refined, comfortable crossover for business travel and executive trips.",
     image: cx5,
@@ -244,7 +244,7 @@ export const vehicles: Vehicle[] = [
     name: "Honda Vezel",
     category: "SUV",
     priceLabel: "$80/day",
-    deposit: "$100 deposit",
+    deposit: "$100 refundable deposit",
     description:
       "Stylish, fuel-efficient compact crossover — comfortable for city driving and out-of-town trips.",
     image: vezel,
@@ -260,7 +260,7 @@ export const vehicles: Vehicle[] = [
     name: "Toyota Hilux D4D Truck",
     category: "Truck",
     priceLabel: "$120/day",
-    deposit: "$300 deposit",
+    deposit: "$300 refundable deposit",
     description:
       "Rugged double-cab 4x4 truck, built for long-distance travel and site visits.",
     image: d4d,
@@ -275,7 +275,7 @@ export const vehicles: Vehicle[] = [
     name: "Toyota GD6",
     category: "SUV",
     priceLabel: "$140/day",
-    deposit: "$500 deposit",
+    deposit: "$500 refundable deposit",
     description:
       "Capable 7-seater 4x4 SUV built for family travel, safaris and cross-country routes.",
     image: fortuner,
@@ -290,7 +290,7 @@ export const vehicles: Vehicle[] = [
     name: "Toyota Prado",
     category: "Premium 4x4",
     priceLabel: "$300/day",
-    deposit: "$500 deposit",
+    deposit: "$500 refundable deposit",
     description:
       "Premium 7-seater 4x4 with robust off-road performance and comfort.",
     image: prado,
@@ -305,7 +305,7 @@ export const vehicles: Vehicle[] = [
     name: "Toyota Land Cruiser",
     category: "Premium 4x4",
     priceLabel: "$400/day",
-    deposit: "$500 deposit",
+    deposit: "$500 refundable deposit",
     description:
       "Powerful 4x4, engineered for maximum durability and long hauls.",
     image: landCruiser,
