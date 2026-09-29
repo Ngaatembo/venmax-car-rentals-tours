@@ -863,10 +863,22 @@ const marketFlags: Record<string, string> = {
  * illustration of the story: booked from abroad over WhatsApp, vehicle ready on arrival.
  * Swap for a real photo by replacing this component's body with an <img>.
  */
-function DiasporaVisual() {
-  // Real footage of Harare International Arrivals sits over the illustration once it can
-  // play; the illustration remains the fallback (slow connection, reduced motion, error).
-  const [videoReady, setVideoReady] = useState(false);
+/**
+ * Muted looping clip laid over a still image once it can play. The still stays as the
+ * fallback (slow connection, playback error, or reduced-motion preference).
+ */
+function AmbientVideo({
+  base,
+  poster,
+  label,
+  caption,
+}: {
+  base: string;
+  poster: string;
+  label: string;
+  caption?: string;
+}) {
+  const [ready, setReady] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(true);
   useEffect(() => {
     try {
@@ -875,34 +887,45 @@ function DiasporaVisual() {
       setReduceMotion(true);
     }
   }, []);
+  if (reduceMotion) return null;
+  return (
+    <>
+      <video
+        className={`absolute inset-0 z-10 h-full w-full object-cover transition-opacity duration-500 ${
+          ready ? "opacity-100" : "opacity-0"
+        }`}
+        poster={poster}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label={label}
+        onCanPlay={() => setReady(true)}
+        onError={() => setReady(false)}
+      >
+        <source src={`${base}.webm`} type="video/webm" />
+        <source src={`${base}.mp4`} type="video/mp4" />
+      </video>
+      {ready && caption && (
+        <span className="absolute bottom-4 left-4 z-20 rounded-full bg-navy/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy-foreground">
+          {caption}
+        </span>
+      )}
+    </>
+  );
+}
+
+function DiasporaVisual() {
   return (
     <div className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-2xl bg-gradient-to-br from-[#16213a] via-navy to-[#0b1220] lg:mx-0 lg:ml-auto">
-      {!reduceMotion && (
-        <>
-          <video
-            className={`absolute inset-0 z-10 h-full w-full object-cover transition-opacity duration-500 ${
-              videoReady ? "opacity-100" : "opacity-0"
-            }`}
-            poster="/videos/harare-arrivals-poster.jpg"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-label="Harare International Airport, International Arrivals entrance"
-            onCanPlay={() => setVideoReady(true)}
-            onError={() => setVideoReady(false)}
-          >
-            <source src="/videos/harare-arrivals.webm" type="video/webm" />
-            <source src="/videos/harare-arrivals.mp4" type="video/mp4" />
-          </video>
-          {videoReady && (
-            <span className="absolute bottom-4 left-4 z-20 rounded-full bg-navy/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy-foreground">
-              Harare International Arrivals
-            </span>
-          )}
-        </>
-      )}
+      <AmbientVideo
+        base="/videos/harare-arrivals"
+        poster="/videos/harare-arrivals-poster.jpg"
+        label="Harare International Airport, International Arrivals entrance"
+        caption="Harare International Arrivals"
+      />
+
       <svg
         viewBox="0 0 400 500"
         className="absolute inset-0 h-full w-full"
@@ -1479,7 +1502,7 @@ export function CancellationSection() {
         <SectionHeading
           eyebrow="Cancellation & Refunds"
           title="Flexible Cancellation"
-          description="In the event of an emergency or change of plans, customers can cancel their rental. VenMax does not charge a cancellation fee and refunds the exact amount paid."
+          description="In the event of an emergency or change of plans, customers can cancel their rental. VenMax does not charge a cancellation fee, and the full amount paid is refunded within 3 business working days. This applies to every booking."
         />
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="rounded-2xl border border-border bg-card p-6">

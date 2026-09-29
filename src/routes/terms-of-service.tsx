@@ -33,35 +33,47 @@ function TermsOfServicePage() {
           <li>A valid driver's licence held for at least 2 years</li>
           <li>A valid ID and passport</li>
           <li>Proof of residence or employment</li>
+          <li>Next of kin details, for use in an emergency</li>
         </ul>
+
+        <h2>Mileage and fuel</h2>
         <p>
           {standardMileagePolicy ? `${standardMileagePolicy} ` : ""}
           Unlimited mileage is available for rentals of one month or more, and customized mileage
-          arrangements can be discussed for longer trips. A refundable security deposit is required and is returned after the vehicle
-          is inspected on return, less any deductions for damage, excess mileage, or outstanding
-          charges. A chauffeur can be arranged for an additional US$20/day (not included in the vehicle rental price) if you'd prefer not to self-drive.
+          arrangements can be discussed for longer trips. The renter pays for the fuel used during
+          the rental and returns the vehicle with the same fuel level it was collected with.
+        </p>
+
+        <h2>Chauffeur service</h2>
+        <p>
+          A VenMax chauffeur can be arranged on any vehicle for an additional US$20/day (not
+          included in the vehicle rental price). The client covers the driver's food and
+          accommodation. The age requirement above applies to self-drive customers only, as the
+          driver is provided by VenMax.
         </p>
 
         <h2>Payments and deposits</h2>
         <p>
-          Rental rates and deposits are as quoted at the time of booking confirmation. Deposits
-          are refundable subject to the condition of the vehicle and mileage on return, as
-          outlined above.
+          Rental rates are fixed once your booking is confirmed. A refundable security deposit is
+          required. VenMax may deduct from the deposit for minor damage, excess mileage or other
+          outstanding charges. The remaining deposit is refunded when the vehicle is returned, using
+          the payment method agreed with you.
         </p>
 
         <h2>Cancellations</h2>
         <p>
-          In the event of an emergency or change of plans, customers can cancel their rental. VenMax
-          does not charge a cancellation fee and refunds the exact amount paid.
+          In the event of an emergency or change of plans, customers can cancel their rental.
+          VenMax does not charge a cancellation fee. This applies to every booking, and the full
+          amount paid is refunded within 3 business working days.
         </p>
 
         <h2>Vehicle condition and liability</h2>
         <p>
           Vehicles are provided in good working condition at the start of the rental. The renter
           is responsible for the vehicle during the rental period, including any traffic fines,
-          tolls, or damage incurred, other than normal wear and tear. VenMax is not liable for
-          personal belongings left in a vehicle, or for delays caused by circumstances outside
-          our reasonable control (e.g. weather, road closures, mechanical failure not caused by
+          tolls, or damage beyond normal wear and tear. VenMax is not liable for personal
+          belongings left in a vehicle, or for delays caused by circumstances outside our
+          reasonable control (e.g. weather, road closures, mechanical failure not caused by
           negligence).
         </p>
 
@@ -84,12 +96,6 @@ function TermsOfServicePage() {
           or {company.phones[0]}.
         </p>
 
-        <p className="mt-8 text-xs text-muted-foreground">
-          These terms are a good-faith draft based on VenMax's stated rental policies and are not
-          a substitute for legal advice. Sections on liability, cancellations, and refunds should
-          be reviewed and confirmed by a qualified lawyer in Zimbabwe before being relied on as a
-          binding contract.
-        </p>
       </div>
     </div>
   );

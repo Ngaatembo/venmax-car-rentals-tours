@@ -358,7 +358,7 @@ export const services: Service[] = [
     slug: "chauffeur",
     name: "Chauffeur Services",
     description:
-      "Sit back with a professional driver for business meetings, events and long-distance travel. Chauffeur service available for an additional US$20/day.",
+      "Sit back with a professional driver for business meetings, events and long-distance travel. Chauffeur service is available on any vehicle for an additional US$20/day. The client covers the driver's food and accommodation.",
     icon: "user",
     whatsapp: "Hello VenMax, I'd like to enquire about your chauffeur services.",
   },
@@ -456,7 +456,11 @@ export const whyVenMax = [
 ];
 
 export const requirements = [
-  { number: "01", title: "Driver Age", description: "Drivers must be 25 years or older." },
+  {
+    number: "01",
+    title: "Driver Age",
+    description: "Self-drive customers must be 25 years or older. No age limit applies when you book a VenMax chauffeur.",
+  },
   {
     number: "02",
     title: "Driver's Licence",
@@ -464,8 +468,9 @@ export const requirements = [
   },
   {
     number: "03",
-    title: "Identification",
-    description: "Customers are required to provide both a valid ID and passport.",
+    title: "Identification & Next of Kin",
+    description:
+      "Customers provide both a valid ID and passport, plus next of kin details in case of an emergency.",
   },
   {
     number: "04",
@@ -476,7 +481,8 @@ export const requirements = [
   {
     number: "06",
     title: "Fuel",
-    description: "Customers are responsible for fuel used during their rental.",
+    description:
+      "Customers pay for fuel used during their rental and return the vehicle with the same fuel level.",
   },
   {
     number: "07",
@@ -503,7 +509,8 @@ export const paymentMethods = [
   "Other applicable local payment arrangements",
 ];
 
-export const chauffeurFeeNote = "Chauffeur service available for an additional US$20/day.";
+export const chauffeurFeeNote =
+  "Chauffeur service is available on any vehicle for an additional US$20/day. The client covers the driver's food and accommodation.";
 export const deliveryNote = "Free vehicle delivery within Harare.";
 
 // Confirmed by VenMax: standard rentals include 200 km/day free mileage, excess $0.60/km.
@@ -550,7 +557,7 @@ export const faqs = [
   {
     question: "Can I hire a car with a driver?",
     answer:
-      "Yes — chauffeur service is available for an additional US$20/day on top of the vehicle rental price.",
+      "Yes — chauffeur service is available on any vehicle for an additional US$20/day on top of the vehicle rental price. The client covers the driver's food and accommodation.",
   },
   {
     question: "Can I arrange a rental from outside Zimbabwe?",
