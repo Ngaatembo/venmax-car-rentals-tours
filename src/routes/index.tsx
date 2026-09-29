@@ -107,10 +107,10 @@ function Index() {
       <ToursTeaserSection />
       <WhySection />
       <BrandPromiseSection />
+      <SocialShowcaseSection />
       <BookingPaymentSection />
       <CancellationSection />
       <TestimonialsSection />
-      <SocialShowcaseSection />
       <RequirementsFaqSection />
       <BookingCta />
     </div>

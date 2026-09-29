@@ -230,6 +230,7 @@ export function WelcomeSection() {
  */
 export function FleetSection() {
   const { vehicles } = useFleet();
+  const modelsDisplay = useSiteContent()["vehicle_models_display"];
   const featured = vehicles.filter((v) => v.isFeatured).slice(0, 8);
   const list = featured.length > 0 ? featured : vehicles.slice(0, 6);
   const countLabel = fleetCountLabel(vehicles.length);
@@ -264,8 +265,8 @@ export function FleetSection() {
         <div className="flex flex-col justify-center p-8 text-center md:p-10 md:text-left">
           <h3 className="text-xl">Explore the Full Fleet</h3>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            VenMax has a wide range of vehicles for city driving, family trips, business travel and
-            longer journeys.
+            VenMax has {modelsDisplay ? `${modelsDisplay} vehicle models` : "a wide range of vehicles"}{" "}
+            for city driving, family trips, business travel and longer journeys.
           </p>
           <div>
             <a
@@ -331,6 +332,8 @@ const PAGE_SIZE = 24;
 /** Full searchable catalogue for /fleet. Everything comes from the live vehicle data. */
 export function FleetCatalogue() {
   const { vehicles } = useFleet();
+  // Admin-editable marketing figure (site_content.vehicle_models_display, e.g. "40+").
+  const modelsDisplay = useSiteContent()["vehicle_models_display"];
   const [query, setQuery] = useState("");
   const [group, setGroup] = useState("all");
   const [band, setBand] = useState("any");
@@ -467,6 +470,30 @@ export function FleetCatalogue() {
       <p className="mt-6 text-sm text-muted-foreground" aria-live="polite">
         Showing {shown.length} of {filtered.length} {filtered.length === 1 ? "vehicle" : "vehicles"}
       </p>
+      {modelsDisplay && (
+        <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            <span className="font-semibold text-foreground">
+              VenMax has {modelsDisplay} vehicle models.
+            </span>{" "}
+            <span className="text-muted-foreground">
+              These are the vehicles currently listed online — if you need something you don't see,
+              ask us and we'll check.
+            </span>
+          </p>
+          <a
+            href={whatsappLink(
+              "Hi VenMax, I'm looking for a vehicle I didn't see on the website. Can you help me find one?",
+            )}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex shrink-0 items-center gap-2 self-start rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground sm:self-auto"
+          >
+            <MessageCircle className="h-3.5 w-3.5" />
+            Ask on WhatsApp
+          </a>
+        </div>
+      )}
 
       {filtered.length === 0 ? (
         <div className="mt-6 rounded-2xl border border-border bg-card p-8 text-center">
@@ -870,21 +897,22 @@ export function BookingPaymentSection() {
   );
 }
 
+// SVG flags (public/flags, from country-flag-icons, MIT) — emoji flags render as
+// plain letters on Windows, so they looked inconsistent across devices.
 const marketFlags: Record<string, string> = {
-  UK: "🇬🇧",
-  USA: "🇺🇸",
-  Canada: "🇨🇦",
-  Australia: "🇦🇺",
-  "South Africa": "🇿🇦",
-  Sweden: "🇸🇪",
-  Europe: "🇪🇺",
+  UK: "/flags/gb.svg",
+  USA: "/flags/us.svg",
+  Canada: "/flags/ca.svg",
+  Australia: "/flags/au.svg",
+  "South Africa": "/flags/za.svg",
+  Sweden: "/flags/se.svg",
+  Europe: "/flags/eu.svg",
 };
 
 /**
- * Dedicated diaspora visual. VenMax has no genuine arrivals/traveller photograph yet, and
- * a stock photo could be mistaken for a real VenMax customer — so this is an obvious
- * illustration of the story: booked from abroad over WhatsApp, vehicle ready on arrival.
- * Swap for a real photo by replacing this component's body with an <img>.
+ * Dedicated diaspora visual: VenMax's own footage of Harare International Arrivals plays
+ * over an illustration (the fallback on slow connections or with reduced motion). No stock
+ * photo is used, so nothing can be mistaken for a real VenMax customer.
  */
 /**
  * Muted looping clip laid over a still image once it can play. The still stays as the
@@ -1029,7 +1057,7 @@ export function DiasporaSection({ full = false }: { full?: boolean } = {}) {
         <div>
           <SectionHeading
             eyebrow="For Diaspora"
-            title="Serving Customers Around the World"
+            title="Coming to Zimbabwe? Arrange your rental before you arrive."
             description="Whether you're visiting family, attending an event, travelling for business or exploring Zimbabwe, you can contact VenMax before your trip and arrange your rental remotely."
             invert
           />
@@ -1039,9 +1067,16 @@ export function DiasporaSection({ full = false }: { full?: boolean } = {}) {
                 key={m}
                 className="inline-flex items-center gap-2 rounded-full border border-navy-foreground/30 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-navy-foreground"
               >
-                <span aria-hidden="true" className="text-sm leading-none">
-                  {marketFlags[m]}
-                </span>
+                {marketFlags[m] && (
+                  <img
+                    src={marketFlags[m]}
+                    alt=""
+                    aria-hidden="true"
+                    width={21}
+                    height={14}
+                    className="h-3.5 w-[21px] shrink-0 rounded-[2px] object-cover ring-1 ring-white/20"
+                  />
+                )}
                 {m}
               </span>
             ))}
@@ -1195,7 +1230,7 @@ export function WhySection() {
   return (
     <Section tone="navy" id="why-venmax">
       <SectionHeading
-        eyebrow="Why Choose Us"
+        eyebrow="Trusted in Harare"
         title="Harare's Most Trusted Car Rental."
         description="A Zimbabwean-owned company built on straightforward, honest service — real vehicles, real prices, and local knowledge that makes travel here effortless."
         invert

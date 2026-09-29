@@ -526,7 +526,7 @@ export const faqs = [
   {
     question: "What do I need to rent a car?",
     answer:
-      "Drivers must be 25 or older and have held a driver's licence for at least 2 years. You'll need to provide both a valid ID and passport, plus proof of residence or employment.",
+      "Self-drive drivers must be 25 or older and have held a driver's licence for at least 2 years. You'll need a valid ID and passport, proof of residence or employment, and next of kin details for emergencies. There is no age limit when you book a VenMax chauffeur.",
   },
   {
     question: "How does booking work?",
@@ -541,7 +541,7 @@ export const faqs = [
   {
     question: "Is the security deposit refundable?",
     answer:
-      "Yes — deposits ($100, $300 or $500 depending on the vehicle) are refunded on safe return of the vehicle.",
+      "Yes — all deposits are refundable. The deposit is refunded when you return the vehicle, using the payment method agreed with you, less any deductions for minor damage or excess mileage.",
   },
   {
     question: "How much free mileage do I get?",
