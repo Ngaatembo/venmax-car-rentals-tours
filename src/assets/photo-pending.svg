@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" role="img" aria-label="Vehicle photo coming soon">
-<rect width="1024" height="768" fill="#eef0f3"/>
-<g fill="none" stroke="#9aa3ae" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" transform="translate(312 250)">
-<path d="M40 190h20M60 190l30-80c6-16 20-26 38-26h176c18 0 32 10 38 26l30 80M60 190h360v60H60z"/>
-<circle cx="130" cy="250" r="26" fill="#eef0f3"/><circle cx="350" cy="250" r="26" fill="#eef0f3"/>
-</g>
-<text x="512" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="44" font-weight="700" fill="#5b6470">Photo coming soon</text>
-</svg>

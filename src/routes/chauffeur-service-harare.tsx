@@ -53,7 +53,7 @@ function ChauffeurPage() {
       <PageHero
         eyebrow="Chauffeur Service"
         title="A professional driver, any vehicle in the fleet"
-        description="Sit back and let someone else handle the roads. VenMax's chauffeur option is available on any vehicle in the fleet for an additional daily fee — book the car you want, then add a driver."
+        description="Sit back and let someone else handle the roads. VenMax's chauffeur option is available on any vehicle in the fleet — book the car you want, then add a driver. Chauffeur service available for an additional US$20/day."
       />
 
       <Section>
@@ -91,7 +91,7 @@ function ChauffeurPage() {
         <SectionHeading
           eyebrow="Available Vehicles"
           title="Chauffeur service is available on any vehicle below"
-          description="Pick the vehicle that suits the occasion — the chauffeur option applies fleet-wide for an additional daily fee, confirmed with your booking."
+          description="Pick the vehicle that suits the occasion — the chauffeur option applies fleet-wide. Chauffeur service available for an additional US$20/day (not included in the vehicle rental price)."
         />
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {vehicles.map((vehicle) => (

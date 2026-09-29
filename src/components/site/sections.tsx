@@ -44,6 +44,8 @@ import {
   requirements,
   rentalTerms,
   standardMileagePolicy,
+  chauffeurFeeNote,
+  deliveryNote,
   trustPoints,
   whatsappLink,
   whyVenMax,
@@ -248,7 +250,12 @@ export function FleetSection() {
           <ArrowRight className="h-4 w-4" />
         </a>
       </div>
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        className={cn(
+          "mt-10 grid gap-6 sm:grid-cols-2",
+          list.length > 2 ? "lg:grid-cols-3" : "mx-auto max-w-4xl",
+        )}
+      >
         {list.map((vehicle) => (
           <VehicleCard key={vehicle.slug} vehicle={vehicle} />
         ))}
@@ -539,7 +546,7 @@ export function ChauffeurSection() {
             {[
               "Executive travel with a professional driver",
               "Business meetings, events and long-distance journeys",
-              "Available on any vehicle for an additional daily fee",
+              chauffeurFeeNote,
             ].map((item) => (
               <li key={item} className="flex items-start gap-3">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -775,6 +782,10 @@ export function MileageSection() {
           <div className="mt-6 space-y-3 text-sm">
             <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5">
               <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              {standardMileagePolicy}
+            </div>
+            <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5">
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
               For rentals of one month or more, unlimited mileage is available.
             </div>
             <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5">
@@ -824,6 +835,13 @@ export function BookingPaymentSection() {
         <p className="mt-4 text-sm text-muted-foreground">
           Payment arrangements are agreed directly with the VenMax team.
         </p>
+        <div className="mt-6 rounded-2xl border border-border bg-card p-5 text-sm">
+          <p className="font-semibold">{deliveryNote}</p>
+          <p className="mt-1 text-muted-foreground">
+            This is vehicle delivery for rental customers — separate from the airport shuttle
+            ($30 per trip).
+          </p>
+        </div>
       </div>
     </Section>
   );
@@ -1272,7 +1290,7 @@ export function RequirementsFaqSection() {
           </article>
         ))}
       </div>
-      <div className="mt-6 grid gap-6 rounded-2xl border border-border bg-card p-6 sm:grid-cols-3">
+      <div className="mt-6 grid gap-6 rounded-2xl border border-border bg-card p-6 sm:grid-cols-2 lg:grid-cols-4">
         {rentalTerms.map((term) => (
           <div key={term.label}>
             <p className="eyebrow">{term.label}</p>
@@ -1280,9 +1298,6 @@ export function RequirementsFaqSection() {
           </div>
         ))}
       </div>
-      {standardMileagePolicy && (
-        <p className="mt-3 text-center text-xs text-muted-foreground">{standardMileagePolicy}</p>
-      )}
 
       <div className="mx-auto mt-12 max-w-2xl">
         <h3 className="text-center text-xl">Frequently Asked Questions</h3>

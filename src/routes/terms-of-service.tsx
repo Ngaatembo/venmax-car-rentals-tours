@@ -39,7 +39,7 @@ function TermsOfServicePage() {
           Unlimited mileage is available for rentals of one month or more, and customized mileage
           arrangements can be discussed for longer trips. A refundable security deposit is required and is returned after the vehicle
           is inspected on return, less any deductions for damage, excess mileage, or outstanding
-          charges. A driver can be arranged for an additional fee if you'd prefer not to self-drive.
+          charges. A chauffeur can be arranged for an additional US$20/day (not included in the vehicle rental price) if you'd prefer not to self-drive.
         </p>
 
         <h2>Payments and deposits</h2>

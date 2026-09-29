@@ -47,7 +47,7 @@ function SelfDrivePage() {
           {[
             "Every price and deposit shown upfront — no back-and-forth for a quote",
             "Free airport vehicle pickup when you hire a VenMax vehicle",
-            "Free vehicle delivery anywhere in Harare",
+            "Free vehicle delivery within Harare",
             "Multi-day hire discounts available",
           ].map((item) => (
             <div

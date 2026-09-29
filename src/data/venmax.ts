@@ -18,10 +18,8 @@ import vezel from "@/assets/honda-vezel.jpg";
 import xtrail from "@/assets/nissan-xtrail.jpg";
 import fortuner from "@/assets/toyota-fortuner.jpg";
 import prado from "@/assets/toyota-prado.jpg";
-// PENDING: no authentic Range Rover Autobiography photo yet. Do not reuse the Sport photo.
-// To finish: drop the real photo in src/assets, import it here instead of the placeholder
-// (or upload it via the admin panel, which overrides this).
-import sport from "@/assets/photo-pending.svg";
+// Range Rover photo: VenMax confirmed this image is to be kept ("Range Rover pic maintain").
+import sport from "@/assets/range-rover-sport.jpg";
 import landCruiser from "@/assets/toyota-land-cruiser.jpg";
 // Tour & hero photography: real photos via Wikimedia Commons (free licenses, CC BY-SA / CC BY).
 // Victoria Falls aerial: Diego Delso (CC BY-SA 4.0) · Hwange elephants: panoramio contributor (CC BY)
@@ -227,6 +225,7 @@ export const vehicles: Vehicle[] = [
   },
   {
     slug: "mazda-cx5",
+    isFeatured: true,
     name: "Mazda CX-5",
     category: "SUV",
     priceLabel: "$80/day",
@@ -256,6 +255,7 @@ export const vehicles: Vehicle[] = [
   },
   {
     slug: "toyota-d4d",
+    isFeatured: true,
     imagePosition: "50% 55%",
     name: "Toyota Hilux D4D Truck",
     category: "Truck",
@@ -319,7 +319,7 @@ export const vehicles: Vehicle[] = [
     name: "Range Rover Autobiography",
     category: "Luxury SUV",
     priceLabel: "$400/day",
-    deposit: "$500 deposit",
+    deposit: "$500 refundable deposit",
     description:
       "Executive luxury SUV for VIP travel and premium occasions.",
     image: sport,
@@ -347,7 +347,7 @@ export const services: Service[] = [
     slug: "self-drive",
     name: "Self-Drive Car Rental",
     description:
-      "Take the wheel yourself with a well-maintained vehicle, all vehicles insured.",
+      "Take the wheel yourself in a well-maintained, insured vehicle.",
     icon: "key",
     whatsapp: "Hello VenMax, I'd like to enquire about a self-drive rental.",
   },
@@ -355,7 +355,7 @@ export const services: Service[] = [
     slug: "chauffeur",
     name: "Chauffeur Services",
     description:
-      "Sit back with a professional driver for business meetings, events and long-distance travel.",
+      "Sit back with a professional driver for business meetings, events and long-distance travel. Chauffeur service available for an additional US$20/day.",
     icon: "user",
     whatsapp: "Hello VenMax, I'd like to enquire about your chauffeur services.",
   },
@@ -446,18 +446,14 @@ export const whyVenMax = [
   "All vehicles insured and well maintained",
   "Transparent pricing, no hidden fees",
   "Free vehicle pickup at the airport for hired vehicles",
-  "Vehicle delivery across Harare",
+  "Free vehicle delivery within Harare",
   "Self-drive and chauffeur options",
   "Flexible rental durations",
   "Friendly WhatsApp-first support",
 ];
 
 export const requirements = [
-  {
-    number: "01",
-    title: "Driver Age",
-    description: "Drivers must be 25 years or older.",
-  },
+  { number: "01", title: "Driver Age", description: "Drivers must be 25 years or older." },
   {
     number: "02",
     title: "Driver's Licence",
@@ -470,21 +466,22 @@ export const requirements = [
   },
   {
     number: "04",
-    title: "Insurance",
-    description: "All VenMax vehicles are insured.",
+    title: "Proof of Residence or Employment",
+    description: "Proof of residence or employment is required.",
   },
+  { number: "05", title: "Insurance", description: "All VenMax vehicles are insured." },
   {
-    number: "05",
+    number: "06",
     title: "Fuel",
     description: "Customers are responsible for fuel used during their rental.",
   },
   {
-    number: "06",
+    number: "07",
     title: "Cross-Border Travel",
     description: "Cross-border travel is currently not offered.",
   },
   {
-    number: "07",
+    number: "08",
     title: "Vehicle Items",
     description: "Lost vehicle items may be charged at applicable market rates.",
   },
@@ -503,11 +500,19 @@ export const paymentMethods = [
   "Other applicable local payment arrangements",
 ];
 
+export const chauffeurFeeNote = "Chauffeur service available for an additional US$20/day.";
+export const deliveryNote = "Free vehicle delivery within Harare.";
+
+// Confirmed by VenMax: standard rentals include 200 km/day free mileage, excess $0.60/km.
+export const standardMileagePolicy =
+  "Standard rentals: 200 km free mileage per day. Excess mileage: $0.60 per km.";
+
+// NOTE: /admin content (faqs table) overrides this list on the live site; keep them in sync.
 export const faqs = [
   {
     question: "What do I need to rent a car?",
     answer:
-      "Drivers must be 25 or older, have held a driver's licence for at least 2 years, and provide both a valid ID and passport.",
+      "Drivers must be 25 or older and have held a driver's licence for at least 2 years. You'll need to provide both a valid ID and passport, plus proof of residence or employment.",
   },
   {
     question: "How does booking work?",
@@ -520,13 +525,29 @@ export const faqs = [
       "Cash, Mukuru, Western Union, WorldRemit, bank transfer, EcoCash, InnBucks and other applicable local payment arrangements.",
   },
   {
+    question: "Is the security deposit refundable?",
+    answer:
+      "Yes — deposits ($100, $300 or $500 depending on the vehicle) are refunded on safe return of the vehicle.",
+  },
+  {
+    question: "How much free mileage do I get?",
+    answer:
+      "Standard rentals include 200 km free mileage per day, with excess mileage charged at $0.60 per km. For rentals of one month or more, unlimited mileage is available, and customized mileage arrangements can be discussed for longer trips.",
+  },
+  {
     question: "Do you offer airport pickup?",
     answer:
-      "Vehicle pickup at the airport is free when you have hired a VenMax vehicle and require it at the airport. Separate Harare airport shuttle services are available at $30 per trip.",
+      "Vehicle pickup at the airport is free when you have hired a VenMax vehicle and require it at the airport. Separately, Harare airport shuttle services are available at $30 per trip.",
+  },
+  {
+    question: "Do you deliver vehicles?",
+    answer:
+      "Yes — free vehicle delivery within Harare for rental customers. This is separate from the airport shuttle ($30 per trip).",
   },
   {
     question: "Can I hire a car with a driver?",
-    answer: "Yes — chauffeur service is available on any vehicle for an additional daily fee.",
+    answer:
+      "Yes — chauffeur service is available for an additional US$20/day on top of the vehicle rental price.",
   },
   {
     question: "Can I arrange a rental from outside Zimbabwe?",
@@ -539,12 +560,6 @@ export const faqs = [
   },
 ];
 
-// TODO(venmax-confirm): legacy mileage policy carried over from the previously
-// approved site. Set to `null` to remove it everywhere it is displayed once
-// VenMax confirms whether it is still current. Intentionally NOT a headline claim.
-export const standardMileagePolicy: string | null =
-  "Standard rentals: 200km free daily mileage, excess billed at $0.60/km.";
-
 export const rentalTerms = [
   {
     label: "Rental Period",
@@ -553,9 +568,10 @@ export const rentalTerms = [
   {
     label: "Mileage",
     value:
-      "Unlimited mileage for rentals of one month or more. Customized mileage arrangements can be discussed for longer trips.",
+      "200 km free per day, excess $0.60/km. Rentals of one month or more: unlimited mileage. Customized arrangements for longer trips.",
   },
-  { label: "Chauffeur Option", value: "Available on any vehicle for an additional daily fee" },
+  { label: "Chauffeur Option", value: chauffeurFeeNote },
+  { label: "Delivery", value: `${deliveryNote} For rental customers.` },
 ];
 
 // ---------------------------------------------------------------------------
