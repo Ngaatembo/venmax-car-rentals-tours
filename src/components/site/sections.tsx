@@ -260,19 +260,36 @@ export function FleetSection() {
           <VehicleCard key={vehicle.slug} vehicle={vehicle} />
         ))}
       </div>
-      <div className="mt-12 rounded-2xl border border-border bg-card p-8 text-center">
-        <h3 className="text-xl">Explore the Full Fleet</h3>
-        <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
-          VenMax has a wide range of vehicles for city driving, family trips, business travel and
-          longer journeys.
-        </p>
-        <a
-          href="/fleet"
-          className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
-        >
-          View All Vehicles
-          <ArrowRight className="h-4 w-4" />
-        </a>
+      <div className="mt-12 grid overflow-hidden rounded-2xl border border-border bg-card md:grid-cols-[1fr_20rem]">
+        <div className="flex flex-col justify-center p-8 text-center md:p-10 md:text-left">
+          <h3 className="text-xl">Explore the Full Fleet</h3>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
+            VenMax has a wide range of vehicles for city driving, family trips, business travel and
+            longer journeys.
+          </p>
+          <div>
+            <a
+              href="/fleet"
+              className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
+            >
+              View All Vehicles
+              <ArrowRight className="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+        <div className="relative aspect-[4/5] bg-secondary md:aspect-auto md:min-h-[26rem]">
+          <img
+            src="/videos/fleet-lineup-poster.jpg"
+            alt="VenMax vehicles parked in a row: a Toyota Hilux, a Mazda CX-5 and a Nissan Serena"
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover object-[50%_50%]"
+          />
+          <AmbientVideo
+            base="/videos/fleet-lineup"
+            poster="/videos/fleet-lineup-poster.jpg"
+            label="A walk along VenMax vehicles parked in a row"
+          />
+        </div>
       </div>
       <p className="mt-6 text-center text-sm text-muted-foreground">
         Daily rates shown. Discounts are available for longer rental periods — message us on
