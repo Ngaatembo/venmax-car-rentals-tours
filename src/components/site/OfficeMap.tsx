@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MapPin, Navigation } from "lucide-react";
-import { company } from "@/data/venmax";
+import { company, googleMaps } from "@/data/venmax";
 
 /**
  * Office location map. The Google Maps embed only loads after the visitor taps
@@ -10,8 +10,8 @@ import { company } from "@/data/venmax";
 export function OfficeMap({ className = "" }: { className?: string }) {
   const [show, setShow] = useState(false);
   const address = company.addressLines.join(", ");
-  const embedUrl = `https://www.google.com/maps?q=${encodeURIComponent(address)}&z=16&output=embed`;
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
+  const embedUrl = googleMaps.embed;
+  const directionsUrl = googleMaps.directions;
 
   return (
     <div className={`flex flex-col overflow-hidden rounded-2xl border border-border bg-card ${className}`}>

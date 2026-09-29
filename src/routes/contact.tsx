@@ -4,7 +4,7 @@ import { Clock, Facebook, Mail, MapPin, MessageCircle, Phone } from "lucide-reac
 import { toast } from "sonner";
 import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
-import { company, whatsappLink } from "@/data/venmax";
+import { company, googleMaps, whatsappLink } from "@/data/venmax";
 import { submitInquiry } from "@/lib/bookings";
 import receptionImage from "@/assets/venmax-reception.jpg";
 import { FormPrivacyNotice } from "@/components/site/LegalPage";
@@ -77,9 +77,7 @@ function ContactPage() {
               <div>
                 <h3 className="text-base">Visit us</h3>
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                    company.addressLines.join(", ")
-                  )}`}
+                  href={googleMaps.place}
                   target="_blank"
                   rel="noreferrer"
                   className="mt-1 block text-sm text-muted-foreground hover:text-foreground hover:underline"

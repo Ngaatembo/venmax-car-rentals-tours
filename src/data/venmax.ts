@@ -109,6 +109,16 @@ export const company = {
 export const tourPhotoCredits =
   "Destination photography via Wikimedia Commons: Victoria Falls — Diego Delso (CC BY-SA 4.0); Hwange — panoramio contributor (CC BY); Great Zimbabwe — Jan Derk (public domain); Matobo Hills — Babakathy (CC BY-SA 3.0); Harare — Tawanda.M (CC BY-SA 4.0).";
 
+// VenMax's own Google Business listing ("Venmax Car Rental & Tours", 27 Lawson Ave).
+// Linking by place ID opens the business page, not a bare pin on the building.
+const googlePlaceId = "ChIJA1_2HxC7MRkR1xly49g39Lw";
+const googlePlaceName = "Venmax Car Rental & Tours";
+export const googleMaps = {
+  place: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(googlePlaceName)}&query_place_id=${googlePlaceId}`,
+  directions: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(googlePlaceName)}&destination_place_id=${googlePlaceId}`,
+  embed: `https://www.google.com/maps?q=${encodeURIComponent(`${googlePlaceName}, 27 Lawson Ave, Harare`)}&z=17&output=embed`,
+};
+
 export function whatsappLink(message: string) {
   return `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(message)}`;
 }
@@ -721,7 +731,7 @@ export const testimonials = [
 // strip. Sourced from VenMax's Google Business Profile panel — update as it changes.
 export const businessFacts = {
   googleRating: 4.9,
-  googleReviewCount: 82,
+  googleReviewCount: 134,
   facebookFollowers: "3.9K+",
   // From VenMax's own "Why Choose Venmax" marketing copy.
   happyClients: "1000+",

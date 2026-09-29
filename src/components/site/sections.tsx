@@ -47,6 +47,7 @@ import {
   standardMileagePolicy,
   chauffeurFeeNote,
   deliveryNote,
+  googleMaps,
   trustPoints,
   whatsappLink,
   whyVenMax,
@@ -1338,7 +1339,9 @@ export function TestimonialsSection() {
             <Star key={i} className="h-4 w-4 fill-primary text-primary" />
           ))}
         </div>
-        100+ Positive Ratings
+        <a href={googleMaps.place} target="_blank" rel="noreferrer" className="hover:underline">
+          {businessFacts.googleRating} on Google · 100+ ratings
+        </a>
       </div>
       <Carousel opts={{ align: "start", loop: true }} className="mt-8">
         <CarouselContent>
@@ -1349,10 +1352,10 @@ export function TestimonialsSection() {
                   <span
                     className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white ${avatarPalette[i % avatarPalette.length]}`}
                   >
-                    {"V"}
+                    {t.name.trim().charAt(0).toUpperCase() || "V"}
                   </span>
                   <div>
-                    <p className="text-sm font-medium text-foreground">Verified Customer</p>
+                    <p className="text-sm font-medium text-foreground">{t.name}</p>
                     <div className="flex gap-0.5">
                       {Array.from({ length: t.rating }).map((_, starIndex) => (
                         <Star
@@ -1367,7 +1370,7 @@ export function TestimonialsSection() {
                   "{t.quote}"
                 </blockquote>
                 <figcaption className="mt-4 text-xs font-normal text-muted-foreground">
-                  Customer Review
+                  Google review
                 </figcaption>
               </figure>
             </CarouselItem>

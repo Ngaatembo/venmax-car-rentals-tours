@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, Linkedin, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import logo from "@/assets/logo.jpg";
-import { company, whatsappLink } from "@/data/venmax";
+import { company, googleMaps, whatsappLink } from "@/data/venmax";
 import { legalLinks } from "./LegalPage";
 
 const links = [
@@ -80,9 +80,7 @@ export function Footer() {
               <li className="flex gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                    company.addressLines.join(", ")
-                  )}`}
+                  href={googleMaps.place}
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-navy-foreground hover:underline"
