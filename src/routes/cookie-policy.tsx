@@ -45,6 +45,14 @@ const sections: LegalSection[] = [
             </>,
           ]}
         />
+        <p>
+          <strong>Google Maps, only if you choose:</strong> the map on the Contact page loads only
+          when you tap "Show map". Google may then set its own cookies, under Google's{" "}
+          <LegalLink href="https://policies.google.com/privacy" external>
+            privacy policy
+          </LegalLink>
+          .
+        </p>
       </>
     ),
   },

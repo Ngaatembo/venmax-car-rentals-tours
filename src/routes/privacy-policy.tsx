@@ -127,6 +127,14 @@ const sections: LegalSection[] = [
               address.
             </>,
             <>
+              <strong>Google Maps</strong> — only if you tap "Show map" on the Contact page, the
+              map is loaded from Google under its own{" "}
+              <LegalLink href="https://policies.google.com/privacy" external>
+                privacy policy
+              </LegalLink>
+              .
+            </>,
+            <>
               <strong>Your chosen payment provider</strong> — for example Mukuru, Western Union,
               WorldRemit, your bank, EcoCash or InnBucks, which process your payment under their
               own terms.
@@ -236,7 +244,7 @@ const sections: LegalSection[] = [
         <p>
           This website uses only the essential browser storage it needs to work — for example,
           remembering that you've closed the cookie notice. There are no advertising or tracking
-          cookies.
+          cookies. The optional Google map on the Contact page only loads if you tap "Show map".
         </p>
         <p>
           Read the full <LegalLink href="/cookie-policy">Cookie Policy</LegalLink>.

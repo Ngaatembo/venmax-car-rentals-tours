@@ -8,6 +8,7 @@ import { company, whatsappLink } from "@/data/venmax";
 import { submitInquiry } from "@/lib/bookings";
 import receptionImage from "@/assets/venmax-reception.jpg";
 import { FormPrivacyNotice } from "@/components/site/LegalPage";
+import { OfficeMap } from "@/components/site/OfficeMap";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -177,19 +178,6 @@ function ContactPage() {
               <MessageCircle className="h-4 w-4" />
               Message us on WhatsApp
             </a>
-            <figure className="max-w-md overflow-hidden rounded-2xl border border-border">
-              <img
-                src={receptionImage}
-                alt="The VenMax Car Rental reception, with the company sign and a desk banner showing fleet vehicles"
-                loading="lazy"
-                width={800}
-                height={1000}
-                className="aspect-[4/5] w-full object-cover"
-              />
-              <figcaption className="bg-card px-4 py-3 text-xs text-muted-foreground">
-                VenMax Car Rental reception
-              </figcaption>
-            </figure>
           </div>
 
           <form
@@ -258,6 +246,29 @@ function ContactPage() {
             )}
             <FormPrivacyNotice opensWhatsApp className="mt-4" />
           </form>
+        </div>
+
+        <div id="find-us" className="mt-14 scroll-mt-28">
+          <h2 className="text-xl sm:text-2xl">Find our office</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {company.addressLines.join(", ")} · {company.hours}
+          </p>
+          <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+            <OfficeMap />
+            <figure className="overflow-hidden rounded-2xl border border-border">
+              <img
+                src={receptionImage}
+                alt="The VenMax Car Rental reception, with the company sign and a desk banner showing fleet vehicles"
+                loading="lazy"
+                width={800}
+                height={1000}
+                className="aspect-[4/5] w-full object-cover lg:aspect-[5/4]"
+              />
+              <figcaption className="bg-card px-4 py-3 text-xs text-muted-foreground">
+                VenMax Car Rental reception
+              </figcaption>
+            </figure>
+          </div>
         </div>
       </Section>
     </>
