@@ -6,6 +6,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
 import { company, whatsappLink } from "@/data/venmax";
 import { submitInquiry } from "@/lib/bookings";
+import receptionImage from "@/assets/venmax-reception.jpg";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -175,6 +176,19 @@ function ContactPage() {
               <MessageCircle className="h-4 w-4" />
               Message us on WhatsApp
             </a>
+            <figure className="max-w-md overflow-hidden rounded-2xl border border-border">
+              <img
+                src={receptionImage}
+                alt="The VenMax Car Rental reception, with the company sign and a desk banner showing fleet vehicles"
+                loading="lazy"
+                width={800}
+                height={1000}
+                className="aspect-[4/5] w-full object-cover"
+              />
+              <figcaption className="bg-card px-4 py-3 text-xs text-muted-foreground">
+                VenMax Car Rental reception
+              </figcaption>
+            </figure>
           </div>
 
           <form
