@@ -105,6 +105,10 @@ export const company = {
   ],
 };
 
+/** Attribution required by the Wikimedia Commons licences of the tour destination photos. */
+export const tourPhotoCredits =
+  "Destination photography via Wikimedia Commons: Victoria Falls — Diego Delso (CC BY-SA 4.0); Hwange — panoramio contributor (CC BY); Great Zimbabwe — Jan Derk (public domain); Matobo Hills — Babakathy (CC BY-SA 3.0); Harare — Tawanda.M (CC BY-SA 4.0).";
+
 export function whatsappLink(message: string) {
   return `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(message)}`;
 }

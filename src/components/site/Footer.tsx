@@ -146,16 +146,11 @@ export function Footer() {
           </div>
         </div>
 
-        <p className="mt-10 text-[11px] leading-relaxed text-navy-foreground/40">
-          Destination photography via Wikimedia Commons: Victoria Falls — Diego Delso (CC BY-SA
-          4.0); Hwange — panoramio contributor (CC BY); Great Zimbabwe — Jan Derk (public domain);
-          Matobo Hills — Babakathy (CC BY-SA 3.0); Harare — Tawanda.M (CC BY-SA 4.0).
-        </p>
-        <div className="mt-6 flex flex-col gap-4 border-t border-navy-foreground/10 pt-6 text-xs text-navy-foreground/50 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-4 border-t border-navy-foreground/10 pt-6 text-xs text-navy-foreground/50 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {company.name}. All rights reserved.
           </p>
-          <nav aria-label="Legal" className="flex flex-wrap items-center gap-y-2">
+          <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-5 gap-y-2 sm:gap-x-0">
             {legalLinks.map((l, i) => (
               <span key={l.href} className="inline-flex items-center whitespace-nowrap">
                 <a
@@ -165,7 +160,7 @@ export function Footer() {
                   {l.label}
                 </a>
                 {i < legalLinks.length - 1 && (
-                  <span aria-hidden="true" className="px-2.5 text-navy-foreground/25">
+                  <span aria-hidden="true" className="hidden px-2.5 text-navy-foreground/25 sm:inline">
                     |
                   </span>
                 )}

@@ -631,6 +631,12 @@ export function ToursTeaserSection() {
           <span className="absolute left-4 top-4 rounded-full bg-navy/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy-foreground">
             {tour.name}
           </span>
+          <a
+            href="/tours#photo-credits"
+            className="absolute bottom-3 right-3 rounded-full bg-navy/70 px-2.5 py-1 text-[10px] text-navy-foreground/80 hover:text-navy-foreground"
+          >
+            Photo credits
+          </a>
         </div>
       </div>
     </Section>
