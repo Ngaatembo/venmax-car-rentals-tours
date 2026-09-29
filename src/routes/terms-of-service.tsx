@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { standardMileagePolicy } from "@/data/venmax";
 import { company } from "@/data/venmax";
 
 export const Route = createFileRoute("/terms-of-service")({
@@ -20,7 +21,7 @@ function TermsOfServicePage() {
 
         <h2>Bookings</h2>
         <p>
-          Submitting a booking request through this website is a request, not a confirmed
+          Sending an enquiry through this website is a request, not a confirmed
           reservation. A booking is only confirmed once VenMax has verified availability and
           contacted you to confirm the details, dates, and price.
         </p>
@@ -28,13 +29,15 @@ function TermsOfServicePage() {
         <h2>Self-drive rental requirements</h2>
         <p>To hire a vehicle for self-drive, you must provide:</p>
         <ul>
-          <li>A valid driver's license held for at least 2 years</li>
-          <li>A valid personal ID or passport</li>
+          <li>Drivers must be 25 years or older</li>
+          <li>A valid driver's licence held for at least 2 years</li>
+          <li>A valid ID and passport</li>
           <li>Proof of residence or employment</li>
         </ul>
         <p>
-          Self-drive rentals include 200km of free daily mileage; excess mileage is charged at
-          $0.60/km. A refundable security deposit is required and is returned after the vehicle
+          {standardMileagePolicy ? `${standardMileagePolicy} ` : ""}
+          Unlimited mileage is available for rentals of one month or more, and customized mileage
+          arrangements can be discussed for longer trips. A refundable security deposit is required and is returned after the vehicle
           is inspected on return, less any deductions for damage, excess mileage, or outstanding
           charges. A driver can be arranged for an additional fee if you'd prefer not to self-drive.
         </p>
@@ -48,9 +51,8 @@ function TermsOfServicePage() {
 
         <h2>Cancellations</h2>
         <p>
-          Please contact us as early as possible if you need to cancel or change a booking.
-          Specific cancellation and refund timeframes will be confirmed with you at the time of
-          booking.
+          In the event of an emergency or change of plans, customers can cancel their rental. VenMax
+          does not charge a cancellation fee and refunds the exact amount paid.
         </p>
 
         <h2>Vehicle condition and liability</h2>

@@ -22,13 +22,13 @@ export const Route = createFileRoute("/book")({
   validateSearch: (search) => searchSchema.parse(search),
   head: () => ({
     meta: [
-      { title: "Request a Booking | VenMax Car Rental & Tours" },
+      { title: "Request a Quote | VenMax Car Rental & Tours" },
       {
         name: "description",
         content:
           "Request a vehicle, chauffeur, airport transfer or tour booking with VenMax in Harare, Zimbabwe.",
       },
-      { property: "og:title", content: "Request a Booking | VenMax" },
+      { property: "og:title", content: "Request a Quote | VenMax" },
       {
         property: "og:description",
         content: "Request a vehicle, chauffeur, airport transfer or tour booking with VenMax.",
@@ -68,7 +68,7 @@ function BookPage() {
     const vehicleName = vehicles.find((v) => v.slug === data.vehicleSlug)?.name;
     const tourName = tours.find((t) => t.slug === data.tourSlug)?.name;
     const lines = [
-      `Hi VenMax, I just submitted a booking request (ref ${ref}).`,
+      `Hi VenMax, I just sent an enquiry (ref ${ref}).`,
       `Service: ${service}`,
       vehicleName ? `Vehicle: ${vehicleName}` : null,
       tourName ? `Tour interest: ${tourName}` : null,
@@ -103,7 +103,7 @@ function BookPage() {
       const link = whatsappLink(buildConfirmMessage(parsed.data, result.reference));
       setReference(result.reference);
       setConfirmLink(link);
-      toast.success("Booking request received.");
+      toast.success("Enquiry received.");
       form.reset();
       setPickupLocation("");
       // Open WhatsApp immediately so VenMax actually sees the request —
@@ -120,18 +120,18 @@ function BookPage() {
   return (
     <>
       <PageHero
-        eyebrow="Booking"
-        title="Request a booking"
-        description="Send us your details and dates — VenMax confirms availability and pricing personally."
+        eyebrow="Enquiry"
+        title="Request a quote"
+        description="Send us your details and dates — VenMax confirms availability and pricing personally. For the fastest response, message us on WhatsApp."
       />
       <Section>
         <div className="mx-auto max-w-3xl">
           {reference ? (
             <div className="rounded-2xl border border-border bg-card p-8 text-center sm:p-12">
               <CheckCircle2 className="mx-auto h-12 w-12 text-primary" />
-              <h2 className="mt-4 text-2xl">Request received</h2>
+              <h2 className="mt-4 text-2xl">Enquiry received</h2>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Your booking request reference is{" "}
+                Your enquiry reference is{" "}
                 <span className="font-semibold text-foreground">{reference}</span>. We've opened
                 WhatsApp with your details pre-filled — send that message so VenMax can confirm
                 availability and final pricing with you directly. If WhatsApp didn't open, use the
@@ -156,7 +156,7 @@ function BookPage() {
                   }}
                   className="rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-secondary"
                 >
-                  Make another request
+                  Send another enquiry
                 </button>
                 <a
                   href="/#vehicles"
@@ -271,7 +271,7 @@ function BookPage() {
                 disabled={pending}
                 className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground disabled:opacity-60 sm:w-auto"
               >
-                {pending ? "Submitting…" : "Submit booking request"}
+                {pending ? "Sending…" : "Send enquiry"}
               </button>
             </form>
           )}

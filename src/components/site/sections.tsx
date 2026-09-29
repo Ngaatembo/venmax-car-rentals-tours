@@ -40,6 +40,7 @@ import {
   paymentMethods,
   requirements,
   rentalTerms,
+  standardMileagePolicy,
   trustPoints,
   whatsappLink,
   whyVenMax,
@@ -951,6 +952,9 @@ export function RequirementsFaqSection() {
           </div>
         ))}
       </div>
+      {standardMileagePolicy && (
+        <p className="mt-3 text-center text-xs text-muted-foreground">{standardMileagePolicy}</p>
+      )}
 
       <div className="mx-auto mt-12 max-w-2xl">
         <h3 className="text-center text-xl">Frequently Asked Questions</h3>

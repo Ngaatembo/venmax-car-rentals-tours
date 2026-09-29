@@ -104,7 +104,7 @@ function ChauffeurPage() {
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl sm:text-4xl">Ready to book a chauffeur?</h2>
           <p className="mt-4 text-navy-foreground/75">
-            Tell us the vehicle, occasion and dates on WhatsApp, or submit a booking request and
+            Tell us the vehicle, occasion and dates on WhatsApp, or send an enquiry and
             we'll confirm availability and pricing directly.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -121,7 +121,7 @@ function ChauffeurPage() {
               to="/book"
               className="inline-flex items-center rounded-full border border-navy-foreground/30 px-6 py-3 text-sm font-semibold text-navy-foreground hover:bg-navy-foreground/10"
             >
-              Submit a booking request
+              Send an enquiry
             </Link>
           </div>
         </div>

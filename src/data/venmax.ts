@@ -12,11 +12,16 @@ import fit from "@/assets/honda-fit.jpg";
 import serena from "@/assets/nissan-serena.jpg";
 import cx5 from "@/assets/mazda-cx5.jpg";
 import d4d from "@/assets/toyota-d4d.jpg";
+// TODO(venmax-image): VenMax wants a 2017 Honda Vezel photo. To replace, overwrite
+// src/assets/honda-vezel.jpg with the correct image (same filename) — nothing else changes.
 import vezel from "@/assets/honda-vezel.jpg";
 import xtrail from "@/assets/nissan-xtrail.jpg";
 import fortuner from "@/assets/toyota-fortuner.jpg";
 import prado from "@/assets/toyota-prado.jpg";
-import sport from "@/assets/range-rover-sport.jpg";
+// PENDING: no authentic Range Rover Autobiography photo yet. Do not reuse the Sport photo.
+// To finish: drop the real photo in src/assets, import it here instead of the placeholder
+// (or upload it via the admin panel, which overrides this).
+import sport from "@/assets/photo-pending.svg";
 import landCruiser from "@/assets/toyota-land-cruiser.jpg";
 // Tour & hero photography: real photos via Wikimedia Commons (free licenses, CC BY-SA / CC BY).
 // Victoria Falls aerial: Diego Delso (CC BY-SA 4.0) · Hwange elephants: panoramio contributor (CC BY)
@@ -528,6 +533,12 @@ export const faqs = [
   },
 ];
 
+// TODO(venmax-confirm): legacy mileage policy carried over from the previously
+// approved site. Set to `null` to remove it everywhere it is displayed once
+// VenMax confirms whether it is still current. Intentionally NOT a headline claim.
+export const standardMileagePolicy: string | null =
+  "Standard rentals: 200km free daily mileage, excess billed at $0.60/km.";
+
 export const rentalTerms = [
   {
     label: "Rental Period",
@@ -536,7 +547,7 @@ export const rentalTerms = [
   {
     label: "Mileage",
     value:
-      "200km free daily mileage (excess $0.60/km). Unlimited mileage for rentals of one month or more.",
+      "Unlimited mileage for rentals of one month or more. Customized mileage arrangements can be discussed for longer trips.",
   },
   { label: "Chauffeur Option", value: "Available on any vehicle for an additional daily fee" },
 ];

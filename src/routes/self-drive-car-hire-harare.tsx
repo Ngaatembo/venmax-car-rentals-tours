@@ -131,7 +131,7 @@ function SelfDrivePage() {
               to="/book"
               className="inline-flex items-center rounded-full border border-navy-foreground/30 px-6 py-3 text-sm font-semibold text-navy-foreground hover:bg-navy-foreground/10"
             >
-              Submit a booking request
+              Send an enquiry
             </Link>
           </div>
         </div>
