@@ -30,6 +30,7 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import airportImage from "@/assets/airport-pickup.jpg";
 import chauffeurImage from "@/assets/range-rover-sport.jpg";
 import roadImage from "@/assets/hero-harare.jpg";
+import brandPromiseImage from "@/assets/venmax-serena-road.jpg";
 import logo from "@/assets/logo-header.png";
 import {
   businessFacts,
@@ -1272,37 +1273,32 @@ export function WhySection() {
   );
 }
 
-// Full-bleed brand photo with an overlay quote — uses a real VenMax tour
-// photo rather than a new asset.
+// Brand banner beside a real VenMax photo: the Serena out on a gravel road trip.
+// Photo-beside-text (stacked on phones) because the client photo is too small to
+// stretch full-bleed without going soft.
 export function BrandPromiseSection() {
-  const tours = useTours();
-  // Second tour photo, so it doesn't repeat the Victoria Falls image in the Custom Tours teaser.
-  const tour = tours[1] ?? tours[0];
-  const image = tour?.image;
-  if (!image) return null;
-
   return (
-    <section className="relative flex min-h-[26rem] items-end overflow-hidden bg-navy text-navy-foreground sm:min-h-[32rem]">
-      <img
-        src={image}
-        alt={tour ? `${tour.name}, Zimbabwe` : "Zimbabwe"}
-        loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-navy/10" />
-      <div className="relative mx-auto w-full max-w-4xl px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">
-        <p className="eyebrow text-primary">Our Promise</p>
-        <h2 className="mt-3 max-w-xl text-3xl leading-tight sm:text-4xl">
-          Drive More. Spend Less. Travel Better.
-        </h2>
-        <p className="mt-3 text-sm text-navy-foreground/80">VenMax Car Rental &amp; Tours</p>
+    <section className="bg-navy text-navy-foreground">
+      <div className="grid lg:min-h-[30rem] lg:grid-cols-2">
+        <div className="relative aspect-[4/3] lg:order-2 lg:aspect-auto">
+          <img
+            src={brandPromiseImage}
+            alt="A VenMax Nissan Serena on a gravel road through the trees"
+            loading="lazy"
+            width={676}
+            height={507}
+            className="absolute inset-0 h-full w-full object-cover object-[50%_60%]"
+          />
+          <div className="absolute inset-y-0 left-0 hidden w-1/4 bg-gradient-to-r from-navy to-transparent lg:block" />
+        </div>
+        <div className="flex flex-col justify-center px-4 py-12 sm:px-6 lg:py-16 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pr-12">
+          <p className="eyebrow text-primary">Our Promise</p>
+          <h2 className="mt-3 max-w-xl text-3xl leading-tight sm:text-4xl">
+            Drive More. Spend Less. Travel Better.
+          </h2>
+          <p className="mt-3 text-sm text-navy-foreground/80">VenMax Car Rental &amp; Tours</p>
+        </div>
       </div>
-      <a
-        href="/tours#photo-credits"
-        className="absolute bottom-3 right-3 rounded-full bg-navy/70 px-2.5 py-1 text-[10px] text-navy-foreground/80 hover:text-navy-foreground"
-      >
-        Photo credits
-      </a>
     </section>
   );
 }
