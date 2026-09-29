@@ -225,11 +225,6 @@ const sections: LegalSection[] = [
           <LegalLink href="#contact-us">Contact Us</LegalLink>. We may need to confirm who you are
           before acting on it.
         </p>
-        <p>
-          If you're unhappy with how your information has been handled, you can complain to the
-          Postal and Telecommunications Regulatory Authority of Zimbabwe (POTRAZ), Zimbabwe's data
-          protection authority.
-        </p>
       </>
     ),
   },
