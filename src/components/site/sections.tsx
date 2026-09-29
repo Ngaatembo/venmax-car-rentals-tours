@@ -1187,7 +1187,7 @@ export function WhySection() {
     { value: `${businessFacts.googleRating}★`, label: "Google Rating" },
     { value: startingPrice ? `$${startingPrice}` : "$40", label: "Starting Price/Day" },
     { value: businessFacts.happyClients, label: "Happy Clients" },
-    { value: content["vehicle_models_display"] || fleetCountLabel(vehicles.length)?.replace(" vehicles", ""), label: "Vehicles" },
+    { value: content["vehicle_models_display"] || fleetCountLabel(vehicles.length)?.replace(" vehicles", ""), label: "Vehicle Models" },
   ].filter((st): st is { value: string; label: string } => Boolean(st.value));
 
   const featureRows = whyVenMax.slice(0, 4);
@@ -1241,14 +1241,16 @@ export function WhySection() {
 // photo rather than a new asset.
 export function BrandPromiseSection() {
   const tours = useTours();
-  const image = tours[0]?.image;
+  // Second tour photo, so it doesn't repeat the Victoria Falls image in the Custom Tours teaser.
+  const tour = tours[1] ?? tours[0];
+  const image = tour?.image;
   if (!image) return null;
 
   return (
     <section className="relative flex min-h-[26rem] items-end overflow-hidden bg-navy text-navy-foreground sm:min-h-[32rem]">
       <img
         src={image}
-        alt="A VenMax vehicle on the road in Zimbabwe"
+        alt={tour ? `${tour.name}, Zimbabwe` : "Zimbabwe"}
         loading="lazy"
         className="absolute inset-0 h-full w-full object-cover"
       />
@@ -1260,6 +1262,12 @@ export function BrandPromiseSection() {
         </h2>
         <p className="mt-3 text-sm text-navy-foreground/80">VenMax Car Rental &amp; Tours</p>
       </div>
+      <a
+        href="/tours#photo-credits"
+        className="absolute bottom-3 right-3 rounded-full bg-navy/70 px-2.5 py-1 text-[10px] text-navy-foreground/80 hover:text-navy-foreground"
+      >
+        Photo credits
+      </a>
     </section>
   );
 }

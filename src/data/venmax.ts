@@ -74,7 +74,7 @@ export const company = {
     "Special rates & discounts tailored to your needs",
     "Flexible short- and long-term rental agreements",
     "Driver hire services for convenience",
-    "Easy WhatsApp booking, for local and diaspora customers",
+    "24/7 customer support for uninterrupted assistance",
     "Safe, clean, affordable, and reliable vehicles",
   ],
   leadership:
@@ -99,7 +99,7 @@ export const company = {
     "Just like Eland/Mhofu/Nhuka, VenMax is a total rockstar of strength and is ridiculously good at keeping up with the global craziness and customer whims!",
   // Verbatim from VenMax's own "Why Choose Venmax?" marketing material.
   aboutParagraphs: [
-    "VenMax is a Zimbabwean car hiring company driven by progressive entrepreneurs who are passionate about revolutionising the mobility sector. Anchored on innovation, customer satisfaction and a commitment to making a visible, positive impact that empowers all stakeholders, VenMax is committed to redefining the standards of excellence and optimally balancing service provision and sustainability.",
+    "VenMax is a bold car hiring company driven by progressive entrepreneurs who are passionate about revolutionising the mobility sector. Anchored on innovation, customer satisfaction and a commitment to making a visible, positive impact that empowers all stakeholders, VenMax is poised to disrupt the market by redefining the standards of excellence and optimally balancing service provision and sustainability.",
     "We pride ourselves on delivering quality service with a fleet of well-maintained vehicles, meticulously serviced to keep every journey safe and comfortable. We've served 1000+ satisfied clients who trust and believe in our offerings.",
     "VenMax has symbiotic partnerships with several car rental entities and travel agencies to meet every customer need. These synergies enable us to access services or vehicles which may not be in our own fleet, ensuring the best options for our clientele.",
   ],

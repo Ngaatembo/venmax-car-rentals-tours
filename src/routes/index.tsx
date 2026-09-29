@@ -14,6 +14,12 @@ import {
   ToursTeaserSection,
   TestimonialsSection,
   ValueCardsSection,
+  WelcomeSection,
+  AboutSection,
+  MissionVisionSection,
+  WhySection,
+  BrandPromiseSection,
+  SocialShowcaseSection,
 } from "@/components/site/sections";
 import { BookingWidget } from "@/components/site/BookingWidget";
 import { whatsappLink } from "@/data/venmax";
@@ -90,15 +96,21 @@ function Index() {
       </div>
       <ValueCardsSection />
       <FleetSection />
+      <WelcomeSection />
+      <AboutSection showCta />
+      <MissionVisionSection />
       <HowItWorksSection />
       <AirportSection />
       <DiasporaSection />
       <ChauffeurSection />
       <MileageSection />
       <ToursTeaserSection />
+      <WhySection />
+      <BrandPromiseSection />
       <BookingPaymentSection />
       <CancellationSection />
       <TestimonialsSection />
+      <SocialShowcaseSection />
       <RequirementsFaqSection />
       <BookingCta />
     </div>

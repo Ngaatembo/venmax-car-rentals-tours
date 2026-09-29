@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { to: "/", label: "Home" },
+  { to: "/about", label: "About" },
   { to: "/fleet", label: "Fleet" },
   { to: "/#how-it-works", label: "How It Works" },
   { to: "/diaspora", label: "For Diaspora" },
@@ -62,12 +63,12 @@ export function Header() {
         </Link>
 
         <div className="flex items-center gap-2">
-          <nav className="hidden items-center gap-1 xl:flex">
+          <nav className="hidden items-center gap-0.5 xl:flex">
             {navItems.map((item) => (
               <a
                 key={item.to}
                 href={item.to}
-                className="rounded-full px-3.5 py-2 text-sm font-medium text-navy-foreground/70 transition-colors hover:text-navy-foreground"
+                className="whitespace-nowrap rounded-full px-2.5 py-2 text-sm font-medium text-navy-foreground/70 transition-colors hover:text-navy-foreground"
               >
                 {item.label}
               </a>
@@ -78,7 +79,7 @@ export function Header() {
             href={whatsappLink("Hello VenMax, I'd like to enquire about a rental.")}
             target="_blank"
             rel="noreferrer"
-            className="hidden items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 sm:inline-flex"
+            className="hidden shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 sm:inline-flex"
           >
             <MessageCircle className="h-4 w-4" />
             Book on WhatsApp
