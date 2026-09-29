@@ -10,7 +10,8 @@ import {
   HowItWorksSection,
   MileageSection,
   RequirementsFaqSection,
-  ServicesSection,
+  ChauffeurSection,
+  ToursTeaserSection,
   TestimonialsSection,
   ValueCardsSection,
 } from "@/components/site/sections";
@@ -92,10 +93,11 @@ function Index() {
       <HowItWorksSection />
       <AirportSection />
       <DiasporaSection />
+      <ChauffeurSection />
       <MileageSection />
+      <ToursTeaserSection />
       <BookingPaymentSection />
       <CancellationSection />
-      <ServicesSection />
       <TestimonialsSection />
       <RequirementsFaqSection />
       <BookingCta />

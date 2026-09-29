@@ -35,6 +35,7 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
           loading="lazy"
           width={1024}
           height={768}
+          style={vehicle.imagePosition ? { objectPosition: vehicle.imagePosition } : undefined}
           className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
         />
         {vehicle.badge && (
@@ -96,7 +97,12 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-h-[92svh] overflow-y-auto p-0 sm:max-w-lg">
           <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
-            <img src={vehicle.image} alt={vehicle.name} className="h-full w-full object-cover" />
+            <img
+              src={vehicle.image}
+              alt={vehicle.name}
+              style={vehicle.imagePosition ? { objectPosition: vehicle.imagePosition } : undefined}
+              className="h-full w-full object-cover"
+            />
             <span className="absolute left-4 top-4 rounded-full bg-navy/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy-foreground">
               {isTruck ? "Truck" : vehicle.category}
             </span>

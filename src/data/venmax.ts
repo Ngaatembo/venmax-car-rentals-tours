@@ -143,6 +143,8 @@ export type Vehicle = {
   /** Admin status: available | reserved | rented | maintenance. Inactive vehicles are never listed. */
   status?: string | undefined;
   isFeatured?: boolean | undefined;
+  /** CSS object-position for the card crop, e.g. "50% 60%" (keeps the vehicle in frame). */
+  imagePosition?: string | undefined;
   badge?: string | undefined;
 };
 
@@ -194,6 +196,7 @@ export const vehicles: Vehicle[] = [
   },
   {
     slug: "nissan-serena",
+    imagePosition: "50% 55%",
     name: "Nissan Serena Hybrid",
     category: "Family MPV",
     priceLabel: "$70/day",
@@ -253,6 +256,7 @@ export const vehicles: Vehicle[] = [
   },
   {
     slug: "toyota-d4d",
+    imagePosition: "50% 55%",
     name: "Toyota Hilux D4D Truck",
     category: "Truck",
     priceLabel: "$120/day",
@@ -282,6 +286,7 @@ export const vehicles: Vehicle[] = [
   },
   {
     slug: "toyota-prado",
+    imagePosition: "42% 55%",
     name: "Toyota Prado",
     category: "Premium 4x4",
     priceLabel: "$300/day",
@@ -296,6 +301,7 @@ export const vehicles: Vehicle[] = [
   },
   {
     slug: "toyota-land-cruiser",
+    imagePosition: "50% 62%",
     name: "Toyota Land Cruiser",
     category: "Premium 4x4",
     priceLabel: "$400/day",

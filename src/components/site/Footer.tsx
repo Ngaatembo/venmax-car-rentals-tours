@@ -145,7 +145,12 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-4 border-t border-navy-foreground/10 pt-6 text-xs text-navy-foreground/50 sm:flex-row sm:items-center sm:justify-between">
+        <p className="mt-10 text-[11px] leading-relaxed text-navy-foreground/40">
+          Destination photography via Wikimedia Commons: Victoria Falls — Diego Delso (CC BY-SA
+          4.0); Hwange — panoramio contributor (CC BY); Great Zimbabwe — Jan Derk (public domain);
+          Matobo Hills — Babakathy (CC BY-SA 3.0); Harare — Tawanda.M (CC BY-SA 4.0).
+        </p>
+        <div className="mt-6 flex flex-col gap-4 border-t border-navy-foreground/10 pt-6 text-xs text-navy-foreground/50 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {company.name}. All rights reserved.
           </p>

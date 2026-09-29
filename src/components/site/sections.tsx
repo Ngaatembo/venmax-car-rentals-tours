@@ -29,6 +29,7 @@ import {
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import airportImage from "@/assets/airport-pickup.jpg";
 import chauffeurImage from "@/assets/range-rover-sport.jpg";
+import roadImage from "@/assets/hero-harare.jpg";
 import logo from "@/assets/logo-header.png";
 import {
   businessFacts,
@@ -504,101 +505,109 @@ export function FleetCatalogue() {
   );
 }
 
-export function ServicesSection() {
-  const tours = useTours();
+export function ChauffeurSection() {
   const services = useServices();
-  const airport = services.find((s) => s.slug === "airport-transfer");
   const chauffeur = services.find((s) => s.slug === "chauffeur");
-  const featuredTour = tours[0];
-
-  const cards = [
-    airport && {
-      key: "airport",
-      eyebrow: "RGM International Airport",
-      title: "Airport Transfers",
-      description: airport.description,
-      image: airportImage,
-      badge: "$30 per trip",
-      cta: "Book Transfer",
-      href: whatsappLink(airport.whatsapp),
-    },
-    chauffeur && {
-      key: "chauffeur",
-      eyebrow: "Professional Drivers",
-      title: "Chauffeur Services",
-      description: chauffeur.description,
-      image: chauffeurImage,
-      badge: "With a Driver",
-      cta: "Book Chauffeur",
-      href: whatsappLink(chauffeur.whatsapp),
-    },
-    featuredTour && {
-      key: "tours",
-      eyebrow: "Zimbabwe Experiences",
-      title: "Custom Tours",
-      description:
-        "Tailored travel packages to Victoria Falls, Hwange, Great Zimbabwe and beyond — corporate retreats or family safaris.",
-      image: featuredTour.image,
-      badge: "Custom Itinerary",
-      cta: "Plan Your Tour",
-      href: "/tours" as const,
-    },
-  ].filter((c): c is NonNullable<typeof c> => Boolean(c));
 
   return (
     <Section id="services">
-      <SectionHeading
-        eyebrow="Services & Tours"
-        title="Beyond Just Car Rental"
-        description="From airport pickups to custom safari itineraries, VenMax delivers end-to-end transportation across Zimbabwe."
-      />
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {cards.map((card) => (
-          <article
-            key={card.key}
-            className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-lg"
+      <div className="grid items-center gap-10 lg:grid-cols-2">
+        <div className="relative order-2 aspect-[4/5] overflow-hidden rounded-2xl bg-navy lg:order-none lg:aspect-auto lg:min-h-[30rem]">
+          <img
+            src={chauffeurImage}
+            alt="A black VenMax executive SUV available with a professional driver"
+            loading="lazy"
+            width={678}
+            height={1080}
+            // Tall photo: the vehicle sits in the lower-middle of the frame.
+            className="absolute inset-0 h-full w-full object-cover object-[50%_62%]"
+          />
+          <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground">
+            With a Driver
+          </span>
+        </div>
+        <div>
+          <SectionHeading
+            eyebrow="Professional Drivers"
+            title="Chauffeur Services"
+            description={
+              chauffeur?.description ??
+              "Sit back with a professional driver for business meetings, events and long-distance travel."
+            }
+          />
+          <ul className="mt-6 space-y-3 text-sm">
+            {[
+              "Executive travel with a professional driver",
+              "Business meetings, events and long-distance journeys",
+              "Available on any vehicle for an additional daily fee",
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-3">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                {item}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <a
+              href={whatsappLink(
+                chauffeur?.whatsapp ?? "Hello VenMax, I'd like to enquire about your chauffeur services.",
+              )}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Book Chauffeur
+            </a>
+            <a
+              href="/chauffeur-service-harare"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-primary"
+            >
+              Learn more
+              <ArrowRight className="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+export function ToursTeaserSection() {
+  const tours = useTours();
+  const tour = tours[0];
+  if (!tour) return null;
+
+  return (
+    <Section tone="surface" id="experiences">
+      <div className="grid items-center gap-10 lg:grid-cols-2">
+        <div>
+          <SectionHeading
+            eyebrow="Zimbabwe Experiences"
+            title="Custom Tours"
+            description="Tailored travel packages to Victoria Falls, Hwange, Great Zimbabwe and beyond — corporate retreats or family safaris."
+          />
+          <a
+            href="/tours"
+            className="mt-8 inline-flex items-center gap-2 rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold transition-colors hover:bg-secondary"
           >
-            <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
-              {card.image && (
-                <img
-                  src={card.image}
-                  alt={card.title}
-                  loading="lazy"
-                  className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                />
-              )}
-              <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground">
-                {card.badge}
-              </span>
-            </div>
-            <div className="flex flex-1 flex-col p-6">
-              <p className="eyebrow">{card.eyebrow}</p>
-              <h3 className="mt-2 text-lg">{card.title}</h3>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-                {card.description}
-              </p>
-              {card.href.startsWith("/") ? (
-                <Link
-                  to={card.href}
-                  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary"
-                >
-                  {card.cta}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              ) : (
-                <a
-                  href={card.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary"
-                >
-                  {card.cta}
-                  <ArrowRight className="h-4 w-4" />
-                </a>
-              )}
-            </div>
-          </article>
-        ))}
+            Plan Your Tour
+            <ArrowRight className="h-4 w-4" />
+          </a>
+        </div>
+        <div className="relative aspect-[16/11] overflow-hidden rounded-2xl">
+          <img
+            src={tour.image}
+            alt={`${tour.name}, Zimbabwe`}
+            loading="lazy"
+            width={1920}
+            height={1278}
+            className="h-full w-full object-cover object-[50%_45%]"
+          />
+          <span className="absolute left-4 top-4 rounded-full bg-navy/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy-foreground">
+            {tour.name}
+          </span>
+        </div>
       </div>
     </Section>
   );
@@ -611,15 +620,19 @@ export function AirportSection() {
   return (
     <Section id="airport">
       <div className="grid items-center gap-12 lg:grid-cols-2">
-        <div className="relative aspect-[3/4] overflow-hidden rounded-2xl sm:aspect-[3/4] lg:aspect-auto lg:min-h-[28rem]">
+        <div className="relative aspect-[4/5] overflow-hidden rounded-2xl lg:aspect-auto lg:min-h-[30rem]">
           <img
             src={airportImage}
-            alt="VenMax chauffeur meeting an arriving traveller at the airport"
+            alt="A VenMax Toyota Hilux parked in front of Harare's airport control tower"
             loading="lazy"
             width={1200}
             height={1600}
-            className="h-full w-full object-cover object-center"
+            // Portrait photo: keep the control tower AND the front of the vehicle in frame.
+            className="absolute inset-0 h-full w-full object-cover object-[50%_42%] lg:object-[50%_25%]"
           />
+          <span className="absolute left-4 top-4 rounded-full bg-navy/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy-foreground">
+            Airport Services
+          </span>
         </div>
         <div>
           <SectionHeading
@@ -738,30 +751,48 @@ export function HowItWorksSection() {
 export function MileageSection() {
   return (
     <Section tone="surface" id="mileage">
-      <div className="grid items-center gap-8 lg:grid-cols-2">
-        <SectionHeading
-          eyebrow="Long-Distance"
-          title="Flexible Mileage for Longer Trips"
-          description="Planning a longer journey? VenMax can discuss customized mileage arrangements based on your trip."
-        />
-        <div className="space-y-3 text-sm">
-          <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5">
-            <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-            For rentals of one month or more, unlimited mileage is available.
+      <div className="grid items-center gap-10 lg:grid-cols-2">
+        <div className="relative aspect-[16/11] overflow-hidden rounded-2xl">
+          <img
+            src={roadImage}
+            alt="A long tree-lined road in Zimbabwe"
+            loading="lazy"
+            width={1920}
+            height={1080}
+            // Road vanishes toward the centre-left; keep it and the tree canopy in frame on mobile.
+            className="h-full w-full object-cover object-[42%_50%]"
+          />
+          <span className="absolute left-4 top-4 rounded-full bg-navy/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy-foreground">
+            Long-distance
+          </span>
+        </div>
+        <div>
+          <SectionHeading
+            eyebrow="Long-Distance"
+            title="Flexible Mileage for Longer Trips"
+            description="Planning a longer journey? VenMax can discuss customized mileage arrangements based on your trip."
+          />
+          <div className="mt-6 space-y-3 text-sm">
+            <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5">
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              For rentals of one month or more, unlimited mileage is available.
+            </div>
+            <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5">
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              Customized mileage packages are available based on individual trip requirements.
+            </div>
+            <a
+              href={whatsappLink(
+                "Hello VenMax, I'm planning a longer trip and would like to discuss mileage.",
+              )}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-primary"
+            >
+              Discuss my trip on WhatsApp
+              <ArrowRight className="h-4 w-4" />
+            </a>
           </div>
-          <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5">
-            <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-            Customized mileage packages are available based on individual trip requirements.
-          </div>
-          <a
-            href={whatsappLink("Hello VenMax, I'm planning a longer trip and would like to discuss mileage.")}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-primary"
-          >
-            Discuss my trip on WhatsApp
-            <ArrowRight className="h-4 w-4" />
-          </a>
         </div>
       </div>
     </Section>
@@ -798,6 +829,97 @@ export function BookingPaymentSection() {
   );
 }
 
+const marketFlags: Record<string, string> = {
+  UK: "🇬🇧",
+  USA: "🇺🇸",
+  Canada: "🇨🇦",
+  Australia: "🇦🇺",
+  "South Africa": "🇿🇦",
+  Sweden: "🇸🇪",
+  Europe: "🇪🇺",
+};
+
+/**
+ * Dedicated diaspora visual. VenMax has no genuine arrivals/traveller photograph yet, and
+ * a stock photo could be mistaken for a real VenMax customer — so this is an obvious
+ * illustration of the story: booked from abroad over WhatsApp, vehicle ready on arrival.
+ * Swap for a real photo by replacing this component's body with an <img>.
+ */
+function DiasporaVisual() {
+  return (
+    <div className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-2xl bg-gradient-to-br from-[#16213a] via-navy to-[#0b1220] lg:mx-0 lg:ml-auto">
+      <svg
+        viewBox="0 0 400 500"
+        className="absolute inset-0 h-full w-full"
+        preserveAspectRatio="xMidYMid meet"
+        role="img"
+        aria-label="Illustration: a rental arranged on WhatsApp from abroad, with the vehicle ready on arrival in Zimbabwe"
+      >
+        <defs>
+          <linearGradient id="dv-glow" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#ffffff" stopOpacity="0.10" />
+            <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <circle cx="320" cy="90" r="70" fill="url(#dv-glow)" />
+        {/* flight path from abroad to Zimbabwe */}
+        <path
+          d="M50 150 C 150 40, 300 60, 330 250"
+          fill="none"
+          stroke="#ffffff"
+          strokeOpacity="0.55"
+          strokeWidth="2"
+          strokeDasharray="4 8"
+          strokeLinecap="round"
+        />
+        <circle cx="50" cy="150" r="7" fill="#ffffff" fillOpacity="0.8" />
+        <g transform="translate(330 262)">
+          <circle r="16" fill="#d9002f" />
+          <circle r="6" fill="#fff" />
+        </g>
+        {/* plane */}
+        <g transform="translate(190 68) rotate(35)" fill="#ffffff">
+          <path d="M0 -14 L4 -3 L20 5 L20 9 L4 5 L3 14 L8 18 L8 21 L0 19 L-8 21 L-8 18 L-3 14 L-4 5 L-20 9 L-20 5 L-4 -3 Z" />
+        </g>
+        <g transform="translate(0 -70)">
+        {/* road */}
+        <path d="M-10 470 L410 420 L410 510 L-10 510 Z" fill="#0b1220" />
+        <path d="M0 462 L400 416" stroke="#ffffff" strokeOpacity="0.35" strokeWidth="2" strokeDasharray="14 12" />
+        {/* car silhouette */}
+        <g transform="translate(150 372)" fill="#ffffff" fillOpacity="0.92">
+          <path d="M0 52 L8 30 C12 20 20 14 32 14 L88 14 C100 14 108 20 114 30 L130 44 L136 46 C140 47 142 50 142 54 L142 60 L0 60 Z" />
+          <circle cx="34" cy="62" r="12" fill="#0b1220" />
+          <circle cx="34" cy="62" r="6" fill="#ffffff" fillOpacity="0.9" />
+          <circle cx="110" cy="62" r="12" fill="#0b1220" />
+          <circle cx="110" cy="62" r="6" fill="#ffffff" fillOpacity="0.9" />
+        </g>
+        {/* suitcase */}
+        <g transform="translate(60 396)">
+          <rect x="0" y="10" width="46" height="52" rx="7" fill="#d9002f" />
+          <rect x="14" y="0" width="18" height="12" rx="4" fill="none" stroke="#ffffff" strokeWidth="3" />
+          <rect x="6" y="20" width="34" height="3" rx="1.5" fill="#ffffff" fillOpacity="0.5" />
+          <rect x="6" y="30" width="34" height="3" rx="1.5" fill="#ffffff" fillOpacity="0.5" />
+        </g>
+        </g>
+        {/* chat bubble */}
+        <g transform="translate(40 200)">
+          <rect width="150" height="70" rx="16" fill="#25D366" />
+          <path d="M28 70 L20 92 L50 70 Z" fill="#25D366" />
+          <rect x="18" y="18" width="98" height="8" rx="4" fill="#ffffff" fillOpacity="0.9" />
+          <rect x="18" y="34" width="70" height="8" rx="4" fill="#ffffff" fillOpacity="0.7" />
+          <path d="M112 48 l8 8 l16 -18" fill="none" stroke="#fff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+        </g>
+      </svg>
+      <span className="absolute left-4 top-4 rounded-full bg-navy-foreground/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy">
+        Arrange before you arrive
+      </span>
+      <p className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-5 pt-12 text-sm text-navy-foreground/90">
+        You're abroad. You're coming to Zimbabwe. Your rental can already be arranged.
+      </p>
+    </div>
+  );
+}
+
 // Reused on the homepage teaser and (with `full`) the dedicated /diaspora page.
 export function DiasporaSection({ full = false }: { full?: boolean } = {}) {
   return (
@@ -814,8 +936,11 @@ export function DiasporaSection({ full = false }: { full?: boolean } = {}) {
             {diasporaMarkets.map((m) => (
               <span
                 key={m}
-                className="rounded-full border border-navy-foreground/30 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-navy-foreground"
+                className="inline-flex items-center gap-2 rounded-full border border-navy-foreground/30 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-navy-foreground"
               >
+                <span aria-hidden="true" className="text-sm leading-none">
+                  {marketFlags[m]}
+                </span>
                 {m}
               </span>
             ))}
@@ -843,16 +968,7 @@ export function DiasporaSection({ full = false }: { full?: boolean } = {}) {
             )}
           </div>
         </div>
-        <div className="relative aspect-[3/4] overflow-hidden rounded-2xl sm:aspect-[3/4] lg:aspect-auto lg:min-h-[24rem]">
-          <img
-            src={airportImage}
-            alt="VenMax vehicle pickup for an arriving traveller at the airport"
-            loading="lazy"
-            width={1200}
-            height={1600}
-            className="h-full w-full object-cover object-center"
-          />
-        </div>
+        <DiasporaVisual />
       </div>
     </Section>
   );
