@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -8,6 +9,7 @@ import {
   Instagram,
   KeyRound,
   MapPin,
+  Search,
   MessageCircle,
   Plane,
   Play,
@@ -35,8 +37,8 @@ import {
   diasporaMarkets,
   howItWorks,
   valueCards,
-  getVehicle,
-  modelOfTheMonthSlug,
+  fleetCountLabel,
+  type Vehicle,
   paymentMethods,
   requirements,
   rentalTerms,
@@ -45,7 +47,7 @@ import {
   whatsappLink,
   whyVenMax,
 } from "@/data/venmax";
-import { useVehicles, useTours, useSiteContent, useServices, useFaqs, useTestimonials } from "@/lib/live-content";
+import { useFleet, useVehicles, useTours, useSiteContent, useServices, useFaqs, useTestimonials } from "@/lib/live-content";
 import { cn } from "@/lib/utils";
 
 const serviceIcons = {
@@ -218,75 +220,285 @@ export function WelcomeSection() {
   );
 }
 
-// Small teaser for one spotlighted vehicle, shown right under the hero
-// booking widget. Change `modelOfTheMonthSlug` in src/data/venmax.ts to
-// rotate the feature — no redesign needed.
-export function ModelOfMonthSection() {
-  const vehicles = useVehicles();
-  const vehicle =
-    vehicles.find((v) => v.slug === modelOfTheMonthSlug) ?? getVehicle(modelOfTheMonthSlug);
-  if (!vehicle) return null;
-
-  return (
-    <div className="mx-auto max-w-3xl px-4 pt-6 sm:px-6 lg:px-8">
-      <Link
-        to="/book"
-        search={{ vehicle: vehicle.slug }}
-        className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-3 shadow-sm transition-shadow hover:shadow-md sm:p-4"
-      >
-        <div className="h-16 w-20 shrink-0 overflow-hidden rounded-xl bg-secondary sm:h-20 sm:w-28">
-          <img
-            src={vehicle.image}
-            alt={vehicle.name}
-            className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-          />
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="eyebrow">Model of the Month</p>
-          <p className="mt-0.5 truncate text-sm font-semibold text-foreground sm:text-base">
-            {vehicle.name}
-          </p>
-          <p className="text-xs text-muted-foreground sm:text-sm">
-            {vehicle.priceLabel}
-            {vehicle.seats ? ` · ${vehicle.seats} seats` : ""}
-          </p>
-        </div>
-        <ArrowRight className="h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-1" />
-      </Link>
-    </div>
-  );
-}
-
-export function FleetSection({ limit }: { limit?: number }) {
-  const vehicles = useVehicles();
-  const list = limit ? vehicles.slice(0, limit) : vehicles;
+/**
+ * Homepage "Featured Vehicles": a short curated selection from the live database.
+ * Vehicles marked "Featured" in the admin panel are used (max 8); if none are marked,
+ * the first few by admin sort order. No vehicle is singled out as a flagship.
+ */
+export function FleetSection() {
+  const { vehicles } = useFleet();
+  const featured = vehicles.filter((v) => v.isFeatured).slice(0, 8);
+  const list = featured.length > 0 ? featured : vehicles.slice(0, 6);
+  const countLabel = fleetCountLabel(vehicles.length);
 
   return (
     <Section tone="surface" id="vehicles">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <SectionHeading
-          eyebrow="The Fleet"
-          title="Vehicles for Every Journey"
-          description="From fuel-efficient city cars to rugged 4x4s for Zimbabwe's terrain — every vehicle is well maintained, with clear daily pricing shown up front."
+          eyebrow={countLabel ? `${countLabel} available` : "The Fleet"}
+          title="Featured Vehicles"
+          description="A selection from the VenMax fleet, each with its own daily rate and deposit shown up front."
         />
-        {limit && (
-          <a
-            href="/fleet"
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-secondary"
-          >
-            View All Vehicles
-            <ArrowRight className="h-4 w-4" />
-          </a>
-        )}
+        <a
+          href="/fleet"
+          className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-secondary"
+        >
+          View Full Fleet
+          <ArrowRight className="h-4 w-4" />
+        </a>
       </div>
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {list.map((vehicle) => (
           <VehicleCard key={vehicle.slug} vehicle={vehicle} />
         ))}
       </div>
+      <div className="mt-12 rounded-2xl border border-border bg-card p-8 text-center">
+        <h3 className="text-xl">Explore the Full Fleet</h3>
+        <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
+          VenMax has a wide range of vehicles for city driving, family trips, business travel and
+          longer journeys.
+        </p>
+        <a
+          href="/fleet"
+          className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
+        >
+          View All Vehicles
+          <ArrowRight className="h-4 w-4" />
+        </a>
+      </div>
+      <p className="mt-6 text-center text-sm text-muted-foreground">
+        Daily rates shown. Discounts are available for longer rental periods — message us on
+        WhatsApp for details.
+      </p>
+    </Section>
+  );
+}
+
+type Band = { key: string; label: string; test: (price: number) => boolean };
+const rateBands: Band[] = [
+  { key: "lt50", label: "Under $50/day", test: (p) => p < 50 },
+  { key: "50-100", label: "$50 – $100/day", test: (p) => p >= 50 && p <= 100 },
+  { key: "100-200", label: "$100 – $200/day", test: (p) => p > 100 && p <= 200 },
+  { key: "200+", label: "Over $200/day", test: (p) => p > 200 },
+];
+
+function ratePerDay(v: Vehicle) {
+  const m = v.priceLabel.replace(/,/g, "").match(/[\d.]+/);
+  return m ? parseFloat(m[0]) : null;
+}
+
+const categoryGroups: { key: string; label: string; test: (v: Vehicle) => boolean }[] = [
+  { key: "economy", label: "Economy", test: (v) => /economy/i.test(v.category) },
+  {
+    key: "hybrid",
+    label: "Hybrid",
+    test: (v) => /hybrid/i.test(v.fuelType ?? "") || /hybrid/i.test(v.name),
+  },
+  { key: "suv", label: "SUVs", test: (v) => /suv/i.test(v.category) },
+  { key: "4x4", label: "4x4", test: (v) => /4x4/i.test(v.category) },
+  { key: "luxury", label: "Luxury", test: (v) => /luxury/i.test(v.category) },
+  { key: "trucks", label: "Trucks", test: (v) => /truck|pickup/i.test(v.category) },
+  { key: "chauffeur", label: "Chauffeur", test: (v) => /chauffeur/i.test(v.category) },
+];
+
+const PAGE_SIZE = 24;
+
+/** Full searchable catalogue for /fleet. Everything comes from the live vehicle data. */
+export function FleetCatalogue() {
+  const { vehicles } = useFleet();
+  const [query, setQuery] = useState("");
+  const [group, setGroup] = useState("all");
+  const [band, setBand] = useState("any");
+  const [visible, setVisible] = useState(PAGE_SIZE);
+
+  // Only offer a category when vehicles in it actually exist. Any raw category that none
+  // of the named groups cover (e.g. "Family MPV") gets its own chip.
+  const chips = useMemo(() => {
+    const named = categoryGroups
+      .filter((g) => vehicles.some(g.test))
+      .map((g) => ({ key: g.key, label: g.label, test: g.test }));
+    const covered = (v: Vehicle) => categoryGroups.some((g) => g.test(v));
+    const extra = Array.from(new Set(vehicles.filter((v) => !covered(v)).map((v) => v.category)))
+      .filter(Boolean)
+      .map((c) => ({
+        key: `cat:${c}`,
+        label: c,
+        test: (v: Vehicle) => v.category === c,
+      }));
+    return [...named, ...extra];
+  }, [vehicles]);
+
+  const bands = useMemo(
+    () =>
+      rateBands.filter((b) =>
+        vehicles.some((v) => {
+          const r = ratePerDay(v);
+          return r !== null && b.test(r);
+        }),
+      ),
+    [vehicles],
+  );
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const chip = chips.find((c) => c.key === group);
+    const rb = rateBands.find((b) => b.key === band);
+    return vehicles.filter((v) => {
+      if (q && !v.name.toLowerCase().includes(q)) return false;
+      if (chip && !chip.test(v)) return false;
+      if (rb) {
+        const r = ratePerDay(v);
+        if (r === null || !rb.test(r)) return false;
+      }
+      return true;
+    });
+  }, [vehicles, query, group, band, chips]);
+
+  const countLabel = fleetCountLabel(vehicles.length);
+  const shown = filtered.slice(0, visible);
+  const filtersActive = query.trim() !== "" || group !== "all" || band !== "any";
+
+  const chipClass = (active: boolean) =>
+    cn(
+      "shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+      active
+        ? "border-primary bg-primary text-primary-foreground"
+        : "border-border bg-background hover:bg-secondary",
+    );
+
+  return (
+    <Section tone="surface" id="vehicles">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <SectionHeading
+          eyebrow={countLabel ? `${countLabel} available` : "The Fleet"}
+          title="Explore the VenMax Fleet"
+          description="Every vehicle shows its own daily rate and deposit. Found one you like? Enquire on WhatsApp and the team will confirm availability."
+        />
+      </div>
+
+      <div className="mt-8 grid gap-3 sm:grid-cols-[1fr_auto]">
+        <label className="relative block">
+          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setVisible(PAGE_SIZE);
+            }}
+            placeholder="Search by vehicle name"
+            aria-label="Search vehicles by name"
+            className="w-full rounded-full border border-input bg-background py-3 pl-11 pr-4 text-sm outline-none focus:ring-2 focus:ring-ring"
+          />
+        </label>
+        {bands.length > 1 && (
+          <select
+            value={band}
+            onChange={(e) => {
+              setBand(e.target.value);
+              setVisible(PAGE_SIZE);
+            }}
+            aria-label="Filter by daily rate"
+            className="rounded-full border border-input bg-background px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+          >
+            <option value="any">Any daily rate</option>
+            {bands.map((b) => (
+              <option key={b.key} value={b.key}>
+                {b.label}
+              </option>
+            ))}
+          </select>
+        )}
+      </div>
+
+      {chips.length > 0 && (
+        <div className="-mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
+          <button
+            type="button"
+            onClick={() => {
+              setGroup("all");
+              setVisible(PAGE_SIZE);
+            }}
+            className={chipClass(group === "all")}
+          >
+            All Vehicles
+          </button>
+          {chips.map((c) => (
+            <button
+              key={c.key}
+              type="button"
+              onClick={() => {
+                setGroup(c.key);
+                setVisible(PAGE_SIZE);
+              }}
+              className={chipClass(group === c.key)}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <p className="mt-6 text-sm text-muted-foreground" aria-live="polite">
+        Showing {shown.length} of {filtered.length} {filtered.length === 1 ? "vehicle" : "vehicles"}
+      </p>
+
+      {filtered.length === 0 ? (
+        <div className="mt-6 rounded-2xl border border-border bg-card p-8 text-center">
+          <p className="text-sm text-muted-foreground">
+            No vehicles match your search. Try a different name or filter — or ask VenMax
+            directly.
+          </p>
+          <div className="mt-4 flex flex-wrap justify-center gap-3">
+            {filtersActive && (
+              <button
+                type="button"
+                onClick={() => {
+                  setQuery("");
+                  setGroup("all");
+                  setBand("any");
+                }}
+                className="rounded-full border border-border px-5 py-2.5 text-sm font-semibold hover:bg-secondary"
+              >
+                Clear filters
+              </button>
+            )}
+            <a
+              href={whatsappLink(
+                "Hi VenMax, I'd like to enquire about renting a vehicle. Please help me with the available options.",
+              )}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Check Rental Options
+            </a>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {shown.map((vehicle) => (
+            <VehicleCard key={vehicle.slug} vehicle={vehicle} />
+          ))}
+        </div>
+      )}
+
+      {filtered.length > shown.length && (
+        <div className="mt-10 text-center">
+          <button
+            type="button"
+            onClick={() => setVisible((n) => n + PAGE_SIZE)}
+            className="rounded-full border border-border bg-background px-7 py-3 text-sm font-semibold hover:bg-secondary"
+          >
+            Show more vehicles
+          </button>
+        </div>
+      )}
+
       <p className="mt-10 text-center text-sm text-muted-foreground">
-        Daily rates shown. Discounts are available for longer rental periods — message us on WhatsApp
-        for details.
+        Daily rates shown. Discounts are available for longer rental periods — message us on
+        WhatsApp for details.
       </p>
     </Section>
   );
@@ -758,8 +970,8 @@ export function WhySection() {
     { value: `${businessFacts.googleRating}★`, label: "Google Rating" },
     { value: startingPrice ? `$${startingPrice}` : "$40", label: "Starting Price/Day" },
     { value: businessFacts.happyClients, label: "Happy Clients" },
-    { value: content["vehicle_models_display"] || businessFacts.vehicleModelsDisplay, label: "Vehicle Models" },
-  ];
+    { value: content["vehicle_models_display"] || fleetCountLabel(vehicles.length)?.replace(" vehicles", ""), label: "Vehicles" },
+  ].filter((st): st is { value: string; label: string } => Boolean(st.value));
 
   const featureRows = whyVenMax.slice(0, 4);
 

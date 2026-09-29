@@ -88,7 +88,7 @@ function Index() {
         <BookingWidget />
       </div>
       <ValueCardsSection />
-      <FleetSection limit={6} />
+      <FleetSection />
       <HowItWorksSection />
       <AirportSection />
       <DiasporaSection />

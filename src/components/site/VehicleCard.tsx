@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MessageCircle, Users, Briefcase, Cog, Snowflake } from "lucide-react";
+import { MessageCircle, Users, Briefcase, Cog, Snowflake, Fuel } from "lucide-react";
 import type { Vehicle } from "@/data/venmax";
 import { vehicleCardMessage, vehicleDetailMessage, whatsappLink } from "@/data/venmax";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
@@ -9,6 +9,7 @@ function getSpecs(vehicle: Vehicle) {
     vehicle.seats ? { icon: Users, label: `${vehicle.seats} seats` } : null,
     vehicle.bags ? { icon: Briefcase, label: `${vehicle.bags} bags` } : null,
     vehicle.transmission ? { icon: Cog, label: vehicle.transmission } : null,
+    vehicle.fuelType ? { icon: Fuel, label: vehicle.fuelType } : null,
     vehicle.ac ? { icon: Snowflake, label: "A/C" } : null,
   ].filter((s): s is { icon: typeof Users; label: string } => Boolean(s));
 }
@@ -16,7 +17,9 @@ function getSpecs(vehicle: Vehicle) {
 export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
   const [open, setOpen] = useState(false);
   const specs = getSpecs(vehicle);
-  const isTruck = vehicle.category.toLowerCase() === "truck";
+  const isTruck = /truck/i.test(vehicle.category);
+  const availabilityNote =
+    vehicle.status && vehicle.status !== "available" ? "Availability on request" : null;
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-lg">
@@ -66,6 +69,9 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
         <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
           {vehicle.description}
         </p>
+        {availabilityNote && (
+          <p className="mt-2 text-xs font-medium text-muted-foreground">{availabilityNote}</p>
+        )}
 
         <div className="mt-5 grid gap-2">
           <a
@@ -117,6 +123,18 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
                   </span>
                 ))}
               </div>
+            )}
+            {vehicle.features && vehicle.features.length > 0 && (
+              <ul className="mt-4 flex flex-wrap gap-2">
+                {vehicle.features.map((f) => (
+                  <li
+                    key={f}
+                    className="rounded-full bg-secondary px-3 py-1 text-xs text-secondary-foreground"
+                  >
+                    {f}
+                  </li>
+                ))}
+              </ul>
             )}
             <p className="mt-6 font-display text-base font-semibold">Interested in this vehicle?</p>
             <a

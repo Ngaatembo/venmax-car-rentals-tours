@@ -78,6 +78,12 @@ const emptyForm: FormState = {
   image_url: null,
   sort_order: 0,
   is_active: true,
+  seats: null,
+  transmission: null,
+  fuel_type: null,
+  features: [],
+  status: "available",
+  is_featured: false,
 };
 
 function AdminFleet() {
@@ -260,7 +266,7 @@ function AdminFleet() {
                   <Input
                     value={form.price_label ?? ""}
                     onChange={(e) => setForm((f) => ({ ...f, price_label: e.target.value }))}
-                    placeholder="From $150/day"
+                    placeholder="$150/day"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -271,6 +277,74 @@ function AdminFleet() {
                     placeholder="$300 deposit"
                   />
                 </div>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="space-y-1.5">
+                  <Label>Seats</Label>
+                  <Input
+                    type="number"
+                    min={1}
+                    value={form.seats ?? ""}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, seats: e.target.value ? Number(e.target.value) : null }))
+                    }
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Transmission</Label>
+                  <Input
+                    value={form.transmission ?? ""}
+                    onChange={(e) => setForm((f) => ({ ...f, transmission: e.target.value || null }))}
+                    placeholder="Auto"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Fuel type</Label>
+                  <Input
+                    value={form.fuel_type ?? ""}
+                    onChange={(e) => setForm((f) => ({ ...f, fuel_type: e.target.value || null }))}
+                    placeholder="Hybrid"
+                  />
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                <Label>Status</Label>
+                <Select
+                  value={form.status ?? "available"}
+                  onValueChange={(v) => setForm((f) => ({ ...f, status: v }))}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="available">Available</SelectItem>
+                    <SelectItem value="reserved">Reserved (shows "Availability on request")</SelectItem>
+                    <SelectItem value="rented">Rented (shows "Availability on request")</SelectItem>
+                    <SelectItem value="maintenance">Maintenance (shows "Availability on request")</SelectItem>
+                    <SelectItem value="inactive">Inactive (hidden from site)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-center justify-between rounded-md border border-border px-3 py-2">
+                <Label htmlFor="ac">Air conditioning</Label>
+                <Switch
+                  id="ac"
+                  checked={(form.features ?? []).includes("A/C")}
+                  onCheckedChange={(checked) =>
+                    setForm((f) => {
+                      const rest = (f.features ?? []).filter((x) => x !== "A/C");
+                      return { ...f, features: checked ? [...rest, "A/C"] : rest };
+                    })
+                  }
+                />
+              </div>
+              <div className="flex items-center justify-between rounded-md border border-border px-3 py-2">
+                <Label htmlFor="featured">Featured on homepage (max 8 shown)</Label>
+                <Switch
+                  id="featured"
+                  checked={form.is_featured ?? false}
+                  onCheckedChange={(checked) => setForm((f) => ({ ...f, is_featured: checked }))}
+                />
               </div>
               <div className="space-y-1.5">
                 <Label>Description</Label>

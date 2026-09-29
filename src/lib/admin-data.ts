@@ -11,6 +11,12 @@ export type DbVehicle = {
   image_url: string | null;
   sort_order: number;
   is_active: boolean;
+  seats: number | null;
+  transmission: string | null;
+  fuel_type: string | null;
+  features: string[];
+  status: string;
+  is_featured: boolean;
 };
 
 export type DbTour = {

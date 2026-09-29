@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
-import { FleetSection, BookingCta } from "@/components/site/sections";
+import { FleetCatalogue, BookingCta } from "@/components/site/sections";
 
 export const Route = createFileRoute("/fleet")({
   head: () => ({
@@ -21,10 +21,10 @@ function FleetPage() {
     <>
       <PageHero
         eyebrow="The Fleet"
-        title="Vehicles for Every Journey"
-        description="From fuel-efficient city cars to rugged 4x4s for Zimbabwe's terrain — every vehicle is insured, with clear daily rates and deposits."
+        title="Explore the VenMax Fleet"
+        description="From fuel-efficient city cars to rugged 4x4s for Zimbabwe's terrain — browse the full range, with the daily rate and deposit shown for every vehicle."
       />
-      <FleetSection />
+      <FleetCatalogue />
       <BookingCta />
     </>
   );

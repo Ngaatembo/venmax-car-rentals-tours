@@ -14,8 +14,15 @@ import {
 const staticVehicleImages = new Map(staticVehicles.map((v) => [v.slug, v.image]));
 const staticTourImages = new Map(staticTours.map((t) => [t.slug, t.image]));
 
-export function useVehicles(): Vehicle[] {
-  const [vehicles, setVehicles] = useState<Vehicle[]>(staticVehicles);
+type FleetState = { vehicles: Vehicle[]; loaded: boolean };
+
+/**
+ * Live fleet from the vehicles table (single source of truth — vehicles added in
+ * the admin panel appear automatically). The code-defined list is only an offline
+ * fallback until the database responds. `loaded` is true once the DB answered with rows.
+ */
+export function useFleet(): FleetState {
+  const [state, setState] = useState<FleetState>({ vehicles: staticVehicles, loaded: false });
 
   useEffect(() => {
     let cancelled = false;
@@ -23,29 +30,46 @@ export function useVehicles(): Vehicle[] {
       .from("vehicles")
       .select("*")
       .eq("is_active", true)
+      .neq("status", "inactive")
       .order("sort_order", { ascending: true })
       .then(({ data, error }) => {
         if (cancelled || error || !data || data.length === 0) return;
-        setVehicles(
-          data.map((v) => ({
-            // Keep specs/badge from the code-defined fleet (not stored in the DB yet).
-            ...(staticVehicles.find((sv) => sv.slug === v.slug) ?? {}),
-            slug: v.slug,
-            name: v.name,
-            category: v.category,
-            priceLabel: v.price_label,
-            deposit: v.deposit,
-            description: v.description,
-            image: v.image_url || staticVehicleImages.get(v.slug) || staticVehicles[0]!.image,
-          })),
-        );
+        setState({
+          loaded: true,
+          vehicles: data.map((v) => {
+            const fallback = staticVehicles.find((sv) => sv.slug === v.slug);
+            const features: string[] = v.features ?? [];
+            return {
+              // Code-only extras (bags/badge) for the original vehicles; DB values win below.
+              ...(fallback ?? {}),
+              slug: v.slug,
+              name: v.name,
+              category: v.category,
+              priceLabel: v.price_label,
+              deposit: v.deposit,
+              description: v.description,
+              image: v.image_url || fallback?.image || staticVehicles[0]!.image,
+              seats: v.seats ?? fallback?.seats,
+              transmission: v.transmission ?? fallback?.transmission,
+              fuelType: v.fuel_type ?? undefined,
+              ac: features.some((f) => /^(a\/c|air ?con)/i.test(f)) || fallback?.ac,
+              features: features.filter((f) => !/^(a\/c|air ?con)/i.test(f)),
+              status: v.status,
+              isFeatured: Boolean(v.is_featured),
+            } satisfies Vehicle;
+          }),
+        });
       });
     return () => {
       cancelled = true;
     };
   }, []);
 
-  return vehicles;
+  return state;
+}
+
+export function useVehicles(): Vehicle[] {
+  return useFleet().vehicles;
 }
 
 export function useTours(): Tour[] {

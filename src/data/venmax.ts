@@ -116,7 +116,7 @@ function cleanRate(priceLabel: string) {
 
 /** WhatsApp message used by the fleet grid card. Never promises availability. */
 export function vehicleCardMessage(v: { name: string; priceLabel: string }) {
-  return `Hi VenMax, I am interested in renting the ${v.name} at ${cleanRate(v.priceLabel)}. Please help me with availability, requirements and booking.`;
+  return `Hi VenMax, I'm interested in the ${v.name} at ${cleanRate(v.priceLabel)}. Please confirm availability, deposit and booking requirements.`;
 }
 
 /** WhatsApp message used on the vehicle detail view (asks for dates + requirements). */
@@ -134,11 +134,16 @@ export type Vehicle = {
   image: string;
   // Manufacturer-typical specs for this model (not admin/DB-managed yet) —
   // used for the fleet card spec row. badge is a short merchandising label.
-  seats?: number;
-  bags?: number;
-  transmission?: "Auto" | "Manual";
-  ac?: boolean;
-  badge?: string;
+  seats?: number | undefined;
+  bags?: number | undefined;
+  transmission?: string | undefined;
+  fuelType?: string | undefined;
+  ac?: boolean | undefined;
+  features?: string[] | undefined;
+  /** Admin status: available | reserved | rented | maintenance. Inactive vehicles are never listed. */
+  status?: string | undefined;
+  isFeatured?: boolean | undefined;
+  badge?: string | undefined;
 };
 
 // TODO(lovable-cloud): replace with a `vehicles` table read once the backend is connected.
@@ -274,7 +279,6 @@ export const vehicles: Vehicle[] = [
     bags: 5,
     transmission: "Auto",
     ac: true,
-    badge: "Model of the Month",
   },
   {
     slug: "toyota-prado",
@@ -323,10 +327,6 @@ export const vehicles: Vehicle[] = [
 export function getVehicle(slug: string) {
   return vehicles.find((v) => v.slug === slug);
 }
-
-// The one vehicle spotlighted in the homepage "Model of the Month" teaser.
-// Change this slug to rotate the feature — no other redesign needed.
-export const modelOfTheMonthSlug = "toyota-fortuner";
 
 export type Service = {
   slug: string;
@@ -689,7 +689,13 @@ export const businessFacts = {
   facebookFollowers: "3.9K+",
   // From VenMax's own "Why Choose Venmax" marketing copy.
   happyClients: "1000+",
-  // Displayed "Vehicle Models" stat on the homepage. Set independently of the
-  // live vehicle list length (client's marketing figure) — update here.
-  vehicleModelsDisplay: "40+",
 };
+
+/**
+ * Fleet-size wording derived from the live vehicle count. Returns null unless the
+ * database actually holds 40+ active vehicles, so the site never overstates fleet size.
+ */
+export function fleetCountLabel(count: number): string | null {
+  if (count < 40) return null;
+  return `${Math.floor(count / 10) * 10}+ vehicles`;
+}

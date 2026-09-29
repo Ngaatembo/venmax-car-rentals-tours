@@ -62,7 +62,7 @@ function DiasporaPage() {
       <DiasporaBenefitsSection />
       <AirportSection />
       <MileageSection />
-      <FleetSection limit={6} />
+      <FleetSection />
       <HowItWorksSection />
       <BookingPaymentSection />
       <CancellationSection />
