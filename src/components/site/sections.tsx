@@ -753,19 +753,15 @@ export function PriceAdvantageSection() {
       <SectionHeading
         eyebrow="Why VenMax"
         title="Lower deposits. Fairer rates. Drive away sooner."
-        description="Most car hire companies ask for $150 to $300 upfront. VenMax asks for just $100 on our small and mid SUVs, fully refundable."
+        description="Pay less upfront. Our small and mid SUVs need just a $100 refundable deposit, lower than most car hire companies in Zimbabwe."
       />
       <div className="mt-10 grid gap-6 md:grid-cols-2">
         <article className="rounded-2xl border border-primary/40 bg-card p-6 sm:p-8">
           <h3 className="text-base uppercase tracking-wide">Deposits below market rates</h3>
-          <p className="mt-4 text-4xl font-semibold text-primary">$100</p>
-          <p className="mt-1 text-sm text-muted-foreground">VenMax deposit, small and mid SUVs</p>
-          <p className="mt-4 text-2xl font-semibold text-muted-foreground line-through decoration-1">
-            $150 to $300
-          </p>
-          <p className="mt-1 text-sm text-muted-foreground">What others in the market charge</p>
+          <p className="mt-4 text-4xl font-semibold text-primary">From $100</p>
+          <p className="mt-1 text-sm text-muted-foreground">Refundable deposit on small and mid SUVs</p>
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-            The deposit is refundable and shown clearly on every vehicle.
+            Lower than most in the market, and shown clearly on every vehicle.
           </p>
         </article>
         <article className="rounded-2xl border border-border bg-card p-6 sm:p-8">
