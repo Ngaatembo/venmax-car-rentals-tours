@@ -14,8 +14,8 @@ import serena from "@/assets/nissan-serena.jpg";
 import serenaSide from "@/assets/nissan-serena-side.jpg";
 import cx5 from "@/assets/mazda-cx5.jpg";
 import d4d from "@/assets/toyota-d4d.jpg";
-// TODO(venmax-image): VenMax wants a 2017 Honda Vezel photo. To replace, overwrite
-// src/assets/honda-vezel.jpg with the correct image (same filename) — nothing else changes.
+// Honda Vezel: VenMax's own photo (supplied 2026-09-30). To replace it again, overwrite
+// src/assets/honda-vezel.jpg (same filename), or set the vehicle's photo in Admin → Fleet.
 import vezel from "@/assets/honda-vezel.jpg";
 import xtrail from "@/assets/nissan-xtrail.jpg";
 import fortuner from "@/assets/toyota-fortuner.jpg";
