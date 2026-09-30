@@ -829,7 +829,7 @@ export function MileageSection() {
           <SectionHeading
             eyebrow="Long-Distance"
             title="Flexible Mileage for Longer Trips"
-            description="Planning a longer journey? VenMax can discuss customized mileage arrangements based on your trip."
+            description="Planning a longer journey? VenMax offers tourists and clients affordable customised mileage packages, arranged case by case for each trip."
           />
           <div className="mt-6 space-y-3 text-sm">
             <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5">
@@ -842,7 +842,7 @@ export function MileageSection() {
             </div>
             <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5">
               <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-              Customized mileage packages are available based on individual trip requirements.
+              Affordable customised mileage packages for tourists and clients on longer trips, arranged case by case.
             </div>
             <a
               href={whatsappLink(
@@ -869,7 +869,7 @@ export function BookingPaymentSection() {
       <SectionHeading
         eyebrow="Booking & Payment"
         title="Simple Booking. Direct Communication."
-        description="Bookings are currently handled through WhatsApp or email, allowing customers to discuss their rental directly with the VenMax team."
+        description="Booking with VenMax is simple: everything is discussed and confirmed directly with our team via WhatsApp or email."
       />
       <div className="mt-8">
         <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
@@ -1063,7 +1063,7 @@ export function DiasporaSection({ full = false }: { full?: boolean } = {}) {
           <SectionHeading
             eyebrow="For Diaspora"
             title="Coming to Zimbabwe? Arrange your rental before you arrive."
-            description="Whether you're visiting family, attending an event, travelling for business or exploring Zimbabwe, you can contact VenMax before your trip and arrange your rental remotely."
+            description="Whether you're visiting family, attending an event, travelling for business or exploring Zimbabwe, you can arrange your rental with VenMax before your trip — from start to finish on WhatsApp."
             invert
           />
           <div className="mt-6 flex flex-wrap gap-2">

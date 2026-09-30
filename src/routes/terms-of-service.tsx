@@ -177,7 +177,7 @@ function buildSections(vehicles: Vehicle[], p: Policies): LegalSection[] {
             `Standard rentals include ${p.freeKm} free mileage per day.`,
             `Excess mileage is charged at ${p.excessRate} per km.`,
             `Unlimited mileage is available for rentals of ${p.unlimitedFrom} or more.`,
-            "Customised mileage arrangements can be discussed for longer trips.",
+            "Affordable customised mileage packages are available for tourists and clients on longer trips, arranged case by case.",
           ]}
         />
       ),
@@ -321,7 +321,7 @@ function buildSections(vehicles: Vehicle[], p: Policies): LegalSection[] {
         <Bullets
           items={[
             `Unlimited mileage is available for rentals of ${p.unlimitedFrom} or more.`,
-            "Customised mileage arrangements can be discussed for longer trips.",
+            "Affordable customised mileage packages are available for tourists and clients on longer trips, arranged case by case.",
             "Discounts are available for longer rental periods — message us on WhatsApp for details.",
           ]}
         />

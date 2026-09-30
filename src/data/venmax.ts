@@ -532,7 +532,7 @@ export const faqs = [
   {
     question: "How does booking work?",
     answer:
-      "Choose a vehicle and message VenMax on WhatsApp (or email). The team will discuss your dates, requirements, mileage arrangements and payment options with you directly.",
+      "Booking is simple: choose a vehicle and message VenMax on WhatsApp or email. The team discusses your dates, requirements, mileage and payment options with you directly, and everything is confirmed via WhatsApp or email.",
   },
   {
     question: "Which payment methods do you accept?",
@@ -557,7 +557,7 @@ export const faqs = [
   {
     question: "How much free mileage do I get?",
     answer:
-      "Standard rentals include {free_km} free mileage per day, with excess mileage charged at {excess_rate} per km. For rentals of {unlimited_from} or more, unlimited mileage is available, and customized mileage arrangements can be discussed for longer trips.",
+      "Standard rentals include {free_km} free mileage per day, with excess mileage charged at {excess_rate} per km. For rentals of {unlimited_from} or more, unlimited mileage is available. Tourists and clients on longer trips can also get affordable customised mileage packages, arranged case by case.",
   },
   {
     question: "Do you offer airport pickup?",
@@ -577,7 +577,7 @@ export const faqs = [
   {
     question: "Can I arrange a rental from outside Zimbabwe?",
     answer:
-      "Yes — you can contact VenMax on WhatsApp before your trip and arrange your rental remotely, so your vehicle is sorted before you land.",
+      "Yes — diaspora clients can arrange everything with VenMax on WhatsApp, from start to finish, so your vehicle is sorted before you land.",
   },
   {
     question: "Can I take the vehicle across the border?",
@@ -593,7 +593,7 @@ export function buildRentalTerms(p: Policies) {
     },
     {
       label: "Mileage",
-      value: `${p.freeKm} free per day, excess ${p.excessRate}/km. Rentals of ${p.unlimitedFrom} or more: unlimited mileage. Customized arrangements for longer trips.`,
+      value: `${p.freeKm} free per day, excess ${p.excessRate}/km. Rentals of ${p.unlimitedFrom} or more: unlimited mileage. Affordable customised packages for tourists and clients on longer trips.`,
     },
     { label: "Chauffeur Option", value: p.chauffeurFeeNote },
     { label: "Delivery", value: `${p.deliveryNote} For rental customers.` },
@@ -662,7 +662,7 @@ export function buildDiasporaBenefits(p: Policies) {
   },
   {
     title: "WhatsApp Convenience",
-    description: "Discuss your vehicle, dates, requirements and arrangements directly with VenMax.",
+    description: "Arrange everything from start to finish on WhatsApp — your vehicle, dates, requirements and arrangements, directly with VenMax.",
   },
   {
     title: "Airport Vehicle Pickup",
@@ -680,7 +680,7 @@ export function buildDiasporaBenefits(p: Policies) {
   {
     title: "Flexible Long-Distance Options",
     description:
-      "Customized mileage arrangements for longer trips can be discussed with VenMax on a customer-by-customer basis.",
+      "Affordable customised mileage packages for tourists and clients on longer trips, arranged case by case.",
   },
   ];
 }

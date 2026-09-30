@@ -34,7 +34,7 @@ function DiasporaPage() {
       <PageHero
         eyebrow="For Diaspora"
         title="Rent Your Car in Zimbabwe Before You Arrive."
-        description="Planning a trip to Zimbabwe from abroad? VenMax makes it easy to arrange your vehicle before you land, with the booking process handled conveniently through WhatsApp."
+        description="Planning a trip to Zimbabwe from abroad? VenMax makes it easy to arrange your vehicle before you land, with everything handled from start to finish on WhatsApp."
       />
       <div className="bg-navy pb-12 text-navy-foreground">
         <div className="mx-auto flex max-w-7xl flex-wrap gap-4 px-4 sm:px-6 lg:px-8">
