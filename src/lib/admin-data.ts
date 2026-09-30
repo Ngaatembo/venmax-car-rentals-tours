@@ -589,7 +589,7 @@ export async function uploadMedia(file: File, pathPrefix: string) {
 // Note: role-based access is enforced server-side via Postgres RLS policies
 // (has_role / has_min_role) — these calls are gated by the database, not
 // just by hiding UI. See migration admin_list_staff_function.
-export type AppRole = "admin" | "manager" | "staff";
+export type AppRole = "admin" | "manager" | "staff" | "developer";
 
 export type StaffMember = {
   user_id: string;
@@ -606,9 +606,16 @@ export async function listStaff() {
   return data as StaffMember[];
 }
 
-export async function inviteStaff(email: string, role: AppRole, mode: "password" | "email_invite" = "password") {
+export async function inviteStaff(
+  email: string,
+  role: AppRole,
+  mode: "password" | "email_invite" = "password",
+  // Optional: when mode is "password" and this is provided, the account is
+  // created with this password instead of a generated one.
+  password?: string,
+) {
   const { data, error } = await supabase.functions.invoke("admin-invite-staff", {
-    body: { email, role, mode },
+    body: { email, role, mode, ...(password ? { password } : {}) },
   });
   if (error) throw error;
   if (data?.error) throw new Error(data.error);

@@ -58,6 +58,7 @@ const roleLabel: Record<AppRole, string> = {
   admin: "Admin (full access)",
   manager: "Manager",
   staff: "Staff",
+  developer: "Developer (website only)",
 };
 
 function roleBadgeVariant(role: AppRole): "default" | "secondary" | "outline" {
@@ -83,6 +84,8 @@ function AdminStaff() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<AppRole>("staff");
   const [mode, setMode] = useState<"password" | "email_invite">("password");
+  // Optional. Blank = generate a random one-time password.
+  const [customPassword, setCustomPassword] = useState("");
 
   // Result of the most recent "password" mode add — shown once in a
   // dedicated dialog so the admin can copy it and share it with the person.
@@ -111,10 +114,21 @@ function AdminStaff() {
       toast.error("Enter an email address");
       return;
     }
+    if (mode === "password" && customPassword && customPassword.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
     setInviting(true);
     try {
-      const result = await inviteStaff(email.trim(), role, mode);
-      if (mode === "password" && result.temp_password) {
+      const result = await inviteStaff(
+        email.trim(),
+        role,
+        mode,
+        mode === "password" && customPassword ? customPassword : undefined,
+      );
+      if (mode === "password" && customPassword) {
+        toast.success(`Account created for ${result.email} with the password you set`);
+      } else if (mode === "password" && result.temp_password) {
         setResultEmail(result.email);
         setResultPassword(result.temp_password);
         setCopied(false);
@@ -124,6 +138,7 @@ function AdminStaff() {
       }
       setOpen(false);
       setEmail("");
+      setCustomPassword("");
       setRole("staff");
       await refresh();
     } catch (err) {
@@ -218,6 +233,23 @@ function AdminStaff() {
                   placeholder="name@example.com"
                 />
               </div>
+              {mode === "password" && (
+                <div>
+                  <Label htmlFor="staff-password">Password (optional)</Label>
+                  <Input
+                    id="staff-password"
+                    type="text"
+                    autoComplete="new-password"
+                    value={customPassword}
+                    onChange={(e) => setCustomPassword(e.target.value)}
+                    placeholder="Leave blank to generate one"
+                  />
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    At least 8 characters. If you leave this blank, a random one-time password is
+                    generated and shown to you once.
+                  </p>
+                </div>
+              )}
               <div>
                 <Label>Role</Label>
                 <Select value={role} onValueChange={(v) => setRole(v as AppRole)}>
@@ -230,6 +262,9 @@ function AdminStaff() {
                       Manager — staff access + fleet, tours, site content
                     </SelectItem>
                     <SelectItem value="admin">Admin — full access, including staff</SelectItem>
+                    <SelectItem value="developer">
+                      Developer — fleet, tours, site content only. No customer data
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -332,6 +367,7 @@ function AdminStaff() {
                           <SelectItem value="staff">Staff</SelectItem>
                           <SelectItem value="manager">Manager</SelectItem>
                           <SelectItem value="admin">Admin</SelectItem>
+                          <SelectItem value="developer">Developer</SelectItem>
                         </SelectContent>
                       </Select>
                     )}

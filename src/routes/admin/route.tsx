@@ -43,12 +43,20 @@ export const Route = createFileRoute("/admin")({
 
 // `minRole` follows the same hierarchy as the database's has_min_role():
 // admin > manager > staff. A nav item with no minRole is visible to anyone
-// with any role at all (i.e. staff and up). This only controls what's
-// *shown* — the real enforcement is the RLS policies on each table.
-const navItems: { to: string; label: string; icon: typeof LayoutDashboard; minRole?: AppRole }[] = [
+// with any staff-tier role (staff and up). The `developer` role sits OUTSIDE
+// that hierarchy: it only sees items marked `developer: true` (website
+// content, no customer data). This only controls what's *shown* — the real
+// enforcement is the RLS policies on each table.
+const navItems: {
+  to: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  minRole?: Exclude<AppRole, "developer">;
+  developer?: boolean;
+}[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/admin/fleet", label: "Fleet", icon: Car },
-  { to: "/admin/tours", label: "Tours", icon: MapPin },
+  { to: "/admin/fleet", label: "Fleet", icon: Car, developer: true },
+  { to: "/admin/tours", label: "Tours", icon: MapPin, developer: true },
   { to: "/admin/bookings", label: "Bookings", icon: CalendarCheck },
   { to: "/admin/customers", label: "Customers", icon: Contact },
   { to: "/admin/drivers", label: "Drivers", icon: IdCard },
@@ -57,16 +65,27 @@ const navItems: { to: string; label: string; icon: typeof LayoutDashboard; minRo
   { to: "/admin/documents", label: "Documents", icon: FolderOpen, minRole: "staff" },
   { to: "/admin/reports", label: "Reports", icon: FileBarChart, minRole: "manager" },
   { to: "/admin/inquiries", label: "Inquiries", icon: MessageSquare },
-  { to: "/admin/content", label: "Site Content", icon: FileText, minRole: "manager" },
+  { to: "/admin/content", label: "Site Content", icon: FileText, minRole: "manager", developer: true },
   { to: "/admin/audit-log", label: "Audit Log", icon: History, minRole: "admin" },
   { to: "/admin/staff", label: "Staff", icon: Users, minRole: "admin" },
 ];
 
-const roleRank: Record<AppRole, number> = { staff: 0, manager: 1, admin: 2 };
+const roleRank: Record<Exclude<AppRole, "developer">, number> = { staff: 0, manager: 1, admin: 2 };
 
-function canSeeNavItem(role: AppRole, minRole?: AppRole) {
-  if (!minRole) return true;
-  return roleRank[role] >= roleRank[minRole];
+// Sections a developer account may open. Anything else (bookings, customers,
+// inquiries, payments, documents, drivers, reports, staff, audit log,
+// dashboard) is hidden AND blocked at the route level. The database RLS
+// policies are what actually protect the data.
+const DEVELOPER_PATHS = navItems.filter((i) => i.developer).map((i) => i.to);
+
+function canSeeNavItem(role: AppRole, item: { minRole?: Exclude<AppRole, "developer">; developer?: boolean }) {
+  if (role === "developer") return Boolean(item.developer);
+  if (!item.minRole) return true;
+  return roleRank[role] >= roleRank[item.minRole];
+}
+
+function developerMayOpen(pathname: string) {
+  return DEVELOPER_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
 }
 
 function ChangePasswordDialog() {
@@ -158,7 +177,8 @@ function AdminLayout() {
   // actually holds a role (staff/manager/admin) — matches the RLS read
   // policy on `bookings`, so it never subscribes for a logged-out visitor.
   useEffect(() => {
-    if (!role) return;
+    // Developers have no access to bookings, so they never subscribe.
+    if (!role || role === "developer") return;
     const channel = supabase
       .channel("admin-new-bookings")
       .on(
@@ -179,6 +199,13 @@ function AdminLayout() {
       supabase.removeChannel(channel);
     };
   }, [role]);
+
+  // Developers have no dashboard (it shows booking data) — send them to Fleet.
+  useEffect(() => {
+    if (role === "developer" && (location.pathname === "/admin" || location.pathname === "/admin/")) {
+      navigate({ to: "/admin/fleet" });
+    }
+  }, [role, location.pathname, navigate]);
 
   // The login page renders itself, with no sidebar and no auth requirement.
   if (onLoginPage) {
@@ -232,7 +259,7 @@ function AdminLayout() {
     );
   }
 
-  const visibleNavItems = navItems.filter((item) => canSeeNavItem(role, item.minRole));
+  const visibleNavItems = navItems.filter((item) => canSeeNavItem(role, item));
 
   const NavLinks = ({ onNavigate }: { onNavigate?: () => void }) => (
     <>
@@ -321,7 +348,24 @@ function AdminLayout() {
           <NavLinks />
         </aside>
         <main className="flex-1 overflow-x-hidden p-4 md:p-8">
-          <Outlet />
+          {role === "developer" && !developerMayOpen(location.pathname) ? (
+            <div className="mx-auto mt-16 max-w-md text-center">
+              <p className="text-sm font-medium text-foreground">
+                Developer accounts can't open this section.
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Customer and business records are only available to VenMax staff.
+              </p>
+              <Link
+                to="/admin/fleet"
+                className="mt-3 inline-block text-sm font-medium text-primary underline underline-offset-2"
+              >
+                Go to Fleet
+              </Link>
+            </div>
+          ) : (
+            <Outlet />
+          )}
         </main>
       </div>
     </div>
