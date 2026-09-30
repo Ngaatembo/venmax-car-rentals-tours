@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MapPin, Navigation } from "lucide-react";
-import { company, googleMaps } from "@/data/venmax";
+import { googleMaps } from "@/data/venmax";
+import { useSiteSettings } from "@/lib/site-settings";
 
 /**
  * Office location map. The Google Maps embed only loads after the visitor taps
@@ -9,7 +10,7 @@ import { company, googleMaps } from "@/data/venmax";
  */
 export function OfficeMap({ className = "" }: { className?: string }) {
   const [show, setShow] = useState(false);
-  const address = company.addressLines.join(", ");
+  const address = useSiteSettings().contact_address;
   const embedUrl = googleMaps.embed;
   const directionsUrl = googleMaps.directions;
 

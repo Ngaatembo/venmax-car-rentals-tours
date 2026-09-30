@@ -16,6 +16,9 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { FloatingWhatsApp } from "@/components/site/FloatingWhatsApp";
 import { CookieNotice } from "@/components/site/CookieNotice";
+import { SETTING_DEFAULTS, useSiteSettings, whatsappNumber } from "@/lib/site-settings";
+
+const DEFAULT_WHATSAPP = whatsappNumber({ ...SETTING_DEFAULTS });
 
 function NotFoundComponent() {
   return (
@@ -140,6 +143,11 @@ function RootComponent() {
   // overlapping headers (and two hamburger menus) showed on every admin page.
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isAdminRoute = pathname.startsWith("/admin");
+  // WhatsApp links are built by whatsappLink() in many places from the admin-editable
+  // number. If the saved number differs from the built-in default, re-render the page
+  // once after settings load so every link uses it (no remount in the normal case).
+  const whatsapp = whatsappNumber(useSiteSettings());
+  const whatsappKey = whatsapp === DEFAULT_WHATSAPP ? "default" : whatsapp;
 
   if (isAdminRoute) {
     return (
@@ -152,12 +160,14 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Header />
-      <main>
-        <Outlet />
-      </main>
-      <Footer />
-      <FloatingWhatsApp />
+      <div key={whatsappKey} className="contents">
+        <Header />
+        <main>
+          <Outlet />
+        </main>
+        <Footer />
+        <FloatingWhatsApp />
+      </div>
       <CookieNotice />
     </QueryClientProvider>
   );

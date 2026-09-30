@@ -7,7 +7,8 @@ import {
   LegalSubhead,
   type LegalSection,
 } from "@/components/site/LegalPage";
-import { company, paymentMethods, whatsappLink, type Vehicle } from "@/data/venmax";
+import { company, whatsappLink, type Vehicle } from "@/data/venmax";
+import { policies, useSiteSettings, type Policies, type SiteSettings } from "@/lib/site-settings";
 import { useVehicles } from "@/lib/live-content";
 
 // Route kept at /terms-of-service so existing links keep working.
@@ -30,21 +31,23 @@ function dollars(label: string): number | null {
   return m ? Number(m[1]) : null;
 }
 
-const glance = [
-  { value: "200 km", label: "Free mileage per day" },
-  { value: "$0.60/km", label: "Excess mileage" },
-  { value: "Refundable", label: "Deposits returned when you bring the car back" },
-  { value: "No fee", label: "To cancel — full refund within 3 business working days" },
-  { value: "+US$20/day", label: "Chauffeur hire, on any vehicle" },
-  { value: "Free", label: "Vehicle delivery within all Harare areas" },
-];
+function glance(p: Policies) {
+  return [
+    { value: p.freeKm, label: "Free mileage per day" },
+    { value: `${p.excessRate}/km`, label: "Excess mileage" },
+    { value: "Refundable", label: "Deposits returned when you bring the car back" },
+    { value: "No fee", label: `To cancel — full refund within ${p.refundDays} business working days` },
+    { value: `+${p.chauffeurFee}`, label: "Chauffeur hire, on any vehicle" },
+    { value: "Free", label: p.deliveryNote.replace(/^Free vehicle delivery/i, "Vehicle delivery").replace(/\.$/, "") },
+  ];
+}
 
-function AtAGlance() {
+function AtAGlance({ p }: { p: Policies }) {
   return (
     <div className="mt-8">
       <p className="eyebrow">At a glance</p>
       <div className="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-3">
-        {glance.map((g) => (
+        {glance(p).map((g) => (
           <div key={g.label} className="rounded-2xl border border-border bg-surface p-4">
             <p className="font-display text-lg font-semibold text-primary sm:text-xl">{g.value}</p>
             <p className="mt-1 text-xs leading-snug text-muted-foreground sm:text-sm">{g.label}</p>
@@ -122,7 +125,7 @@ function RatesAndDeposits({ vehicles }: { vehicles: Vehicle[] }) {
   );
 }
 
-function buildSections(vehicles: Vehicle[]): LegalSection[] {
+function buildSections(vehicles: Vehicle[], p: Policies): LegalSection[] {
   return [
     {
       id: "rental-eligibility",
@@ -132,8 +135,8 @@ function buildSections(vehicles: Vehicle[]): LegalSection[] {
           <LegalSubhead>For self-drive hire you'll need</LegalSubhead>
           <Bullets
             items={[
-              "To be 25 years or older.",
-              "A valid driver's licence, held for at least 2 years.",
+              `To be ${p.minAge} years or older.`,
+              `A valid driver's licence, held for at least ${p.licenceYears} years.`,
               "A valid ID and passport.",
               "Proof of residence or employment.",
               "Next of kin details, for use in an emergency.",
@@ -170,9 +173,9 @@ function buildSections(vehicles: Vehicle[]): LegalSection[] {
       content: (
         <Bullets
           items={[
-            "Standard rentals include 200 km free mileage per day.",
-            "Excess mileage is charged at $0.60 per km.",
-            "Unlimited mileage is available for rentals of one month or more.",
+            `Standard rentals include ${p.freeKm} free mileage per day.`,
+            `Excess mileage is charged at ${p.excessRate} per km.`,
+            `Unlimited mileage is available for rentals of ${p.unlimitedFrom} or more.`,
             "Customised mileage arrangements can be discussed for longer trips.",
           ]}
         />
@@ -225,7 +228,7 @@ function buildSections(vehicles: Vehicle[]): LegalSection[] {
                 and need it at the airport.
               </>,
               <>
-                <strong>Harare airport shuttle — $30 per trip.</strong> Ask about airport drop-off,
+                <strong>Harare airport shuttle — {p.shuttlePerTrip}.</strong> Ask about airport drop-off,
                 or a pickup-and-drop-off service, when you message us.
               </>,
             ]}
@@ -239,7 +242,7 @@ function buildSections(vehicles: Vehicle[]): LegalSection[] {
       content: (
         <Bullets
           items={[
-            "A VenMax chauffeur can be added to any vehicle for an additional US$20/day. This is not included in the vehicle's daily rate.",
+            `A VenMax chauffeur can be added to any vehicle for an additional ${p.chauffeurFee}. This is not included in the vehicle's daily rate.`,
             "The client covers the driver's food and accommodation.",
             "The self-drive age requirement does not apply, because VenMax provides the driver.",
           ]}
@@ -253,7 +256,7 @@ function buildSections(vehicles: Vehicle[]): LegalSection[] {
         <>
           <p>VenMax accepts:</p>
           <ul className="flex flex-wrap gap-2">
-            {paymentMethods.map((m) => (
+            {p.paymentMethods.map((m) => (
               <li
                 key={m}
                 className="rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-semibold text-foreground sm:text-sm"
@@ -277,7 +280,7 @@ function buildSections(vehicles: Vehicle[]): LegalSection[] {
           items={[
             "In an emergency or if your plans change, you can cancel your rental.",
             "VenMax does not charge a cancellation fee. This applies to every booking.",
-            "The full amount you paid is refunded within 3 business working days.",
+            `The full amount you paid is refunded within ${p.refundDays} business working days.`,
           ]}
         />
       ),
@@ -285,7 +288,7 @@ function buildSections(vehicles: Vehicle[]): LegalSection[] {
     {
       id: "cross-border-travel",
       title: "Cross-Border Travel",
-      content: <p>Cross-border travel is currently not offered.</p>,
+      content: <p>{p.crossBorder}</p>,
     },
     {
       id: "lost-vehicle-items",
@@ -298,7 +301,7 @@ function buildSections(vehicles: Vehicle[]): LegalSection[] {
       content: (
         <Bullets
           items={[
-            "Unlimited mileage is available for rentals of one month or more.",
+            `Unlimited mileage is available for rentals of ${p.unlimitedFrom} or more.`,
             "Customised mileage arrangements can be discussed for longer trips.",
             "Discounts are available for longer rental periods — message us on WhatsApp for details.",
           ]}
@@ -328,8 +331,8 @@ function buildSections(vehicles: Vehicle[]): LegalSection[] {
             ))}
           </ol>
           <p>
-            <strong>Delivery:</strong> vehicle delivery is free within all Harare areas for rental
-            customers. This is separate from the airport shuttle.
+            <strong>Delivery:</strong> {p.deliveryNote} This is for rental customers and is
+            separate from the airport shuttle.
           </p>
           <a
             href={whatsappLink("Hi VenMax, I'd like to book a vehicle. Please confirm availability and requirements.")}
@@ -348,6 +351,8 @@ function buildSections(vehicles: Vehicle[]): LegalSection[] {
 
 function RentalTermsPage() {
   const vehicles = useVehicles();
+  const settings = useSiteSettings();
+  const p = policies(settings);
   return (
     <LegalPage
       title="Rental Terms & Conditions"
@@ -362,8 +367,8 @@ function RentalTermsPage() {
           <LegalLink href="/privacy-policy">Privacy Policy</LegalLink>.
         </p>
       }
-      lead={<AtAGlance />}
-      sections={buildSections(vehicles)}
+      lead={<AtAGlance p={p} />}
+      sections={buildSections(vehicles, p)}
       closing={
         <>
           <p>
@@ -373,8 +378,8 @@ function RentalTermsPage() {
           </p>
           <p>
             Questions about these terms:{" "}
-            <LegalLink href={`mailto:${company.emails[0]}`}>{company.emails[0]}</LegalLink> or{" "}
-            {company.phones[0]}.
+            <LegalLink href={`mailto:${settings.contact_email_sales}`}>{settings.contact_email_sales}</LegalLink> or{" "}
+            {settings.contact_phone_primary}.
           </p>
         </>
       }

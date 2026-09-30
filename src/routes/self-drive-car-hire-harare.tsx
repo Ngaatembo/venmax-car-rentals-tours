@@ -3,7 +3,8 @@ import { Check, MessageCircle } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { Section, SectionHeading } from "@/components/site/Section";
 import { VehicleCard } from "@/components/site/VehicleCard";
-import { requirements, rentalTerms, whatsappLink } from "@/data/venmax";
+import { buildRentalTerms, buildRequirements, whatsappLink } from "@/data/venmax";
+import { policies, useSiteSettings } from "@/lib/site-settings";
 import { useVehicles } from "@/lib/live-content";
 
 export const Route = createFileRoute("/self-drive-car-hire-harare")({
@@ -28,6 +29,7 @@ export const Route = createFileRoute("/self-drive-car-hire-harare")({
 
 function SelfDrivePage() {
   const vehicles = useVehicles();
+  const p = policies(useSiteSettings());
 
   return (
     <>
@@ -47,7 +49,7 @@ function SelfDrivePage() {
           {[
             "Every price and deposit shown upfront — no back-and-forth for a quote",
             "Free airport vehicle pickup when you hire a VenMax vehicle",
-            "Free vehicle delivery within all Harare areas",
+            p.deliveryNote.replace(/\.$/, ""),
             "Multi-day hire discounts available",
           ].map((item) => (
             <div
@@ -83,7 +85,7 @@ function SelfDrivePage() {
               description="Straightforward requirements — no surprises on pickup day."
             />
             <div className="mt-8 space-y-6">
-              {requirements.map((req) => (
+              {buildRequirements(p).map((req) => (
                 <div key={req.number} className="flex gap-4">
                   <span className="text-lg font-semibold text-primary">{req.number}</span>
                   <div>
@@ -97,7 +99,7 @@ function SelfDrivePage() {
           <div>
             <SectionHeading eyebrow="Rental Terms" title="Good to know before you book" />
             <div className="mt-8 space-y-5">
-              {rentalTerms.map((term) => (
+              {buildRentalTerms(p).map((term) => (
                 <div key={term.label} className="rounded-xl border border-border p-4">
                   <p className="text-sm font-semibold text-foreground">{term.label}</p>
                   <p className="mt-1 text-sm text-muted-foreground">{term.value}</p>

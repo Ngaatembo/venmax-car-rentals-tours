@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { Bullets, LegalLink, LegalPage, type LegalSection } from "@/components/site/LegalPage";
 import { company, whatsappLink } from "@/data/venmax";
+import { contactInfo, useSiteSettings, type SiteSettings } from "@/lib/site-settings";
 
 export const Route = createFileRoute("/privacy-policy")({
   head: () => ({
@@ -17,12 +18,14 @@ export const Route = createFileRoute("/privacy-policy")({
   component: PrivacyPolicyPage,
 });
 
-const address = company.addressLines.join(", ");
 
 // Only states what VenMax has confirmed or what this website demonstrably does.
 // No retention periods, security certifications or data-sharing arrangements are
 // claimed — add them here only once VenMax confirms them.
-const sections: LegalSection[] = [
+function buildSections(settings: SiteSettings): LegalSection[] {
+  const address = settings.contact_address;
+  const contact = contactInfo(settings);
+  return [
   {
     id: "who-we-are",
     title: "Who We Are",
@@ -268,24 +271,24 @@ const sections: LegalSection[] = [
             <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
             <span>
               <span className="block font-semibold text-foreground">WhatsApp</span>
-              {company.phones[0]}
+              {settings.contact_whatsapp}
             </span>
           </a>
           <a
-            href={`mailto:${company.emails[0]}`}
+            href={`mailto:${settings.contact_email_sales}`}
             className="flex items-start gap-3 rounded-xl border border-border p-4 hover:bg-secondary"
           >
             <Mail className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
             <span className="min-w-0">
               <span className="block font-semibold text-foreground">Email</span>
-              <span className="break-words">{company.emails[0]}</span>
+              <span className="break-words">{settings.contact_email_sales}</span>
             </span>
           </a>
           <div className="flex items-start gap-3 rounded-xl border border-border p-4">
             <Phone className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
             <span>
               <span className="block font-semibold text-foreground">Phone</span>
-              {company.phones.join(" · ")}
+              {contact.phones.join(" · ")}
             </span>
           </div>
           <div className="flex items-start gap-3 rounded-xl border border-border p-4">
@@ -300,6 +303,7 @@ const sections: LegalSection[] = [
     ),
   },
 ];
+}
 
 function PrivacyPolicyPage() {
   return (
@@ -308,7 +312,7 @@ function PrivacyPolicyPage() {
       description="What personal information VenMax collects, why, and the choices you have — in plain language."
       updated="September 2026"
       currentHref="/privacy-policy"
-      sections={sections}
+      sections={buildSections(useSiteSettings())}
       whatsappMessage="Hello VenMax, I have a question about your Privacy Policy."
     />
   );

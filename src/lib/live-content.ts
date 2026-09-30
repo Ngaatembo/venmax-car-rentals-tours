@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "./supabase";
+import { useRawSiteContent } from "./site-settings";
 import {
   vehicles as staticVehicles,
   tours as staticTours,
@@ -105,25 +106,8 @@ export function useTours(): Tour[] {
 // Returns a map of key -> value; missing keys are simply absent (callers should
 // treat an absent or empty-string value as "not configured yet").
 export function useSiteContent(): Record<string, string> {
-  const [content, setContent] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    let cancelled = false;
-    supabase
-      .from("site_content")
-      .select("key, value")
-      .then(({ data, error }) => {
-        if (cancelled || error || !data) return;
-        const map: Record<string, string> = {};
-        for (const row of data) map[row.key] = row.value ?? "";
-        setContent(map);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return content;
+  // Shares the single site_content fetch with useSiteSettings().
+  return useRawSiteContent();
 }
 
 export function useServices(): Service[] {

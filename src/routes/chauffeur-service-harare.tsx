@@ -3,7 +3,8 @@ import { Check, MessageCircle } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { Section, SectionHeading } from "@/components/site/Section";
 import { VehicleCard } from "@/components/site/VehicleCard";
-import { whatsappLink, whyVenMax } from "@/data/venmax";
+import { buildWhyVenMax, whatsappLink } from "@/data/venmax";
+import { policies, useSiteSettings } from "@/lib/site-settings";
 import { useVehicles } from "@/lib/live-content";
 
 export const Route = createFileRoute("/chauffeur-service-harare")({
@@ -47,13 +48,15 @@ const useCases = [
 
 function ChauffeurPage() {
   const vehicles = useVehicles();
+  const p = policies(useSiteSettings());
+  const covers = p.chauffeurClientCovers ? ` ${p.chauffeurClientCovers}` : "";
 
   return (
     <>
       <PageHero
         eyebrow="Chauffeur Service"
         title="A professional driver, any vehicle in the fleet"
-        description="Sit back and let someone else handle the roads. VenMax's chauffeur option is available on any vehicle in the fleet — book the car you want, then add a driver. Chauffeur service is available for an additional US$20/day. The client covers the driver's food and accommodation."
+        description={`Sit back and let someone else handle the roads. VenMax's chauffeur option is available on any vehicle in the fleet — book the car you want, then add a driver. Chauffeur service is available for an additional ${p.chauffeurFee}.${covers}`}
       />
 
       <Section>
@@ -78,7 +81,7 @@ function ChauffeurPage() {
           title="What you get with a VenMax chauffeur booking"
         />
         <div className="mt-8 grid gap-3 sm:grid-cols-2">
-          {whyVenMax.map((item) => (
+          {buildWhyVenMax(p).map((item) => (
             <div key={item} className="flex items-start gap-3 rounded-xl border border-border bg-background p-4 text-sm">
               <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
               {item}
@@ -91,7 +94,7 @@ function ChauffeurPage() {
         <SectionHeading
           eyebrow="Available Vehicles"
           title="Chauffeur service is available on any vehicle below"
-          description="Pick the vehicle that suits the occasion — the chauffeur option applies fleet-wide. Chauffeur service is available for an additional US$20/day (not included in the vehicle rental price). The client covers the driver's food and accommodation."
+          description={`Pick the vehicle that suits the occasion — the chauffeur option applies fleet-wide. Chauffeur service is available for an additional ${p.chauffeurFee} (not included in the vehicle rental price).${covers}`}
         />
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {vehicles.map((vehicle) => (

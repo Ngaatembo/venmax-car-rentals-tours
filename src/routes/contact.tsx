@@ -9,6 +9,7 @@ import { submitInquiry } from "@/lib/bookings";
 import receptionImage from "@/assets/venmax-reception.jpg";
 import { FormPrivacyNotice } from "@/components/site/LegalPage";
 import { OfficeMap } from "@/components/site/OfficeMap";
+import { contactInfo, useSiteSettings } from "@/lib/site-settings";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -30,6 +31,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
+  const contact = contactInfo(useSiteSettings());
   const [pending, setPending] = useState(false);
   const [sent, setSent] = useState(false);
   const [confirmLink, setConfirmLink] = useState<string | null>(null);
@@ -82,7 +84,7 @@ function ContactPage() {
                   rel="noreferrer"
                   className="mt-1 block text-sm text-muted-foreground hover:text-foreground hover:underline"
                 >
-                  {company.addressLines.join(", ")}
+                  {contact.address}
                 </a>
               </div>
             </div>
@@ -90,7 +92,7 @@ function ContactPage() {
               <Phone className="mt-1 h-5 w-5 shrink-0 text-primary" />
               <div>
                 <h3 className="text-base">Call or WhatsApp</h3>
-                {company.phones.map((phone) => (
+                {contact.phones.map((phone) => (
                   <p key={phone} className="mt-1 text-sm text-muted-foreground">
                     <a href={`tel:${phone.replace(/\s/g, "")}`} className="hover:text-foreground">
                       {phone}
@@ -103,7 +105,7 @@ function ContactPage() {
               <Mail className="mt-1 h-5 w-5 shrink-0 text-primary" />
               <div>
                 <h3 className="text-base">Email</h3>
-                {company.emails.map((email) => (
+                {contact.emails.map((email) => (
                   <p key={email} className="mt-1 text-sm text-muted-foreground">
                     <a href={`mailto:${email}`} className="hover:text-foreground">
                       {email}
@@ -116,7 +118,7 @@ function ContactPage() {
               <Clock className="mt-1 h-5 w-5 shrink-0 text-primary" />
               <div>
                 <h3 className="text-base">Opening hours</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{company.hours}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{contact.hours}</p>
               </div>
             </div>
             <div className="flex gap-4">
@@ -249,7 +251,7 @@ function ContactPage() {
         <div id="find-us" className="mt-14 scroll-mt-28">
           <h2 className="text-xl sm:text-2xl">Find our office</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            {company.addressLines.join(", ")} · {company.hours}
+            {contact.address} · {contact.hours}
           </p>
           <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
             <OfficeMap />

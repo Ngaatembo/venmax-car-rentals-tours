@@ -3,6 +3,7 @@ import { Facebook, Instagram, Linkedin, Mail, MapPin, MessageCircle, Phone } fro
 import logo from "@/assets/logo.jpg";
 import { company, googleMaps, whatsappLink } from "@/data/venmax";
 import { legalLinks } from "./LegalPage";
+import { contactInfo, useSiteSettings } from "@/lib/site-settings";
 
 const links = [
   { to: "/fleet", label: "Fleet" },
@@ -16,6 +17,7 @@ const links = [
 ] as const;
 
 export function Footer() {
+  const contact = contactInfo(useSiteSettings());
   return (
     <footer className="bg-ink pb-16 text-navy-foreground sm:pb-0">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -85,16 +87,16 @@ export function Footer() {
                   rel="noreferrer"
                   className="hover:text-navy-foreground hover:underline"
                 >
-                  {company.addressLines.join(", ")}
+                  {contact.address}
                 </a>
               </li>
-              {company.phones.map((phone) => (
+              {contact.phones.map((phone) => (
                 <li key={phone} className="flex gap-3">
                   <Phone className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                   <a href={`tel:${phone.replace(/\s/g, "")}`}>{phone}</a>
                 </li>
               ))}
-              {company.emails.map((email) => (
+              {contact.emails.map((email) => (
                 <li key={email} className="flex gap-3">
                   <Mail className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                   <a href={`mailto:${email}`}>{email}</a>

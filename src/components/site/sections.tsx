@@ -35,25 +35,22 @@ import logo from "@/assets/logo-header.png";
 import {
   businessFacts,
   company,
-  diasporaBenefits,
   diasporaMarkets,
   howItWorks,
   valueCards,
   fleetCountLabel,
   type Vehicle,
-  paymentMethods,
-  requirements,
-  rentalTerms,
-  standardMileagePolicy,
-  chauffeurFeeNote,
-  deliveryNote,
   googleMaps,
   trustPoints,
   whatsappLink,
-  whyVenMax,
+  buildDiasporaBenefits,
+  buildRentalTerms,
+  buildRequirements,
+  buildWhyVenMax,
 } from "@/data/venmax";
 import { useFleet, useVehicles, useTours, useSiteContent, useServices, useFaqs, useTestimonials } from "@/lib/live-content";
 import { cn } from "@/lib/utils";
+import { fillTokens, phoneHref, policies, useSiteSettings } from "@/lib/site-settings";
 
 const serviceIcons = {
   key: KeyRound,
@@ -559,6 +556,7 @@ export function FleetCatalogue() {
 }
 
 export function ChauffeurSection() {
+  const p = policies(useSiteSettings());
   const services = useServices();
   const chauffeur = services.find((s) => s.slug === "chauffeur");
 
@@ -592,7 +590,7 @@ export function ChauffeurSection() {
             {[
               "Executive travel with a professional driver",
               "Business meetings, events and long-distance journeys",
-              chauffeurFeeNote,
+              p.chauffeurFeeNote,
             ].map((item) => (
               <li key={item} className="flex items-start gap-3">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -676,6 +674,7 @@ export function ToursTeaserSection() {
 // "free airport pickup" message now lives in the Services & Tours card and
 // the Why Choose Us feature row instead.
 export function AirportSection() {
+  const p = policies(useSiteSettings());
   return (
     <Section id="airport">
       <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -711,10 +710,10 @@ export function AirportSection() {
             </div>
             <div className="rounded-2xl border border-border bg-card p-5">
               <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-                Airport shuttle · $30 per trip
+                Airport shuttle · {p.shuttlePerTrip}
               </p>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Harare airport shuttle services are available at $30 per trip. Ask about airport
+                Harare airport shuttle services are available at {p.shuttlePerTrip}. Ask about airport
                 drop-off, or a pickup-and-drop-off service, when you message us.
               </p>
             </div>
@@ -808,6 +807,7 @@ export function HowItWorksSection() {
 }
 
 export function MileageSection() {
+  const p = policies(useSiteSettings());
   return (
     <Section tone="surface" id="mileage">
       <div className="grid items-center gap-10 lg:grid-cols-2">
@@ -834,11 +834,11 @@ export function MileageSection() {
           <div className="mt-6 space-y-3 text-sm">
             <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5">
               <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-              {standardMileagePolicy}
+              {p.standardMileage}
             </div>
             <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5">
               <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-              For rentals of one month or more, unlimited mileage is available.
+              {p.unlimitedSentence}
             </div>
             <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5">
               <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -863,6 +863,7 @@ export function MileageSection() {
 }
 
 export function BookingPaymentSection() {
+  const p = policies(useSiteSettings());
   return (
     <Section id="booking-payment">
       <SectionHeading
@@ -875,7 +876,7 @@ export function BookingPaymentSection() {
           Confirmed payment methods include
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
-          {paymentMethods.map((method) => (
+          {p.paymentMethods.map((method) => (
             <span
               key={method}
               className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
@@ -888,10 +889,10 @@ export function BookingPaymentSection() {
           Payment arrangements are agreed directly with the VenMax team.
         </p>
         <div className="mt-6 rounded-2xl border border-border bg-card p-5 text-sm">
-          <p className="font-semibold">{deliveryNote}</p>
+          <p className="font-semibold">{p.deliveryNote}</p>
           <p className="mt-1 text-muted-foreground">
             This is vehicle delivery for rental customers — separate from the airport shuttle
-            ($30 per trip).
+            ({p.shuttlePerTrip}).
           </p>
         </div>
       </div>
@@ -1113,6 +1114,7 @@ export function DiasporaSection({ full = false }: { full?: boolean } = {}) {
 }
 
 export function DiasporaBenefitsSection() {
+  const p = policies(useSiteSettings());
   return (
     <Section>
       <SectionHeading
@@ -1121,7 +1123,7 @@ export function DiasporaBenefitsSection() {
         description="Everything can be arranged conveniently through WhatsApp."
       />
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {diasporaBenefits.map((b) => (
+        {buildDiasporaBenefits(p).map((b) => (
           <article key={b.title} className="rounded-2xl border border-border bg-card p-6">
             <h3 className="text-base uppercase tracking-wide">{b.title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{b.description}</p>
@@ -1211,6 +1213,8 @@ export function ToursSection() {
 // live vehicle list; the other two tiles are real stated facts (not
 // invented customer/rating numbers, which VenMax hasn't supplied yet).
 export function WhySection() {
+  const settings = useSiteSettings();
+  const p = policies(settings);
   const vehicles = useVehicles();
   const content = useSiteContent();
   const startingPrice = vehicles.reduce<number | null>((min, v) => {
@@ -1221,13 +1225,13 @@ export function WhySection() {
   }, null);
 
   const stats = [
-    { value: `${businessFacts.googleRating}★`, label: "Google Rating" },
+    { value: `${settings.stat_google_rating}★`, label: "Google Rating" },
     { value: startingPrice ? `$${startingPrice}` : "$40", label: "Starting Price/Day" },
-    { value: businessFacts.happyClients, label: "Happy Clients" },
+    { value: settings.stat_happy_clients, label: "Happy Clients" },
     { value: content["vehicle_models_display"] || fleetCountLabel(vehicles.length)?.replace(" vehicles", ""), label: "Vehicle Models" },
   ].filter((st): st is { value: string; label: string } => Boolean(st.value));
 
-  const featureRows = whyVenMax.slice(0, 4);
+  const featureRows = buildWhyVenMax(p).slice(0, 4);
 
   return (
     <Section tone="navy" id="why-venmax">
@@ -1305,6 +1309,7 @@ export function BrandPromiseSection() {
 }
 
 export function TestimonialsSection() {
+  const settings = useSiteSettings();
   const testimonials = useTestimonials();
   const avatarPalette = ["bg-primary", "bg-navy", "bg-emerald-600", "bg-sky-600", "bg-amber-600"];
   return (
@@ -1340,7 +1345,7 @@ export function TestimonialsSection() {
           ))}
         </div>
         <a href={googleMaps.place} target="_blank" rel="noreferrer" className="hover:underline">
-          {businessFacts.googleRating} on Google · 100+ ratings
+          {settings.stat_google_rating} on Google · 100+ ratings
         </a>
       </div>
       <Carousel opts={{ align: "start", loop: true }} className="mt-8">
@@ -1398,6 +1403,7 @@ export function TestimonialsSection() {
 // Rental Requirements + FAQ, condensed into one accordion so the essential
 // information survives without taking up two full homepage sections.
 export function RequirementsFaqSection() {
+  const p = policies(useSiteSettings());
   const faqs = useFaqs();
   return (
     <Section tone="surface" id="requirements">
@@ -1407,7 +1413,7 @@ export function RequirementsFaqSection() {
         description="Simple, straightforward requirements — kept easy to read so you can get on the road quickly."
       />
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {requirements.map((req) => (
+        {buildRequirements(p).map((req) => (
           <article key={req.number} className="rounded-2xl border border-border bg-card p-6">
             <span className="text-2xl font-semibold text-primary">{req.number}</span>
             <h3 className="mt-3 text-base">{req.title}</h3>
@@ -1416,7 +1422,7 @@ export function RequirementsFaqSection() {
         ))}
       </div>
       <div className="mt-6 grid gap-6 rounded-2xl border border-border bg-card p-6 sm:grid-cols-2 lg:grid-cols-4">
-        {rentalTerms.map((term) => (
+        {buildRentalTerms(p).map((term) => (
           <div key={term.label}>
             <p className="eyebrow">{term.label}</p>
             <p className="mt-2 text-sm">{term.value}</p>
@@ -1429,8 +1435,8 @@ export function RequirementsFaqSection() {
         <Accordion type="single" collapsible className="mt-6">
           {faqs.map((faq, i) => (
             <AccordionItem key={faq.question} value={`item-${i}`}>
-              <AccordionTrigger>{faq.question}</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
+              <AccordionTrigger>{fillTokens(faq.question, p)}</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">{fillTokens(faq.answer, p)}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
@@ -1529,6 +1535,7 @@ export function SocialShowcaseSection() {
 }
 
 export function BookingCta() {
+  const settings = useSiteSettings();
   return (
     <Section tone="navy">
       <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
@@ -1540,10 +1547,10 @@ export function BookingCta() {
         />
         <div className="flex flex-wrap gap-3 lg:justify-end">
           <a
-            href={`tel:${(company.phones[0] ?? "").replace(/\s+/g, "")}`}
+            href={phoneHref(settings.contact_phone_primary)}
             className="inline-flex items-center gap-2 rounded-full bg-navy-foreground px-6 py-3 text-sm font-semibold text-navy"
           >
-            {company.phones[0]}
+            {settings.contact_phone_primary}
           </a>
           <a
             href={whatsappLink("Hello VenMax, I'd like to check availability and book a vehicle.")}
@@ -1561,13 +1568,14 @@ export function BookingCta() {
 }
 
 export function CancellationSection() {
+  const p = policies(useSiteSettings());
   return (
     <Section id="cancellation">
       <div className="grid items-start gap-8 lg:grid-cols-2">
         <SectionHeading
           eyebrow="Cancellation & Refunds"
           title="Flexible Cancellation"
-          description="In the event of an emergency or change of plans, customers can cancel their rental. VenMax does not charge a cancellation fee, and the full amount paid is refunded within 3 business working days. This applies to every booking."
+          description={`In the event of an emergency or change of plans, customers can cancel their rental. VenMax does not charge a cancellation fee, and the full amount paid is refunded within ${p.refundDays} business working days. This applies to every booking.`}
         />
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="rounded-2xl border border-border bg-card p-6">

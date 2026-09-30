@@ -1,5 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import {
+  SETTING_DEFAULTS,
+  TEXT_TOKENS,
+  policies,
+  refreshSiteSettings,
+  type SiteSettings,
+} from "@/lib/site-settings";
+import { useEffect, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -58,22 +65,8 @@ export const Route = createFileRoute("/admin/content")({
   component: AdminContent,
 });
 
-const fieldLabels: Record<string, string> = {
-  hero_tagline: "Hero tagline",
-  hero_subtitle: "Hero subtitle",
-  contact_address: "Contact address",
-  contact_phone_primary: "Primary phone",
-  contact_phone_secondary: "Secondary phone",
-  contact_email_sales: "Sales email",
-  contact_email_bookings: "Bookings email",
-  social_showcase_1: "Featured post/reel #1 (Instagram, TikTok or Facebook link)",
-  social_showcase_2: "Featured post/reel #2 (Instagram, TikTok or Facebook link)",
-  social_showcase_3: "Featured post/reel #3 (Instagram, TikTok or Facebook link)",
-  social_showcase_4: "Featured post/reel #4 (Instagram, TikTok or Facebook link)",
-  vehicle_models_display: "\"Vehicle Models\" homepage stat (e.g. 40+)",
-};
 
-type Tab = "general" | "services" | "faq" | "testimonials";
+type Tab = "general" | "rates" | "services" | "faq" | "testimonials";
 
 function AdminContent() {
   const [tab, setTab] = useState<Tab>("general");
@@ -82,13 +75,14 @@ function AdminContent() {
     <div>
       <h1 className="text-2xl font-semibold text-foreground">Website Content</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Manage the public site's hero text, contact details, services, FAQ, and testimonials.
-        Changes here update the live website.
+        Manage the public site's hero text, contact details, rates and policies, services, FAQ
+        and testimonials. Changes here update the live website.
       </p>
 
       <Tabs value={tab} onValueChange={(v) => setTab(v as Tab)} className="mt-6">
         <TabsList>
           <TabsTrigger value="general">General</TabsTrigger>
+          <TabsTrigger value="rates">Rates &amp; Policies</TabsTrigger>
           <TabsTrigger value="services">Services</TabsTrigger>
           <TabsTrigger value="faq">FAQ</TabsTrigger>
           <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
@@ -97,6 +91,7 @@ function AdminContent() {
 
       <div className="mt-6">
         {tab === "general" && <GeneralSection />}
+        {tab === "rates" && <RatesSection />}
         {tab === "services" && <ServicesSection />}
         {tab === "faq" && <FaqSection />}
         {tab === "testimonials" && <TestimonialsSection />}
@@ -105,18 +100,44 @@ function AdminContent() {
   );
 }
 
-// ---------------- General (existing key-value editor) ----------------
-function GeneralSection() {
-  const [items, setItems] = useState<DbSiteContent[]>([]);
+// ---------------- Settings forms (General, Rates & Policies) ----------------
+type SettingField = {
+  key: string;
+  label: string;
+  help?: string;
+  kind?: "text" | "textarea" | "number";
+  prefix?: string;
+  suffix?: string;
+};
+type SettingGroup = { title: string; description?: string; fields: SettingField[] };
+
+function defaultFor(key: string): string {
+  return (SETTING_DEFAULTS as Record<string, string>)[key] ?? "";
+}
+
+function SettingsForm({
+  groups,
+  preview,
+}: {
+  groups: SettingGroup[];
+  preview?: (values: Record<string, string>) => ReactNode;
+}) {
+  const keys = groups.flatMap((g) => g.fields.map((f) => f.key));
+  const [saved, setSaved] = useState<Record<string, string>>({});
+  const [values, setValues] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
-  const [savingKey, setSavingKey] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   async function refresh() {
     setLoading(true);
     try {
-      setItems(await listSiteContent());
+      const rows = await listSiteContent();
+      const map: Record<string, string> = {};
+      for (const k of keys) map[k] = rows.find((r) => r.key === k)?.value ?? "";
+      setSaved(map);
+      setValues(map);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to load content");
+      toast.error(err instanceof Error ? err.message : "Failed to load settings");
     } finally {
       setLoading(false);
     }
@@ -124,43 +145,254 @@ function GeneralSection() {
 
   useEffect(() => {
     refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function updateLocal(key: string, value: string) {
-    setItems((prev) => prev.map((i) => (i.key === key ? { ...i, value } : i)));
-  }
+  const dirty = keys.filter((k) => (values[k] ?? "") !== (saved[k] ?? ""));
 
-  async function handleSave(key: string, value: string) {
-    setSavingKey(key);
+  async function handleSave() {
+    setSaving(true);
     try {
-      await setSiteContent(key, value);
-      toast.success("Saved");
+      for (const k of dirty) await setSiteContent(k, (values[k] ?? "").trim());
+      setSaved({ ...values });
+      refreshSiteSettings();
+      toast.success(`Saved ${dirty.length} change${dirty.length === 1 ? "" : "s"} — the website now uses them`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to save");
     } finally {
-      setSavingKey(null);
+      setSaving(false);
     }
   }
 
+  // Blank fields fall back to the built-in default on the website.
+  const effective: Record<string, string> = {};
+  for (const k of keys) effective[k] = (values[k] ?? "").trim() || defaultFor(k);
+
+  if (loading) return <p className="text-sm text-muted-foreground">Loading…</p>;
+
   return (
-    <div className="max-w-xl space-y-4">
-      {loading && <p className="text-sm text-muted-foreground">Loading…</p>}
-      {!loading &&
-        items.map((item) => (
-          <div key={item.key} className="rounded-lg border border-border bg-background p-4">
-            <Label>{fieldLabels[item.key] ?? item.key}</Label>
-            <div className="mt-2 flex gap-2">
-              <Input value={item.value} onChange={(e) => updateLocal(item.key, e.target.value)} />
-              <Button
-                variant="secondary"
-                onClick={() => handleSave(item.key, item.value)}
-                disabled={savingKey === item.key}
-              >
-                {savingKey === item.key ? "Saving…" : "Save"}
-              </Button>
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
+      <div className="space-y-6">
+        {groups.map((group) => (
+          <section key={group.title} className="rounded-lg border border-border bg-background p-5">
+            <h2 className="text-base font-semibold text-foreground">{group.title}</h2>
+            {group.description && (
+              <p className="mt-1 text-sm text-muted-foreground">{group.description}</p>
+            )}
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              {group.fields.map((field) => {
+                const def = defaultFor(field.key);
+                const value = values[field.key] ?? "";
+                const wide = field.kind === "textarea" || (!field.prefix && !field.suffix && field.kind !== "number");
+                return (
+                  <div key={field.key} className={wide ? "sm:col-span-2" : undefined}>
+                    <Label htmlFor={`set-${field.key}`}>{field.label}</Label>
+                    <div className="mt-1.5 flex items-center gap-2">
+                      {field.prefix && <span className="text-sm text-muted-foreground">{field.prefix}</span>}
+                      {field.kind === "textarea" ? (
+                        <Textarea
+                          id={`set-${field.key}`}
+                          rows={6}
+                          value={value}
+                          placeholder={def}
+                          onChange={(e) => setValues((v) => ({ ...v, [field.key]: e.target.value }))}
+                        />
+                      ) : (
+                        <Input
+                          id={`set-${field.key}`}
+                          inputMode={field.kind === "number" ? "decimal" : undefined}
+                          value={value}
+                          placeholder={def}
+                          onChange={(e) =>
+                            setValues((v) => ({
+                              ...v,
+                              [field.key]:
+                                field.kind === "number" ? e.target.value.replace(/[^0-9.]/g, "") : e.target.value,
+                            }))
+                          }
+                        />
+                      )}
+                      {field.suffix && <span className="shrink-0 text-sm text-muted-foreground">{field.suffix}</span>}
+                    </div>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {field.help ? `${field.help} ` : ""}
+                      {def ? (
+                        value.trim() ? (
+                          value.trim() !== def ? (
+                            <button
+                              type="button"
+                              className="underline underline-offset-2 hover:text-foreground"
+                              onClick={() => setValues((v) => ({ ...v, [field.key]: "" }))}
+                            >
+                              Reset to default
+                            </button>
+                          ) : null
+                        ) : (
+                          "Blank — the website uses the default shown."
+                        )
+                      ) : null}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
-          </div>
+          </section>
         ))}
+        <div className="sticky bottom-0 flex items-center justify-between gap-3 rounded-lg border border-border bg-background/95 p-4 backdrop-blur">
+          <p className="text-sm text-muted-foreground">
+            {dirty.length ? `${dirty.length} unsaved change${dirty.length === 1 ? "" : "s"}` : "All changes saved"}
+          </p>
+          <div className="flex gap-2">
+            <Button variant="ghost" disabled={!dirty.length || saving} onClick={() => setValues({ ...saved })}>
+              Discard
+            </Button>
+            <Button disabled={!dirty.length || saving} onClick={handleSave}>
+              {saving ? "Saving…" : "Save changes"}
+            </Button>
+          </div>
+        </div>
+      </div>
+      {preview && (
+        <aside className="h-fit rounded-lg border border-border bg-muted/40 p-5 lg:sticky lg:top-4">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            How the website will read
+          </p>
+          <div className="mt-3 space-y-3 text-sm text-foreground">{preview(effective)}</div>
+        </aside>
+      )}
+    </div>
+  );
+}
+
+const generalGroups: SettingGroup[] = [
+  {
+    title: "Homepage hero",
+    description: "The first thing visitors see at the top of the homepage.",
+    fields: [
+      { key: "hero_tagline", label: "Small line above the heading" },
+      { key: "hero_headline", label: "Main heading" },
+      { key: "hero_subtitle", label: "Text under the heading", kind: "textarea" },
+    ],
+  },
+  {
+    title: "Contact details",
+    description: "Shown in the footer, Contact page, legal pages and call buttons.",
+    fields: [
+      { key: "contact_address", label: "Office address" },
+      { key: "contact_phone_primary", label: "Primary phone" },
+      { key: "contact_phone_secondary", label: "Secondary phone (optional)" },
+      {
+        key: "contact_whatsapp",
+        label: "WhatsApp number",
+        help: "Every “Book on WhatsApp” button uses this number. Include the country code.",
+      },
+      { key: "contact_email_sales", label: "Main email" },
+      { key: "contact_email_bookings", label: "Second email (optional)" },
+      { key: "contact_hours", label: "Opening hours" },
+    ],
+  },
+  {
+    title: "Homepage stats",
+    fields: [
+      { key: "stat_google_rating", label: "Google rating", kind: "number", suffix: "★" },
+      { key: "stat_happy_clients", label: "Happy clients", help: "e.g. 1000+" },
+      { key: "vehicle_models_display", label: "Vehicle models", help: "e.g. 40+. Also shown on the Fleet page." },
+    ],
+  },
+  {
+    title: "Social posts",
+    description: "Instagram, TikTok or Facebook links shown in “See VenMax in action”.",
+    fields: [
+      { key: "social_showcase_1", label: "Featured post #1" },
+      { key: "social_showcase_2", label: "Featured post #2" },
+      { key: "social_showcase_3", label: "Featured post #3" },
+      { key: "social_showcase_4", label: "Featured post #4" },
+    ],
+  },
+];
+
+function GeneralSection() {
+  return <SettingsForm groups={generalGroups} />;
+}
+
+const ratesGroups: SettingGroup[] = [
+  {
+    title: "Chauffeur hire",
+    fields: [
+      { key: "chauffeur_fee_per_day", label: "Chauffeur fee", kind: "number", prefix: "US$", suffix: "per day" },
+      { key: "chauffeur_client_covers", label: "Extra note", help: "Shown after the fee." },
+    ],
+  },
+  {
+    title: "Airport & delivery",
+    fields: [
+      { key: "airport_shuttle_fee", label: "Airport shuttle", kind: "number", prefix: "US$", suffix: "per trip" },
+      { key: "delivery_note", label: "Delivery sentence" },
+    ],
+  },
+  {
+    title: "Mileage",
+    fields: [
+      { key: "mileage_free_km_per_day", label: "Free mileage", kind: "number", suffix: "km per day" },
+      { key: "mileage_excess_per_km", label: "Excess mileage", kind: "number", prefix: "US$", suffix: "per km" },
+      {
+        key: "mileage_unlimited_from",
+        label: "Unlimited mileage from",
+        help: "Completes “For rentals of … or more, unlimited mileage is available.”",
+      },
+    ],
+  },
+  {
+    title: "Cancellation, requirements & travel",
+    fields: [
+      { key: "cancellation_refund_days", label: "Refund time", kind: "number", suffix: "business working days" },
+      { key: "min_driver_age", label: "Minimum self-drive age", kind: "number", suffix: "years" },
+      { key: "licence_years", label: "Licence held for at least", kind: "number", suffix: "years" },
+      { key: "cross_border", label: "Cross-border travel sentence" },
+    ],
+  },
+  {
+    title: "Payment methods",
+    description: "One per line, in the order they should appear.",
+    fields: [{ key: "payment_methods", label: "Accepted payment methods", kind: "textarea" }],
+  },
+];
+
+function RatesSection() {
+  return (
+    <div className="space-y-4">
+      <p className="max-w-3xl text-sm text-muted-foreground">
+        These values feed the homepage, the chauffeur and self-drive pages, the rental requirements
+        cards and the Rental Terms &amp; Conditions. FAQ answers are written text: use the
+        placeholders listed in the FAQ tab (e.g. {"{chauffeur_fee}"}) so they update too.
+      </p>
+      <SettingsForm
+        groups={ratesGroups}
+        preview={(v) => {
+          const p = policies(v as SiteSettings);
+          return (
+            <>
+              <p>{p.chauffeurFeeNote}</p>
+              <p>Harare airport shuttle: {p.shuttlePerTrip}.</p>
+              <p>{p.deliveryNote}</p>
+              <p>{p.standardMileage}</p>
+              <p>{p.unlimitedSentence}</p>
+              <p>No cancellation fee. {p.refundSentence}</p>
+              <p>
+                Self-drive: {p.minAge}+ years, licence held for at least {p.licenceYears} years.
+              </p>
+              <p>{p.crossBorder}</p>
+              <div className="flex flex-wrap gap-1.5">
+                {p.paymentMethods.map((m) => (
+                  <span key={m} className="rounded-full border border-border bg-background px-2 py-0.5 text-xs">
+                    {m}
+                  </span>
+                ))}
+              </div>
+            </>
+          );
+        }}
+      />
     </div>
   );
 }
@@ -449,6 +681,16 @@ function FaqSection() {
               <div>
                 <Label>Answer</Label>
                 <Textarea value={form.answer ?? ""} onChange={(e) => setForm((f) => ({ ...f, answer: e.target.value }))} />
+                <details className="mt-2 text-xs text-muted-foreground">
+                  <summary className="cursor-pointer">Placeholders that follow Rates &amp; Policies</summary>
+                  <ul className="mt-2 space-y-1">
+                    {TEXT_TOKENS.map((t) => (
+                      <li key={t.token}>
+                        <code className="rounded bg-muted px-1">{t.token}</code> — {t.describe}
+                      </li>
+                    ))}
+                  </ul>
+                </details>
               </div>
               <div className="flex items-center gap-4">
                 <div>

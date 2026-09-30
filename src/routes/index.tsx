@@ -24,6 +24,7 @@ import {
 import { BookingWidget } from "@/components/site/BookingWidget";
 import { whatsappLink } from "@/data/venmax";
 import heroImage from "@/assets/toyota-fortuner.jpg";
+import { useSiteSettings } from "@/lib/site-settings";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -40,6 +41,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const hero = useSiteSettings();
   return (
     <div>
       <section className="relative overflow-hidden bg-navy text-navy-foreground">
@@ -52,15 +54,10 @@ function Index() {
         <div className="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-navy/40" />
         <div className="relative mx-auto flex min-h-[min(640px,88svh)] max-w-7xl flex-col justify-center px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-primary">
-            Affordable car rental in Zimbabwe &middot; Easy WhatsApp booking
+            {hero.hero_tagline}
           </p>
-          <h1 className="mt-3 max-w-2xl text-4xl leading-tight sm:text-6xl">
-            Reliable Car Rental in Zimbabwe, Made Simple.
-          </h1>
-          <p className="mt-5 max-w-xl text-lg text-navy-foreground/80">
-            Choose your vehicle, send us a WhatsApp message and let our team help arrange your
-            rental — whether you're in Zimbabwe or planning your trip from abroad.
-          </p>
+          <h1 className="mt-3 max-w-2xl text-4xl leading-tight sm:text-6xl">{hero.hero_headline}</h1>
+          <p className="mt-5 max-w-xl text-lg text-navy-foreground/80">{hero.hero_subtitle}</p>
           <div className="mt-8 flex flex-wrap gap-4">
             <a
               href={whatsappLink("Hi VenMax, I'd like to enquire about renting a vehicle. Please help me with the available options.")}

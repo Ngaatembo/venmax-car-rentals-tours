@@ -1,3 +1,4 @@
+import { getSiteSettings, whatsappNumber, type Policies } from "@/lib/site-settings";
 /**
  * VenMax content source of truth.
  *
@@ -120,7 +121,8 @@ export const googleMaps = {
 };
 
 export function whatsappLink(message: string) {
-  return `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(message)}`;
+  // Admin-editable (Website Content → Contact details); defaults to company.whatsapp.
+  return `https://wa.me/${whatsappNumber(getSiteSettings())}?text=${encodeURIComponent(message)}`;
 }
 
 function cleanRate(priceLabel: string) {
@@ -372,7 +374,7 @@ export const services: Service[] = [
     slug: "chauffeur",
     name: "Chauffeur Services",
     description:
-      "Sit back with a professional driver for business meetings, events and long-distance travel. Chauffeur service is available on any vehicle for an additional US$20/day. The client covers the driver's food and accommodation.",
+      "Sit back with a professional driver for business meetings, events and long-distance travel.",
     icon: "user",
     whatsapp: "Hello VenMax, I'd like to enquire about your chauffeur services.",
   },
@@ -458,85 +460,69 @@ export const trustPoints = [
   },
 ];
 
-export const whyVenMax = [
-  "Zimbabwean-owned, local knowledge",
-  "All vehicles insured and well maintained",
-  "Transparent pricing, no hidden fees",
-  "Free vehicle pickup at the airport for hired vehicles",
-  "Free vehicle delivery within all Harare areas",
-  "Self-drive and chauffeur options",
-  "Flexible rental durations",
-  "Friendly WhatsApp-first support",
-];
+export function buildWhyVenMax(p: Policies) {
+  return [
+    "Zimbabwean-owned, local knowledge",
+    "All vehicles insured and well maintained",
+    "Transparent pricing, no hidden fees",
+    "Free vehicle pickup at the airport for hired vehicles",
+    p.deliveryNote.replace(/\.$/, ""),
+    "Self-drive and chauffeur options",
+    "Flexible rental durations",
+    "Friendly WhatsApp-first support",
+  ];
+}
 
-export const requirements = [
-  {
-    number: "01",
-    title: "Driver Age",
-    description: "Self-drive customers must be 25 years or older. No age limit applies when you book a VenMax chauffeur.",
-  },
-  {
-    number: "02",
-    title: "Driver's Licence",
-    description: "The driver's licence must have been held for at least 2 years.",
-  },
-  {
-    number: "03",
-    title: "Identification & Next of Kin",
-    description:
-      "Customers provide both a valid ID and passport, plus next of kin details in case of an emergency.",
-  },
-  {
-    number: "04",
-    title: "Proof of Residence or Employment",
-    description: "Proof of residence or employment is required.",
-  },
-  { number: "05", title: "Insurance", description: "All VenMax vehicles are insured." },
-  {
-    number: "06",
-    title: "Fuel",
-    description:
-      "Customers pay for fuel used during their rental and return the vehicle with the same fuel level.",
-  },
-  {
-    number: "07",
-    title: "Cross-Border Travel",
-    description: "Cross-border travel is currently not offered.",
-  },
-  {
-    number: "08",
-    title: "Vehicle Items",
-    description: "Lost vehicle items may be charged at applicable market rates.",
-  },
-];
+// Rental requirement cards. Age, licence years and cross-border wording come from
+// Website Content → Rates & Policies in the admin.
+export function buildRequirements(p: Policies) {
+  return [
+    {
+      number: "01",
+      title: "Driver Age",
+      description: `Self-drive customers must be ${p.minAge} years or older. No age limit applies when you book a VenMax chauffeur.`,
+    },
+    {
+      number: "02",
+      title: "Driver's Licence",
+      description: `The driver's licence must have been held for at least ${p.licenceYears} years.`,
+    },
+    {
+      number: "03",
+      title: "Identification & Next of Kin",
+      description:
+        "Customers provide both a valid ID and passport, plus next of kin details in case of an emergency.",
+    },
+    {
+      number: "04",
+      title: "Proof of Residence or Employment",
+      description: "Proof of residence or employment is required.",
+    },
+    { number: "05", title: "Insurance", description: "All VenMax vehicles are insured." },
+    {
+      number: "06",
+      title: "Fuel",
+      description:
+        "Customers pay for fuel used during their rental and return the vehicle with the same fuel level.",
+    },
+    { number: "07", title: "Cross-Border Travel", description: p.crossBorder },
+    {
+      number: "08",
+      title: "Vehicle Items",
+      description: "Lost vehicle items may be charged at applicable market rates.",
+    },
+  ];
+}
 
-// Confirmed payment methods, as supplied by VenMax. There is no online payment
-// gateway — payments are arranged directly with the VenMax team.
-export const paymentMethods = [
-  "Cash",
-  "Mukuru",
-  "Western Union",
-  "WorldRemit",
-  "Bank transfer",
-  "EcoCash",
-  "InnBucks",
-  "Other applicable local payment arrangements",
-];
-
-export const chauffeurFeeNote =
-  "Chauffeur service is available on any vehicle for an additional US$20/day. The client covers the driver's food and accommodation.";
-export const deliveryNote = "Free vehicle delivery within all Harare areas.";
-
-// Confirmed by VenMax: standard rentals include 200 km/day free mileage, excess $0.60/km.
-export const standardMileagePolicy =
-  "Standard rentals: 200 km free mileage per day. Excess mileage: $0.60 per km.";
+// Payment methods, chauffeur fee, delivery, mileage and other policy values live in
+// src/lib/site-settings.ts (defaults) and are edited in Website Content → Rates & Policies.
 
 // NOTE: /admin content (faqs table) overrides this list on the live site; keep them in sync.
 export const faqs = [
   {
     question: "What do I need to rent a car?",
     answer:
-      "Self-drive drivers must be 25 or older and have held a driver's licence for at least 2 years. You'll need a valid ID and passport, proof of residence or employment, and next of kin details for emergencies. There is no age limit when you book a VenMax chauffeur.",
+      "Self-drive drivers must be {min_age} or older and have held a driver's licence for at least {licence_years} years. You'll need a valid ID and passport, proof of residence or employment, and next of kin details for emergencies. There is no age limit when you book a VenMax chauffeur.",
   },
   {
     question: "How does booking work?",
@@ -546,7 +532,7 @@ export const faqs = [
   {
     question: "Which payment methods do you accept?",
     answer:
-      "Cash, Mukuru, Western Union, WorldRemit, bank transfer, EcoCash, InnBucks and other applicable local payment arrangements.",
+      "{payment_methods}.",
   },
   {
     question: "Is the security deposit refundable?",
@@ -556,22 +542,22 @@ export const faqs = [
   {
     question: "How much free mileage do I get?",
     answer:
-      "Standard rentals include 200 km free mileage per day, with excess mileage charged at $0.60 per km. For rentals of one month or more, unlimited mileage is available, and customized mileage arrangements can be discussed for longer trips.",
+      "Standard rentals include {free_km} free mileage per day, with excess mileage charged at {excess_rate} per km. For rentals of {unlimited_from} or more, unlimited mileage is available, and customized mileage arrangements can be discussed for longer trips.",
   },
   {
     question: "Do you offer airport pickup?",
     answer:
-      "Vehicle pickup at the airport is free when you have hired a VenMax vehicle and require it at the airport. Separately, Harare airport shuttle services are available at $30 per trip.",
+      "Vehicle pickup at the airport is free when you have hired a VenMax vehicle and require it at the airport. Separately, Harare airport shuttle services are available at {shuttle_fee} per trip.",
   },
   {
     question: "Do you deliver vehicles?",
     answer:
-      "Yes — free vehicle delivery within all Harare areas for rental customers. This is separate from the airport shuttle ($30 per trip).",
+      "Yes — free vehicle delivery within all Harare areas for rental customers. This is separate from the airport shuttle ({shuttle_fee} per trip).",
   },
   {
     question: "Can I hire a car with a driver?",
     answer:
-      "Yes — chauffeur service is available on any vehicle for an additional US$20/day on top of the vehicle rental price. The client covers the driver's food and accommodation.",
+      "Yes — chauffeur service is available on any vehicle for an additional {chauffeur_fee} on top of the vehicle rental price. The client covers the driver's food and accommodation.",
   },
   {
     question: "Can I arrange a rental from outside Zimbabwe?",
@@ -580,23 +566,24 @@ export const faqs = [
   },
   {
     question: "Can I take the vehicle across the border?",
-    answer: "Cross-border travel is currently not offered.",
+    answer: "{cross_border}",
   },
 ];
 
-export const rentalTerms = [
-  {
-    label: "Rental Period",
-    value: "Flexible rentals — discounts are available for longer hiring periods",
-  },
-  {
-    label: "Mileage",
-    value:
-      "200 km free per day, excess $0.60/km. Rentals of one month or more: unlimited mileage. Customized arrangements for longer trips.",
-  },
-  { label: "Chauffeur Option", value: chauffeurFeeNote },
-  { label: "Delivery", value: `${deliveryNote} For rental customers.` },
-];
+export function buildRentalTerms(p: Policies) {
+  return [
+    {
+      label: "Rental Period",
+      value: "Flexible rentals — discounts are available for longer hiring periods",
+    },
+    {
+      label: "Mileage",
+      value: `${p.freeKm} free per day, excess ${p.excessRate}/km. Rentals of ${p.unlimitedFrom} or more: unlimited mileage. Customized arrangements for longer trips.`,
+    },
+    { label: "Chauffeur Option", value: p.chauffeurFeeNote },
+    { label: "Delivery", value: `${p.deliveryNote} For rental customers.` },
+  ];
+}
 
 // ---------------------------------------------------------------------------
 // Conversion-focused copy blocks (client-approved wording).
@@ -652,7 +639,8 @@ export const howItWorks = [
 
 export const diasporaMarkets = ["UK", "USA", "Canada", "Australia", "South Africa", "Sweden", "Europe"];
 
-export const diasporaBenefits = [
+export function buildDiasporaBenefits(p: Policies) {
+  return [
   {
     title: "Arrange Before You Travel",
     description: "Start your rental arrangements before arriving in Zimbabwe.",
@@ -672,14 +660,15 @@ export const diasporaBenefits = [
   },
   {
     title: "Monthly Unlimited Mileage",
-    description: "For rentals of one month or more, unlimited mileage is available.",
+    description: p.unlimitedSentence,
   },
   {
     title: "Flexible Long-Distance Options",
     description:
       "Customized mileage arrangements for longer trips can be discussed with VenMax on a customer-by-customer basis.",
   },
-];
+  ];
+}
 
 // Genuine reviews sourced from VenMax's Google Business Profile.
 export const testimonials = [

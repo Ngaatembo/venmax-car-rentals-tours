@@ -217,6 +217,14 @@ function AdminPricing() {
             Internal charges and discounts applied on top of a base rate. Not visible to
             customers — used by staff to quote accurately and consistently.
           </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            The prices customers see on the website (chauffeur fee, airport shuttle, mileage) are
+            set in{" "}
+            <a href="/admin/content" className="font-medium text-primary underline underline-offset-2">
+              Website Content → Rates &amp; Policies
+            </a>
+            .
+          </p>
         </div>
         {canManage && (
           <Dialog open={formOpen} onOpenChange={setFormOpen}>

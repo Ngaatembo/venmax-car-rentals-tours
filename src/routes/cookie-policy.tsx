@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Bullets, LegalLink, LegalPage, type LegalSection } from "@/components/site/LegalPage";
 import { company } from "@/data/venmax";
+import { useSiteSettings, type SiteSettings } from "@/lib/site-settings";
 
 export const Route = createFileRoute("/cookie-policy")({
   head: () => ({
@@ -16,7 +17,8 @@ export const Route = createFileRoute("/cookie-policy")({
   component: CookiePolicyPage,
 });
 
-const sections: LegalSection[] = [
+function buildSections(settings: SiteSettings): LegalSection[] {
+  return [
   {
     id: "what-are-cookies",
     title: "What Are Cookies?",
@@ -84,13 +86,14 @@ const sections: LegalSection[] = [
     content: (
       <p>
         Contact us at{" "}
-        <LegalLink href={`mailto:${company.emails[0]}`}>{company.emails[0]}</LegalLink> or on
+        <LegalLink href={`mailto:${settings.contact_email_sales}`}>{settings.contact_email_sales}</LegalLink> or on
         WhatsApp. How we handle personal information is explained in our{" "}
         <LegalLink href="/privacy-policy">Privacy Policy</LegalLink>.
       </p>
     ),
   },
 ];
+}
 
 function CookiePolicyPage() {
   return (
@@ -99,7 +102,7 @@ function CookiePolicyPage() {
       description="How this website uses cookies and similar browser storage."
       updated="September 2026"
       currentHref="/cookie-policy"
-      sections={sections}
+      sections={buildSections(useSiteSettings())}
       whatsappMessage="Hello VenMax, I have a question about your Cookie Policy."
     />
   );
