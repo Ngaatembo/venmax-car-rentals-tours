@@ -161,6 +161,7 @@ function buildSections(vehicles: Vehicle[], p: Policies): LegalSection[] {
         <Bullets
           items={[
             "All VenMax deposits are refundable.",
+            "The deposit is paid once your booking is confirmed, to secure the vehicle.",
             "Your deposit is refunded when you return the vehicle — on the spot, not the next day — using the payment method agreed with you.",
             "VenMax may deduct from the deposit for minor damage not covered by insurance (such as scratches), excess mileage or other outstanding charges.",
           ]}
@@ -261,8 +262,8 @@ function buildSections(vehicles: Vehicle[], p: Policies): LegalSection[] {
       content: (
         <Bullets
           items={[
-            "Once your booking is confirmed, you pay a deposit to secure the vehicle.",
-            "The balance can be paid before or on the day you collect the vehicle.",
+            "Once your booking is confirmed, you pay the vehicle's refundable security deposit to secure your booking.",
+            "The balance can be paid on or before the day you collect the vehicle.",
           ]}
         />
       ),

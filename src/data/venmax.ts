@@ -542,7 +542,7 @@ export const faqs = [
   {
     question: "When do I pay?",
     answer:
-      "Once your booking is confirmed, you pay a deposit to secure the vehicle. The balance can be paid before or on the day you collect the vehicle.",
+      "Once your booking is confirmed, you pay the vehicle's refundable deposit to secure it. The balance can be paid on or before the day you collect the vehicle.",
   },
   {
     question: "Is the security deposit refundable?",

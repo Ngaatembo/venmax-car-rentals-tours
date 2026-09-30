@@ -886,9 +886,9 @@ export function BookingPaymentSection() {
           ))}
         </div>
         <p className="mt-4 text-sm text-muted-foreground">
-          Once your booking is confirmed, you pay a deposit to secure the vehicle. The balance can be
-          paid before or on the day you collect it. Payment arrangements are agreed directly with the
-          VenMax team.
+          Once your booking is confirmed, you pay the vehicle's refundable deposit to secure it. The
+          balance can be paid on or before the day you collect the vehicle. Payment arrangements are
+          agreed directly with the VenMax team.
         </p>
         <div className="mt-6 rounded-2xl border border-border bg-card p-5 text-sm">
           <p className="font-semibold">{p.deliveryNote}</p>
