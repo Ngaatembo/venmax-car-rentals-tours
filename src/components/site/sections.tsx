@@ -31,6 +31,7 @@ import airportImage from "@/assets/airport-pickup.jpg";
 import chauffeurImage from "@/assets/range-rover-sport.jpg";
 import roadImage from "@/assets/hero-harare.jpg";
 import brandPromiseImage from "@/assets/venmax-serena-road.jpg";
+import happyClientImage from "@/assets/venmax-happy-client.jpg";
 import logo from "@/assets/logo-header.png";
 import {
   businessFacts,
@@ -1369,6 +1370,53 @@ export function TestimonialsSection() {
           />
         </div>
         <div className="mt-6 h-2.5 w-full rounded-full bg-navy sm:mt-8" />
+      </div>
+      <div className="mt-8 overflow-hidden rounded-3xl border border-border bg-navy text-navy-foreground shadow-xl">
+        <div className="grid items-stretch md:grid-cols-[0.9fr_1.1fr]">
+          <div className="relative min-h-[360px] overflow-hidden md:min-h-[430px]">
+            <img
+              src={happyClientImage}
+              alt="A happy VenMax customer enjoying a rental vehicle"
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent" />
+            <div className="absolute bottom-5 left-5 rounded-full border border-white/20 bg-navy/70 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-sm">
+              Real customer experience
+            </div>
+          </div>
+          <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
+            <div className="flex items-center gap-1.5 text-primary">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+              ))}
+            </div>
+            <p className="mt-5 text-3xl font-semibold leading-tight sm:text-4xl">
+              Real people. Real journeys.
+            </p>
+            <p className="mt-4 max-w-lg text-base leading-relaxed text-navy-foreground/75 sm:text-lg">
+              One of our happy clients, captured during her VenMax rental. We love seeing our customers enjoy the freedom to drive, explore and experience Zimbabwe.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <a
+                href={whatsappLink("Hi VenMax, I'd like to enquire about renting a vehicle.")}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
+              >
+                <MessageCircle className="h-4 w-4" />
+                Start Your Journey
+              </a>
+              <Link
+                to="/fleet"
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+              >
+                Explore Fleet
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="mt-6 flex items-center justify-center gap-2 text-sm font-medium text-foreground">
         <div className="flex gap-0.5">
