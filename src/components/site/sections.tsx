@@ -946,7 +946,7 @@ const marketFlags: Record<string, string> = {
 };
 
 /**
- * Dedicated diaspora visual: VenMax's own footage of Harare International Arrivals plays
+ * Dedicated diaspora visual: VenMax's own footage of RGM International Airport arrivals plays
  * over an illustration (the fallback on slow connections or with reduced motion). No stock
  * photo is used, so nothing can be mistaken for a real VenMax customer.
  */
@@ -1009,8 +1009,8 @@ function DiasporaVisual() {
       <AmbientVideo
         base="/videos/harare-arrivals"
         poster="/videos/harare-arrivals-poster.jpg"
-        label="Harare International Airport, International Arrivals entrance"
-        caption="Harare International Arrivals"
+        label="RGM International Airport, international arrivals entrance"
+        caption="RGM International Airport Arrivals"
       />
 
       <svg
@@ -1349,7 +1349,7 @@ export function TestimonialsSection() {
     <Section>
       <SectionHeading
         eyebrow="Customer Reviews"
-        title="Trusted by Customers Across Zimbabwe"
+        title="Trusted by Customers Across Zimbabwe and Abroad"
         description="Genuine reviews from VenMax customers on our Google Business Profile."
       />
       <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-background px-6 py-8 sm:px-10 sm:py-10">
