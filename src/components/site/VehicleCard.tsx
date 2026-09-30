@@ -22,27 +22,7 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
   const isTruck = /truck/i.test(vehicle.category);
   // Avoid repeating the category when it is already included at the end of the vehicle name.
   // Example: "Toyota Hilux D4D Truck" + "Truck" badge -> "Toyota Hilux D4D" + "Truck".
-  const displayName = vehicle.name.replace(new RegExp(`\\s+${vehicle.category}import { useState } from "react";
-import { MessageCircle, Users, Briefcase, Cog, Snowflake, Fuel } from "lucide-react";
-import type { Vehicle } from "@/data/venmax";
-import { vehicleCardMessage, vehicleDetailMessage, whatsappLink } from "@/data/venmax";
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
-
-function getSpecs(vehicle: Vehicle) {
-  return [
-    vehicle.seats ? { icon: Users, label: `${vehicle.seats} seats` } : null,
-    vehicle.bags ? { icon: Briefcase, label: `${vehicle.bags} bags` } : null,
-    vehicle.transmission ? { icon: Cog, label: vehicle.transmission } : null,
-    vehicle.fuelType ? { icon: Fuel, label: vehicle.fuelType } : null,
-    vehicle.ac ? { icon: Snowflake, label: "A/C" } : null,
-  ].filter((s): s is { icon: typeof Users; label: string } => Boolean(s));
-}
-
-export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
-  const [open, setOpen] = useState(false);
-  const [activePhoto, setActivePhoto] = useState(0);
-  const photos = [vehicle.image, ...(vehicle.gallery ?? [])];
-, "i"), "");
+  const displayName = vehicle.name.replace(new RegExp(`\\s+${vehicle.category}$`, "i"), "");
   const availabilityNote =
     vehicle.status && vehicle.status !== "available" ? "Availability on request" : null;
 
