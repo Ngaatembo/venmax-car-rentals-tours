@@ -57,6 +57,12 @@ export function useFleet(): FleetState {
               features: features.filter((f) => !/^(a\/c|air ?con)/i.test(f)),
               status: v.status,
               isFeatured: Boolean(v.is_featured),
+              // Admin-managed card extras. Extra photos fall back to the built-in ones
+              // (e.g. the Serena side view) until photos are uploaded in the admin.
+              badge: v.badge ?? undefined,
+              bags: v.bags ?? fallback?.bags,
+              imagePosition: v.image_position || undefined,
+              gallery: Array.isArray(v.gallery_urls) && v.gallery_urls.length > 0 ? v.gallery_urls : fallback?.gallery,
             } satisfies Vehicle;
           }),
         });

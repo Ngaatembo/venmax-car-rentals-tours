@@ -17,6 +17,14 @@ export type DbVehicle = {
   features: string[];
   status: string;
   is_featured: boolean;
+  /** Short label on the card, e.g. "Family Pick". */
+  badge: string | null;
+  /** Luggage capacity shown in the spec row. */
+  bags: number | null;
+  /** CSS object-position for the photo crop, e.g. "50% 60%". */
+  image_position: string | null;
+  /** Extra photos shown in the "View details" gallery. */
+  gallery_urls: string[];
 };
 
 export type DbTour = {

@@ -84,7 +84,25 @@ const emptyForm: FormState = {
   features: [],
   status: "available",
   is_featured: false,
+  badge: null,
+  bags: null,
+  image_position: null,
+  gallery_urls: [],
 };
+
+// Where the photo is anchored inside the card's crop.
+const photoFocusOptions = [
+  { value: "center", label: "Centre (default)", css: null },
+  { value: "top", label: "Top", css: "50% 20%" },
+  { value: "upper", label: "Slightly high", css: "50% 38%" },
+  { value: "lower", label: "Slightly low", css: "50% 60%" },
+  { value: "bottom", label: "Bottom", css: "50% 80%" },
+] as const;
+
+function focusValue(css: string | null | undefined) {
+  if (!css) return "center";
+  return photoFocusOptions.find((o) => o.css === css)?.value ?? "custom";
+}
 
 function AdminFleet() {
   const [vehicles, setVehicles] = useState<DbVehicle[]>([]);
@@ -208,6 +226,22 @@ function AdminFleet() {
     }
   }
 
+  async function handleGalleryChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    if (!files.length) return;
+    setUploading(true);
+    try {
+      const urls: string[] = [];
+      for (const file of files) urls.push(await uploadMedia(file, "vehicles"));
+      setForm((f) => ({ ...f, gallery_urls: [...(f.gallery_urls ?? []), ...urls] }));
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -307,6 +341,28 @@ function AdminFleet() {
                   />
                 </div>
               </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label>Card label (optional)</Label>
+                  <Input
+                    value={form.badge ?? ""}
+                    onChange={(e) => setForm((f) => ({ ...f, badge: e.target.value || null }))}
+                    placeholder="e.g. Family Pick"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Luggage (bags)</Label>
+                  <Input
+                    type="number"
+                    min={0}
+                    value={form.bags ?? ""}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, bags: e.target.value ? Number(e.target.value) : null }))
+                    }
+                    placeholder="e.g. 4"
+                  />
+                </div>
+              </div>
               <div className="space-y-1.5">
                 <Label>Status</Label>
                 <Select
@@ -366,9 +422,63 @@ function AdminFleet() {
                   <img
                     src={form.image_url}
                     alt="Preview"
-                    className="mt-2 h-32 w-full rounded-md object-cover"
+                    style={form.image_position ? { objectPosition: form.image_position } : undefined}
+                    className="mt-2 aspect-[4/3] w-full rounded-md object-cover"
                   />
                 )}
+              </div>
+              <div className="space-y-1.5">
+                <Label>Photo focus</Label>
+                <Select
+                  value={focusValue(form.image_position)}
+                  onValueChange={(v) =>
+                    setForm((f) => ({
+                      ...f,
+                      image_position:
+                        v === "custom" ? f.image_position ?? null : (photoFocusOptions.find((o) => o.value === v)?.css ?? null),
+                    }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {photoFocusOptions.map((o) => (
+                      <SelectItem key={o.value} value={o.value}>
+                        {o.label}
+                      </SelectItem>
+                    ))}
+                    {focusValue(form.image_position) === "custom" && (
+                      <SelectItem value="custom">Custom ({form.image_position})</SelectItem>
+                    )}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Moves the crop if the car is cut off on the card. The preview above updates.
+                </p>
+              </div>
+              <div className="space-y-1.5">
+                <Label>Extra photos (shown in “View details”)</Label>
+                <Input type="file" accept="image/*" multiple onChange={handleGalleryChange} disabled={uploading} />
+                {(form.gallery_urls ?? []).length > 0 && (
+                  <div className="mt-2 grid grid-cols-3 gap-2">
+                    {(form.gallery_urls ?? []).map((url, i) => (
+                      <div key={url} className="group relative">
+                        <img src={url} alt={`Extra photo ${i + 1}`} className="aspect-[4/3] w-full rounded-md object-cover" />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setForm((f) => ({ ...f, gallery_urls: (f.gallery_urls ?? []).filter((u) => u !== url) }))
+                          }
+                          className="absolute right-1 top-1 rounded-full bg-background/90 px-2 py-0.5 text-xs font-medium text-destructive shadow"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {uploading && <p className="text-xs text-muted-foreground">Uploading…</p>}
               </div>
               <div className="flex items-center justify-between rounded-md border border-border px-3 py-2">
                 <Label htmlFor="active">Active (visible on site)</Label>
