@@ -217,7 +217,7 @@ function buildSections(vehicles: Vehicle[], p: Policies): LegalSection[] {
           <p>
             VenMax is not liable for personal belongings left in a vehicle, or for delays caused by
             circumstances outside our reasonable control (for example weather, road closures, or
-            mechanical failure not caused by negligence).
+            mechanical failure caused by negligence).
           </p>
         </>
       ),
