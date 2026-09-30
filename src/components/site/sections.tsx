@@ -1587,9 +1587,9 @@ export function CancellationSection() {
             </p>
           </div>
           <div className="rounded-2xl border border-border bg-card p-6">
-            <h3 className="text-base uppercase tracking-wide">Competitive Deposits</h3>
+            <h3 className="text-base uppercase tracking-wide">Deposits Below Market Rates</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              Clear deposit amounts are shown on every vehicle.
+              Our refundable deposits are far lower than typical market rates, and the amount is shown on every vehicle.
             </p>
           </div>
         </div>

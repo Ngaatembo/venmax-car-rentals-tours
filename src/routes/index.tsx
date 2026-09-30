@@ -58,6 +58,14 @@ function Index() {
           </p>
           <h1 className="mt-3 max-w-2xl text-4xl leading-tight sm:text-6xl">{hero.hero_headline}</h1>
           <p className="mt-5 max-w-xl text-lg text-navy-foreground/80">{hero.hero_subtitle}</p>
+          <div className="mt-5 flex max-w-2xl flex-wrap gap-3">
+            <span className="rounded-full border border-primary/60 bg-primary/15 px-4 py-2 text-sm font-semibold text-navy-foreground">
+              Affordable daily rates, from $40/day
+            </span>
+            <span className="rounded-full border border-primary/60 bg-primary/15 px-4 py-2 text-sm font-semibold text-navy-foreground">
+              Deposits far below typical market rates, from $100 refundable
+            </span>
+          </div>
           <div className="mt-8 flex flex-wrap gap-4">
             <a
               href={whatsappLink("Hi VenMax, I'd like to enquire about renting a vehicle. Please help me with the available options.")}

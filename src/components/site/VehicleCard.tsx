@@ -40,7 +40,7 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
           style={vehicle.imagePosition ? { objectPosition: vehicle.imagePosition } : undefined}
           className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
         />
-        {vehicle.badge && (
+        {vehicle.badge && vehicle.badge.trim().toLowerCase() !== vehicle.category.trim().toLowerCase() && (
           <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground shadow">
             {vehicle.badge}
           </span>
