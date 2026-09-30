@@ -50,6 +50,8 @@ import {
   getDocumentSignedUrl,
   listDrivers,
   listVehicles,
+  listCustomers,
+  type DbCustomer,
   type DbDocument,
   type DocumentCategory,
   type DbDriver,
@@ -63,7 +65,13 @@ const categoryLabel: Record<DocumentCategory, string> = {
   vehicle_registration: "Vehicle Registration",
   vehicle_other: "Vehicle — Other",
   company: "Company Document",
+  customer_id: "Customer — ID Document",
+  customer_passport: "Customer — Passport",
+  customer_licence: "Customer — Driver's Licence",
+  customer_proof_of_residence: "Customer — Proof of Residence / Employment",
 };
+
+const isCustomerCategory = (c: DocumentCategory) => c.startsWith("customer_");
 
 function expiryWarning(expiry: string | null): "expired" | "soon" | null {
   if (!expiry) return null;
@@ -77,6 +85,7 @@ const emptyForm = {
   category: "company" as DocumentCategory,
   driver_id: "",
   vehicle_id: "",
+  customer_id: "",
   title: "",
   expiry_date: "",
   notes: "",
@@ -94,6 +103,7 @@ function AdminDocuments() {
   const [documents, setDocuments] = useState<DbDocument[]>([]);
   const [drivers, setDrivers] = useState<DbDriver[]>([]);
   const [vehicles, setVehicles] = useState<DbVehicle[]>([]);
+  const [customers, setCustomers] = useState<DbCustomer[]>([]);
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
 
@@ -105,10 +115,16 @@ function AdminDocuments() {
   async function refresh() {
     setLoading(true);
     try {
-      const [d, dr, v] = await Promise.all([listDocuments(), listDrivers(), listVehicles()]);
+      const [d, dr, v, c] = await Promise.all([
+        listDocuments(),
+        listDrivers(),
+        listVehicles(),
+        listCustomers(),
+      ]);
       setDocuments(d);
       setDrivers(dr);
       setVehicles(v);
+      setCustomers(c);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to load documents");
     } finally {
@@ -126,6 +142,7 @@ function AdminDocuments() {
   const linkedLabel = (doc: DbDocument) => {
     if (doc.driver_id) return driverName(doc.driver_id) ?? "Unknown driver";
     if (doc.vehicle_id) return vehicleName(doc.vehicle_id) ?? "Unknown vehicle";
+    if (doc.customer_id) return customers.find((c) => c.id === doc.customer_id)?.full_name ?? "Unknown customer";
     return "—";
   };
 
@@ -163,6 +180,7 @@ function AdminDocuments() {
           form.category === "vehicle_other"
             ? form.vehicle_id || null
             : null,
+        customer_id: isCustomerCategory(form.category) ? form.customer_id || null : null,
         title: form.title.trim(),
         file_url: storagePath,
         file_name: file.name,
@@ -199,6 +217,7 @@ function AdminDocuments() {
   }
 
   const needsDriverPicker = form.category === "driver_license";
+  const needsCustomerPicker = isCustomerCategory(form.category);
   const needsVehiclePicker =
     form.category === "vehicle_insurance" ||
     form.category === "vehicle_registration" ||
@@ -210,7 +229,8 @@ function AdminDocuments() {
         <div>
           <h1 className="text-2xl font-semibold text-foreground">Documents</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Licenses, insurance, registration, and company documents in one place.
+            Licences, insurance, registration, customer documents and company documents in one
+            place. Files are private — only signed-in staff can open them.
             {expiringCount > 0 && (
               <span className="ml-2 inline-flex items-center gap-1 text-amber-600">
                 <AlertTriangle className="h-3.5 w-3.5" />
@@ -236,7 +256,7 @@ function AdminDocuments() {
                 <Select
                   value={form.category}
                   onValueChange={(v) =>
-                    setForm((f) => ({ ...f, category: v as DocumentCategory, driver_id: "", vehicle_id: "" }))
+                    setForm((f) => ({ ...f, category: v as DocumentCategory, driver_id: "", vehicle_id: "", customer_id: "" }))
                   }
                 >
                   <SelectTrigger>
@@ -267,6 +287,28 @@ function AdminDocuments() {
                       {drivers.map((d) => (
                         <SelectItem key={d.id} value={d.id}>
                           {d.full_name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
+              {needsCustomerPicker && (
+                <div className="col-span-2">
+                  <Label>Customer</Label>
+                  <Select
+                    value={form.customer_id || "none"}
+                    onValueChange={(v) => setForm((f) => ({ ...f, customer_id: v === "none" ? "" : v }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a customer" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">Not linked to a customer</SelectItem>
+                      {customers.map((c) => (
+                        <SelectItem key={c.id} value={c.id}>
+                          {c.full_name}
                         </SelectItem>
                       ))}
                     </SelectContent>

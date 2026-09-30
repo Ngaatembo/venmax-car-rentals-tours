@@ -64,8 +64,9 @@ import {
   type PaymentStatus,
 } from "@/lib/admin-data";
 import { useAdminSession, useMyRole } from "@/lib/admin-auth";
+import { policies, useSiteSettings } from "@/lib/site-settings";
 
-const paymentMethods = ["Cash", "EcoCash", "Bank Transfer", "Card", "Other"];
+// Payment methods come from Website Content → Rates & Policies (same list as the website).
 
 const statusLabel: Record<PaymentStatus, string> = {
   pending: "Pending",
@@ -94,6 +95,7 @@ export const Route = createFileRoute("/admin/payments")({
 });
 
 function AdminPayments() {
+  const paymentMethods = policies(useSiteSettings()).paymentMethods;
   const session = useAdminSession();
   const role = useMyRole(session);
   const canManage = role === "manager" || role === "admin";
@@ -291,7 +293,10 @@ function AdminPayments() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {paymentMethods.map((m) => (
+                    {[
+                      ...paymentMethods,
+                      ...(form.method && !paymentMethods.includes(form.method) ? [form.method] : []),
+                    ].map((m) => (
                       <SelectItem key={m} value={m}>
                         {m}
                       </SelectItem>

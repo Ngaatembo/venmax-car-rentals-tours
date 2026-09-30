@@ -21,10 +21,14 @@ import {
   listBookings,
   updateBookingStatus,
   listDrivers,
+  listVehicles,
   assignDriverToBooking,
   type DbBooking,
   type DbDriver,
+  type DbVehicle,
 } from "@/lib/admin-data";
+import { Button } from "@/components/ui/button";
+import { BookingDetailsDialog } from "@/components/admin/BookingDetailsDialog";
 
 export const Route = createFileRoute("/admin/bookings")({
   component: AdminBookings,
@@ -42,14 +46,17 @@ function statusVariant(status: string): "default" | "secondary" | "destructive" 
 function AdminBookings() {
   const [bookings, setBookings] = useState<DbBooking[]>([]);
   const [drivers, setDrivers] = useState<DbDriver[]>([]);
+  const [vehicles, setVehicles] = useState<DbVehicle[]>([]);
+  const [detailsFor, setDetailsFor] = useState<DbBooking | null>(null);
   const [loading, setLoading] = useState(true);
 
   async function refresh() {
     setLoading(true);
     try {
-      const [b, d] = await Promise.all([listBookings(), listDrivers()]);
+      const [b, d, v] = await Promise.all([listBookings(), listDrivers(), listVehicles()]);
       setBookings(b);
       setDrivers(d);
+      setVehicles(v);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to load bookings");
     } finally {
@@ -88,7 +95,8 @@ function AdminBookings() {
     <div>
       <h1 className="text-2xl font-semibold text-foreground">Bookings</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Requests submitted through the site's booking form.
+        Requests submitted through the site's booking form. Open “Details” to record the deposit,
+        mileage, fuel, chauffeur and any cancellation refund.
       </p>
 
       <div className="mt-6 overflow-x-auto rounded-lg border border-border bg-background">
@@ -102,19 +110,20 @@ function AdminBookings() {
               <TableHead>Contact</TableHead>
               <TableHead>Driver</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Rental</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading && (
               <TableRow>
-                <TableCell colSpan={7} className="text-center text-muted-foreground">
+                <TableCell colSpan={8} className="text-center text-muted-foreground">
                   Loading…
                 </TableCell>
               </TableRow>
             )}
             {!loading && bookings.length === 0 && (
               <TableRow>
-                <TableCell colSpan={7} className="text-center text-muted-foreground">
+                <TableCell colSpan={8} className="text-center text-muted-foreground">
                   No bookings yet.
                 </TableCell>
               </TableRow>
@@ -172,11 +181,31 @@ function AdminBookings() {
                     </SelectContent>
                   </Select>
                 </TableCell>
+                <TableCell>
+                  <div className="flex flex-col items-start gap-1">
+                    <Button variant="outline" size="sm" onClick={() => setDetailsFor(b)}>
+                      Details
+                    </Button>
+                    {b.deposit_status === "held" && (
+                      <Badge variant="outline" className="text-[10px]">Deposit held</Badge>
+                    )}
+                    {b.refund_due_on && !b.refund_paid_on && (
+                      <Badge variant="destructive" className="text-[10px]">Refund due {b.refund_due_on}</Badge>
+                    )}
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
+
+      <BookingDetailsDialog
+        booking={detailsFor}
+        vehicles={vehicles}
+        onClose={() => setDetailsFor(null)}
+        onSaved={(updated) => setBookings((prev) => prev.map((x) => (x.id === updated.id ? updated : x)))}
+      />
     </div>
   );
 }

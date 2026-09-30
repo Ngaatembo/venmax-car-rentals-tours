@@ -57,7 +57,27 @@ export type DbBooking = {
   total_amount: number | null;
   amount_paid: number | null;
   payment_status: string | null;
+  vehicle_id?: string | null;
+  daily_rate?: number | null;
+  admin_notes?: string | null;
+  // Rental details (bookings rental-details dialog)
+  chauffeur?: boolean;
+  deposit_amount?: number | null;
+  deposit_status?: DepositStatus;
+  deposit_deduction?: number | null;
+  deposit_deduction_reason?: string | null;
+  deposit_refunded_on?: string | null;
+  mileage_out?: number | null;
+  mileage_in?: number | null;
+  fuel_out?: string | null;
+  fuel_in?: string | null;
+  cancelled_on?: string | null;
+  refund_amount?: number | null;
+  refund_due_on?: string | null;
+  refund_paid_on?: string | null;
 };
+
+export type DepositStatus = "not_taken" | "held" | "refunded" | "partially_refunded";
 
 export type DbInquiry = {
   id: string;
@@ -126,6 +146,11 @@ export async function listBookings() {
   return data as DbBooking[];
 }
 
+export async function updateBooking(id: string, updates: Partial<DbBooking>) {
+  const { error } = await supabase.from("bookings").update(updates).eq("id", id);
+  if (error) throw error;
+}
+
 export async function updateBookingStatus(id: string, status: string) {
   const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
   if (error) throw error;
@@ -169,6 +194,12 @@ export type DbCustomer = {
   id_number: string | null;
   address: string | null;
   notes: string | null;
+  passport_number?: string | null;
+  next_of_kin_name?: string | null;
+  next_of_kin_phone?: string | null;
+  next_of_kin_relationship?: string | null;
+  /** Staff tick-offs against the rental requirements (see CUSTOMER_CHECKS). */
+  checks?: Record<string, boolean>;
   created_at: string;
   updated_at: string;
 };
@@ -377,13 +408,25 @@ export type DocumentCategory =
   | "vehicle_insurance"
   | "vehicle_registration"
   | "vehicle_other"
-  | "company";
+  | "company"
+  | "customer_id"
+  | "customer_passport"
+  | "customer_licence"
+  | "customer_proof_of_residence";
+
+export const CUSTOMER_DOCUMENT_CATEGORIES: { value: DocumentCategory; label: string }[] = [
+  { value: "customer_id", label: "ID document" },
+  { value: "customer_passport", label: "Passport" },
+  { value: "customer_licence", label: "Driver's licence" },
+  { value: "customer_proof_of_residence", label: "Proof of residence / employment" },
+];
 
 export type DbDocument = {
   id: string;
   category: DocumentCategory;
   driver_id: string | null;
   vehicle_id: string | null;
+  customer_id?: string | null;
   title: string;
   file_url: string;
   file_name: string | null;
@@ -397,6 +440,16 @@ export async function listDocuments() {
   const { data, error } = await supabase
     .from("documents")
     .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data as DbDocument[];
+}
+
+export async function listDocumentsForCustomer(customerId: string) {
+  const { data, error } = await supabase
+    .from("documents")
+    .select("*")
+    .eq("customer_id", customerId)
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data as DbDocument[];
