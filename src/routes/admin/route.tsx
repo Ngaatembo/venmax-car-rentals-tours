@@ -326,13 +326,27 @@ function AdminLayout() {
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="flex w-64 flex-col p-0">
+          {/* Scrolls on short phone screens so Change password / Sign out are always reachable. */}
+          <SheetContent side="right" className="flex w-64 flex-col overflow-y-auto p-0">
             <div className="border-b border-border px-5 py-4">
               <img src={logo} alt="VenMax Car Rental & Tours" className="h-8 w-auto" />
               <p className="mt-2 text-xs text-muted-foreground">{session.user.email}</p>
-              <span className="mt-1 inline-block rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
-                {roleLabel(role)}
-              </span>
+              <div className="mt-1 flex items-center justify-between gap-2">
+                <span className="inline-block rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
+                  {roleLabel(role)}
+                </span>
+                <button
+                  onClick={async () => {
+                    setMobileNavOpen(false);
+                    await signOutAdmin();
+                    navigate({ to: "/admin/login" });
+                  }}
+                  className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                  Sign out
+                </button>
+              </div>
             </div>
             <NavLinks onNavigate={() => setMobileNavOpen(false)} />
           </SheetContent>
