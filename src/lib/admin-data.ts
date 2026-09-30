@@ -151,6 +151,12 @@ export async function updateBooking(id: string, updates: Partial<DbBooking>) {
   if (error) throw error;
 }
 
+/** Re-derives amount_paid / payment_status from recorded payments (e.g. after the total changes). */
+export async function recomputeBookingPaymentStatus(id: string) {
+  const { error } = await supabase.rpc("recompute_booking_payment_status", { p_booking_id: id });
+  if (error) throw error;
+}
+
 export async function updateBookingStatus(id: string, status: string) {
   const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
   if (error) throw error;

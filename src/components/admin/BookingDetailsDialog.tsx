@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { updateBooking, type DbBooking, type DbVehicle, type DepositStatus } from "@/lib/admin-data";
+import { recomputeBookingPaymentStatus, updateBooking, type DbBooking, type DbVehicle, type DepositStatus } from "@/lib/admin-data";
 import { policies, useSiteSettings } from "@/lib/site-settings";
 
 const FUEL_LEVELS = ["Full", "3/4", "1/2", "1/4", "Empty"] as const;
@@ -155,6 +155,10 @@ export function BookingDetailsDialog({
     };
     try {
       await updateBooking(booking.id, updates);
+      if (updates.total_amount !== booking.total_amount) {
+        // Keep "paid / partially paid" in step with the new total.
+        await recomputeBookingPaymentStatus(booking.id).catch(() => undefined);
+      }
       toast.success("Rental details saved");
       onSaved({ ...booking, ...updates });
       onClose();
