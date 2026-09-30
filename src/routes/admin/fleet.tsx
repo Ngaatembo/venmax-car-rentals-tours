@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Plus, Pencil, Trash2, Search, ArrowUpDown, Car as CarIcon } from "lucide-react";
+import { can, useAdminRole } from "@/lib/admin-permissions";
 import {
   listVehicles,
   upsertVehicle,
@@ -105,6 +106,11 @@ function focusValue(css: string | null | undefined) {
 }
 
 function AdminFleet() {
+  // Owner/Manager/Developer can add and edit; only the Owner can delete (RLS).
+  // Staff see the fleet read-only.
+  const role = useAdminRole();
+  const canEdit = can.manageSite(role);
+  const canDelete = can.deleteSiteItems(role);
   const [vehicles, setVehicles] = useState<DbVehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
@@ -248,15 +254,19 @@ function AdminFleet() {
         <div>
           <h1 className="text-2xl font-semibold text-foreground">Fleet</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage vehicles shown on the public site.
+            {canEdit
+              ? "Manage vehicles shown on the public site."
+              : "Vehicles shown on the public site (view only)."}
           </p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={openNew}>
-              <Plus className="mr-1 h-4 w-4" /> Add vehicle
-            </Button>
-          </DialogTrigger>
+          {canEdit && (
+            <DialogTrigger asChild>
+              <Button onClick={openNew}>
+                <Plus className="mr-1 h-4 w-4" /> Add vehicle
+              </Button>
+            </DialogTrigger>
+          )}
           <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{form.id ? "Edit vehicle" : "Add vehicle"}</DialogTitle>
@@ -569,17 +579,21 @@ function AdminFleet() {
                     <TableCell>
                       <Switch
                         checked={v.is_active}
-                        disabled={togglingId === v.id}
+                        disabled={!canEdit || togglingId === v.id}
                         onCheckedChange={() => toggleActive(v)}
                       />
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button variant="ghost" size="icon" onClick={() => openEdit(v)}>
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="icon" onClick={() => handleDelete(v)}>
-                        <Trash2 className="h-4 w-4 text-destructive" />
-                      </Button>
+                      {canEdit && (
+                        <Button variant="ghost" size="icon" aria-label={`Edit ${v.name}`} onClick={() => openEdit(v)}>
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      )}
+                      {canDelete && (
+                        <Button variant="ghost" size="icon" aria-label={`Delete ${v.name}`} onClick={() => handleDelete(v)}>
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -604,15 +618,19 @@ function AdminFleet() {
                 <div className="flex flex-shrink-0 items-center gap-1">
                   <Switch
                     checked={v.is_active}
-                    disabled={togglingId === v.id}
+                    disabled={!canEdit || togglingId === v.id}
                     onCheckedChange={() => toggleActive(v)}
                   />
-                  <Button variant="ghost" size="icon" onClick={() => openEdit(v)}>
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" onClick={() => handleDelete(v)}>
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  </Button>
+                  {canEdit && (
+                    <Button variant="ghost" size="icon" aria-label={`Edit ${v.name}`} onClick={() => openEdit(v)}>
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                  )}
+                  {canDelete && (
+                    <Button variant="ghost" size="icon" aria-label={`Delete ${v.name}`} onClick={() => handleDelete(v)}>
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                  )}
                 </div>
               </div>
             ))}

@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
 import { Plus, Pencil, Trash2, MapPin } from "lucide-react";
+import { can, useAdminRole } from "@/lib/admin-permissions";
 import { listTours, upsertTour, deleteTour, uploadMedia, type DbTour } from "@/lib/admin-data";
 
 function DestinationThumb({ url, name }: { url?: string | null; name: string }) {
@@ -58,6 +59,11 @@ const emptyForm: FormState = {
 };
 
 function AdminTours() {
+  // Owner/Manager/Developer can add and edit; only the Owner can delete (RLS).
+  // Staff see the destinations read-only.
+  const role = useAdminRole();
+  const canEdit = can.manageSite(role);
+  const canDelete = can.deleteSiteItems(role);
   const [tours, setTours] = useState<DbTour[]>([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
@@ -139,15 +145,19 @@ function AdminTours() {
         <div>
           <h1 className="text-2xl font-semibold text-foreground">Tour destinations</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage the destination cards shown on the public site.
+            {canEdit
+              ? "Manage the destination cards shown on the public site."
+              : "Destination cards shown on the public site (view only)."}
           </p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={openNew}>
-              <Plus className="mr-1 h-4 w-4" /> Add destination
-            </Button>
-          </DialogTrigger>
+          {canEdit && (
+            <DialogTrigger asChild>
+              <Button onClick={openNew}>
+                <Plus className="mr-1 h-4 w-4" /> Add destination
+              </Button>
+            </DialogTrigger>
+          )}
           <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{form.id ? "Edit destination" : "Add destination"}</DialogTitle>
@@ -247,12 +257,16 @@ function AdminTours() {
                 <TableCell className="font-medium">{t.name}</TableCell>
                 <TableCell>{t.is_active ? "Yes" : "No"}</TableCell>
                 <TableCell className="text-right">
-                  <Button variant="ghost" size="icon" onClick={() => openEdit(t)}>
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" onClick={() => handleDelete(t)}>
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  </Button>
+                  {canEdit && (
+                    <Button variant="ghost" size="icon" aria-label={`Edit ${t.name}`} onClick={() => openEdit(t)}>
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                  )}
+                  {canDelete && (
+                    <Button variant="ghost" size="icon" aria-label={`Delete ${t.name}`} onClick={() => handleDelete(t)}>
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             ))}

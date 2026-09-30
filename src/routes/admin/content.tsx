@@ -42,6 +42,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Plus, Pencil, Trash2, Star } from "lucide-react";
+import { can, useAdminRole } from "@/lib/admin-permissions";
 import {
   listSiteContent,
   setSiteContent,
@@ -401,6 +402,8 @@ function RatesSection() {
 const iconOptions: ServiceIcon[] = ["key", "user", "plane", "users"];
 
 function ServicesSection() {
+  // Deleting is Owner-only in the database; Manager/Developer can add, edit and hide.
+  const canDelete = can.deleteSiteItems(useAdminRole());
   const [services, setServices] = useState<DbService[]>([]);
   const [loading, setLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
@@ -559,21 +562,23 @@ function ServicesSection() {
             <div className="flex items-center gap-2">
               <Switch checked={s.is_active} onCheckedChange={(v) => handleToggle(s, v)} />
               <Button variant="ghost" size="icon" onClick={() => openEdit(s)}><Pencil className="h-4 w-4" /></Button>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Delete "{s.name}"?</AlertDialogTitle>
-                    <AlertDialogDescription>This removes it from the public site.</AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => handleDelete(s)}>Delete</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              {canDelete && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete "{s.name}"?</AlertDialogTitle>
+                      <AlertDialogDescription>This removes it from the public site.</AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => handleDelete(s)}>Delete</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
             </div>
           </div>
         ))}
@@ -584,6 +589,8 @@ function ServicesSection() {
 
 // ---------------- FAQ ----------------
 function FaqSection() {
+  // Deleting is Owner-only in the database; Manager/Developer can add, edit and hide.
+  const canDelete = can.deleteSiteItems(useAdminRole());
   const [faqs, setFaqs] = useState<DbFaq[]>([]);
   const [loading, setLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
@@ -723,21 +730,23 @@ function FaqSection() {
             <div className="flex shrink-0 items-center gap-2">
               <Switch checked={f.is_active} onCheckedChange={(v) => handleToggle(f, v)} />
               <Button variant="ghost" size="icon" onClick={() => openEdit(f)}><Pencil className="h-4 w-4" /></Button>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Delete this question?</AlertDialogTitle>
-                    <AlertDialogDescription>This removes it from the public FAQ section.</AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => handleDelete(f)}>Delete</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              {canDelete && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete this question?</AlertDialogTitle>
+                      <AlertDialogDescription>This removes it from the public FAQ section.</AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => handleDelete(f)}>Delete</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
             </div>
           </div>
         ))}
@@ -748,6 +757,8 @@ function FaqSection() {
 
 // ---------------- Testimonials ----------------
 function TestimonialsSection() {
+  // Deleting is Owner-only in the database; Manager/Developer can add, edit and hide.
+  const canDelete = can.deleteSiteItems(useAdminRole());
   const [items, setItems] = useState<DbTestimonial[]>([]);
   const [loading, setLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
@@ -886,21 +897,23 @@ function TestimonialsSection() {
             <div className="flex shrink-0 items-center gap-2">
               <Switch checked={t.is_active} onCheckedChange={(v) => handleToggle(t, v)} />
               <Button variant="ghost" size="icon" onClick={() => openEdit(t)}><Pencil className="h-4 w-4" /></Button>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Delete this testimonial?</AlertDialogTitle>
-                    <AlertDialogDescription>This removes it from the public site.</AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => handleDelete(t)}>Delete</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              {canDelete && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete this testimonial?</AlertDialogTitle>
+                      <AlertDialogDescription>This removes it from the public site.</AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => handleDelete(t)}>Delete</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
             </div>
           </div>
         ))}

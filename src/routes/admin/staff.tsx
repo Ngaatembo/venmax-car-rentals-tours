@@ -49,21 +49,28 @@ import {
   type StaffMember,
 } from "@/lib/admin-data";
 import { useAdminSession } from "@/lib/admin-auth";
+import { ALL_ROLES, ROLE_DESCRIPTIONS, ROLE_LABELS } from "@/lib/admin-permissions";
 
 export const Route = createFileRoute("/admin/staff")({
   component: AdminStaff,
 });
 
-const roleLabel: Record<AppRole, string> = {
-  admin: "Admin (full access)",
-  manager: "Manager",
-  staff: "Staff",
-};
+// Internal value `admin` is shown as "Owner" everywhere in the panel.
+const roleLabel = ROLE_LABELS;
 
 function roleBadgeVariant(role: AppRole): "default" | "secondary" | "outline" {
   if (role === "admin") return "default";
   if (role === "manager") return "secondary";
   return "outline";
+}
+
+// Friendlier message when the database refuses to remove the last Owner.
+function roleErrorMessage(err: unknown, fallback: string) {
+  const message = err instanceof Error ? err.message : "";
+  if (/at least one Owner/i.test(message)) {
+    return "VenMax must always have at least one Owner. Make someone else an Owner first.";
+  }
+  return message || fallback;
 }
 
 function formatDate(value: string | null) {
@@ -149,7 +156,7 @@ function AdminStaff() {
       setStaff((prev) => prev.map((s) => (s.user_id === userId ? { ...s, role: newRole } : s)));
       toast.success("Role updated");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to update role");
+      toast.error(roleErrorMessage(err, "Failed to update role"));
     }
   }
 
@@ -159,7 +166,7 @@ function AdminStaff() {
       setStaff((prev) => prev.filter((s) => s.user_id !== member.user_id));
       toast.success(`${member.email} no longer has admin panel access`);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to remove access");
+      toast.error(roleErrorMessage(err, "Failed to remove access"));
     }
   }
 
@@ -171,8 +178,9 @@ function AdminStaff() {
         <div>
           <h1 className="text-2xl">Staff</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Control who can access the admin panel and what they can do. Removing someone here
-            blocks their access immediately — enforced by the database, not just hidden buttons.
+            Control who can access the admin panel and what they can do. Only the Owner can manage
+            staff and roles. Removing someone here blocks their access immediately — enforced by the
+            database, not just hidden buttons. VenMax always keeps at least one Owner.
           </p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
@@ -225,11 +233,11 @@ function AdminStaff() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="staff">Staff — bookings, customers, inquiries</SelectItem>
-                    <SelectItem value="manager">
-                      Manager — staff access + fleet, tours, site content
-                    </SelectItem>
-                    <SelectItem value="admin">Admin — full access, including staff</SelectItem>
+                    {(["staff", "manager", "admin", "developer"] as AppRole[]).map((r) => (
+                      <SelectItem key={r} value={r}>
+                        {ROLE_DESCRIPTIONS[r]}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -326,12 +334,14 @@ function AdminStaff() {
                         onValueChange={(v) => handleRoleChange(member.user_id, v as AppRole)}
                       >
                         <SelectTrigger className="h-8 w-40">
-                          <SelectValue />
+                          <SelectValue>{roleLabel[member.role] ?? member.role}</SelectValue>
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="staff">Staff</SelectItem>
-                          <SelectItem value="manager">Manager</SelectItem>
-                          <SelectItem value="admin">Admin</SelectItem>
+                          {ALL_ROLES.map((r) => (
+                            <SelectItem key={r} value={r}>
+                              {roleLabel[r]}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     )}

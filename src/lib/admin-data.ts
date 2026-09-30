@@ -230,6 +230,37 @@ export async function deleteCustomer(id: string) {
   if (error) throw error;
 }
 
+// ---------- Customers (Staff view) ----------
+// Staff can't read the customers table directly (RLS: Manager/Owner only), because
+// it holds passport and national ID numbers. They use these two database functions,
+// which return and save every other field. Passport/ID numbers never reach Staff.
+export type CustomerBasicFields = Pick<
+  DbCustomer,
+  | "full_name"
+  | "phone"
+  | "email"
+  | "license_number"
+  | "license_expiry"
+  | "address"
+  | "notes"
+  | "next_of_kin_name"
+  | "next_of_kin_phone"
+  | "next_of_kin_relationship"
+  | "checks"
+>;
+
+export async function listCustomersBasic() {
+  const { data, error } = await supabase.rpc("list_customers_basic");
+  if (error) throw error;
+  return (data ?? []) as DbCustomer[];
+}
+
+export async function saveCustomerBasic(id: string | null, fields: CustomerBasicFields) {
+  const { data, error } = await supabase.rpc("save_customer_basic", { p_id: id, p_data: fields });
+  if (error) throw error;
+  return data as string;
+}
+
 // Bookings linked to a specific customer (via bookings.customer_id), most
 // recent first. Used on the customer detail view.
 export async function listBookingsForCustomer(customerId: string) {
@@ -589,7 +620,9 @@ export async function uploadMedia(file: File, pathPrefix: string) {
 // Note: role-based access is enforced server-side via Postgres RLS policies
 // (has_role / has_min_role) — these calls are gated by the database, not
 // just by hiding UI. See migration admin_list_staff_function.
-export type AppRole = "admin" | "manager" | "staff";
+// Same values as admin-auth.ts (kept in both places for existing imports).
+// `admin` is the Owner; `developer` is the WebAura technical account.
+export type AppRole = "admin" | "manager" | "staff" | "developer";
 
 export type StaffMember = {
   user_id: string;

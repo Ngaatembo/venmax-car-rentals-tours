@@ -47,9 +47,12 @@ export function useIsAdmin(session: Session | null | undefined) {
   return isAdmin;
 }
 
-export type AppRole = "admin" | "manager" | "staff";
+// Internal role values. `admin` is the Owner (shown as "Owner" in the UI — see
+// admin-permissions.ts); `developer` is WebAura's technical account, limited by RLS
+// to fleet, tours and website content.
+export type AppRole = "admin" | "manager" | "staff" | "developer";
 
-// Returns the signed-in user's own role (admin/manager/staff), or null if
+// Returns the signed-in user's own role (admin/manager/staff/developer), or null if
 // they have no role assigned (blocked from the admin panel entirely). Used
 // to gate navigation and page-level UI — the real enforcement still happens
 // server-side via RLS, this only controls what's shown.
@@ -66,7 +69,9 @@ export function useMyRole(session: Session | null | undefined) {
     setRole(undefined);
     supabase.rpc("my_role").then(({ data, error }) => {
       if (cancelled) return;
-      setRole(error ? null : (data as AppRole | null));
+      const value = data as string | null;
+      const known = value === "admin" || value === "manager" || value === "staff" || value === "developer";
+      setRole(error || !known ? null : (value as AppRole));
     });
     return () => {
       cancelled = true;

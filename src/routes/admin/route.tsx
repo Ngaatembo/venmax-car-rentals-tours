@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet, useNavigate, useLocation } from "@tanstack/react-router";
+import { createFileRoute, Link, Navigate, Outlet, useMatches, useNavigate, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
@@ -19,8 +19,17 @@ import {
   FolderOpen,
   FileBarChart,
   KeyRound,
+  ShieldAlert,
 } from "lucide-react";
-import { useAdminSession, useMyRole, signOutAdmin, updateOwnPassword, type AppRole } from "@/lib/admin-auth";
+import { useAdminSession, useMyRole, signOutAdmin, updateOwnPassword } from "@/lib/admin-auth";
+import {
+  AdminRoleContext,
+  allowedRolesForPath,
+  can,
+  canAccessPath,
+  homePathForRole,
+  roleLabel,
+} from "@/lib/admin-permissions";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,32 +50,39 @@ export const Route = createFileRoute("/admin")({
   component: AdminLayout,
 });
 
-// `minRole` follows the same hierarchy as the database's has_min_role():
-// admin > manager > staff. A nav item with no minRole is visible to anyone
-// with any role at all (i.e. staff and up). This only controls what's
-// *shown* — the real enforcement is the RLS policies on each table.
-const navItems: { to: string; label: string; icon: typeof LayoutDashboard; minRole?: AppRole }[] = [
+// Each menu item is shown only to the roles listed for its section in
+// admin-permissions.ts (explicit lists, not a rank). The same list guards the
+// page itself, and RLS enforces it again in the database.
+const navItems: { to: string; label: string; icon: typeof LayoutDashboard }[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { to: "/admin/fleet", label: "Fleet", icon: Car },
   { to: "/admin/tours", label: "Tours", icon: MapPin },
   { to: "/admin/bookings", label: "Bookings", icon: CalendarCheck },
   { to: "/admin/customers", label: "Customers", icon: Contact },
   { to: "/admin/drivers", label: "Drivers", icon: IdCard },
-  { to: "/admin/payments", label: "Payments", icon: Wallet, minRole: "staff" },
-  { to: "/admin/pricing", label: "Pricing", icon: Percent, minRole: "staff" },
-  { to: "/admin/documents", label: "Documents", icon: FolderOpen, minRole: "staff" },
-  { to: "/admin/reports", label: "Reports", icon: FileBarChart, minRole: "manager" },
+  { to: "/admin/payments", label: "Payments", icon: Wallet },
+  { to: "/admin/pricing", label: "Pricing", icon: Percent },
+  { to: "/admin/documents", label: "Documents", icon: FolderOpen },
+  { to: "/admin/reports", label: "Reports", icon: FileBarChart },
   { to: "/admin/inquiries", label: "Inquiries", icon: MessageSquare },
-  { to: "/admin/content", label: "Site Content", icon: FileText, minRole: "manager" },
-  { to: "/admin/audit-log", label: "Audit Log", icon: History, minRole: "admin" },
-  { to: "/admin/staff", label: "Staff", icon: Users, minRole: "admin" },
+  { to: "/admin/content", label: "Site Content", icon: FileText },
+  { to: "/admin/audit-log", label: "Audit Log", icon: History },
+  { to: "/admin/staff", label: "Staff", icon: Users },
 ];
 
-const roleRank: Record<AppRole, number> = { staff: 0, manager: 1, admin: 2 };
-
-function canSeeNavItem(role: AppRole, minRole?: AppRole) {
-  if (!minRole) return true;
-  return roleRank[role] >= roleRank[minRole];
+function NoAccess({ homePath }: { homePath: string }) {
+  return (
+    <div className="mx-auto mt-16 max-w-md rounded-lg border border-border bg-background p-8 text-center">
+      <ShieldAlert className="mx-auto h-10 w-10 text-muted-foreground" />
+      <h1 className="mt-3 text-xl font-semibold text-foreground">No access</h1>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Your role doesn't include this section. Ask the Owner if you need access.
+      </p>
+      <Link to={homePath} className="mt-4 inline-block text-sm font-medium text-primary underline underline-offset-2">
+        Go back
+      </Link>
+    </div>
+  );
 }
 
 function ChangePasswordDialog() {
@@ -150,15 +166,20 @@ function AdminLayout() {
   const role = useMyRole(session);
   const navigate = useNavigate();
   const location = useLocation();
+  // The page actually rendered by <Outlet />. During a navigation the address
+  // changes before the next page has loaded, so access is checked against what's
+  // on screen (and against the address) — an unauthorised page never mounts,
+  // not even for a moment.
+  const renderedPath = useMatches({ select: (matches) => matches[matches.length - 1]?.pathname });
   const onLoginPage = location.pathname === "/admin/login";
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   // New-booking notification: plays a chime + toast whenever a booking is
-  // inserted while any admin page is open. Only subscribes once the user
-  // actually holds a role (staff/manager/admin) — matches the RLS read
-  // policy on `bookings`, so it never subscribes for a logged-out visitor.
+  // inserted while any admin page is open. Only subscribes for roles that can
+  // read bookings (Owner/Manager/Staff) — matches the RLS read policy on
+  // `bookings`; never for the Developer or a logged-out visitor.
   useEffect(() => {
-    if (!role) return;
+    if (!can.receiveBookingAlerts(role)) return;
     const channel = supabase
       .channel("admin-new-bookings")
       .on(
@@ -232,7 +253,16 @@ function AdminLayout() {
     );
   }
 
-  const visibleNavItems = navItems.filter((item) => canSeeNavItem(role, item.minRole));
+  const homePath = homePathForRole(role);
+
+  // The Developer has no dashboard: send them to Fleet.
+  if (location.pathname.replace(/\/+$/, "") === "/admin" && homePath !== "/admin") {
+    return <Navigate to={homePath} replace />;
+  }
+
+  const allowedHere =
+    canAccessPath(role, location.pathname) && canAccessPath(role, renderedPath ?? location.pathname);
+  const visibleNavItems = navItems.filter((item) => allowedRolesForPath(item.to).includes(role));
 
   const NavLinks = ({ onNavigate }: { onNavigate?: () => void }) => (
     <>
@@ -301,7 +331,7 @@ function AdminLayout() {
               <img src={logo} alt="VenMax Car Rental & Tours" className="h-8 w-auto" />
               <p className="mt-2 text-xs text-muted-foreground">{session.user.email}</p>
               <span className="mt-1 inline-block rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
-                {role}
+                {roleLabel(role)}
               </span>
             </div>
             <NavLinks onNavigate={() => setMobileNavOpen(false)} />
@@ -315,13 +345,16 @@ function AdminLayout() {
             <img src={logo} alt="VenMax Car Rental & Tours" className="h-8 w-auto" />
             <p className="mt-2 text-xs text-muted-foreground">{session.user.email}</p>
             <span className="mt-1 inline-block rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
-              {role}
+              {roleLabel(role)}
             </span>
           </div>
           <NavLinks />
         </aside>
         <main className="flex-1 overflow-x-hidden p-4 md:p-8">
-          <Outlet />
+          {/* Unauthorised pages never mount, so they never request their data. */}
+          <AdminRoleContext.Provider value={role}>
+            {allowedHere ? <Outlet /> : <NoAccess homePath={homePath} />}
+          </AdminRoleContext.Provider>
         </main>
       </div>
     </div>

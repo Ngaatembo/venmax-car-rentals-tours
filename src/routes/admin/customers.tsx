@@ -37,6 +37,8 @@ import {
 import { Plus, Pencil, Trash2, Search, User as UserIcon } from "lucide-react";
 import {
   listCustomers,
+  listCustomersBasic,
+  saveCustomerBasic,
   upsertCustomer,
   deleteCustomer,
   listBookingsForCustomer,
@@ -54,8 +56,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { policies, useSiteSettings, type Policies } from "@/lib/site-settings";
-import { useMyRole } from "@/lib/admin-auth";
-import { useAdminSession } from "@/lib/admin-auth";
+import { can, useAdminRole } from "@/lib/admin-permissions";
 
 const emptyForm: Partial<DbCustomer> = {
   full_name: "",
@@ -107,9 +108,11 @@ export const Route = createFileRoute("/admin/customers")({
 });
 
 function AdminCustomers() {
-  const session = useAdminSession();
-  const role = useMyRole(session);
-  const canDelete = role === "manager" || role === "admin";
+  const role = useAdminRole();
+  const canDelete = can.deleteOperationalRecords(role);
+  // Passport/national ID numbers and private ID documents: Manager and Owner only.
+  // Staff read and save customers through database functions that leave those out.
+  const canSeeIdentity = can.seeCustomerIdentity(role);
 
   const [customers, setCustomers] = useState<DbCustomer[]>([]);
   const [loading, setLoading] = useState(true);
@@ -128,7 +131,7 @@ function AdminCustomers() {
   async function refresh() {
     setLoading(true);
     try {
-      setCustomers(await listCustomers());
+      setCustomers(await (canSeeIdentity ? listCustomers() : listCustomersBasic()));
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to load customers");
     } finally {
@@ -169,23 +172,30 @@ function AdminCustomers() {
       return;
     }
     setSaving(true);
+    const basic = {
+      full_name: form.full_name.trim(),
+      phone: form.phone.trim(),
+      email: form.email?.trim() || null,
+      license_number: form.license_number?.trim() || null,
+      license_expiry: form.license_expiry || null,
+      address: form.address?.trim() || null,
+      notes: form.notes?.trim() || null,
+      next_of_kin_name: form.next_of_kin_name?.trim() || null,
+      next_of_kin_phone: form.next_of_kin_phone?.trim() || null,
+      next_of_kin_relationship: form.next_of_kin_relationship?.trim() || null,
+      checks: form.checks ?? {},
+    };
     try {
-      await upsertCustomer({
-        ...(editingId ? { id: editingId } : {}),
-        full_name: form.full_name.trim(),
-        phone: form.phone.trim(),
-        email: form.email?.trim() || null,
-        license_number: form.license_number?.trim() || null,
-        license_expiry: form.license_expiry || null,
-        id_number: form.id_number?.trim() || null,
-        address: form.address?.trim() || null,
-        notes: form.notes?.trim() || null,
-        passport_number: form.passport_number?.trim() || null,
-        next_of_kin_name: form.next_of_kin_name?.trim() || null,
-        next_of_kin_phone: form.next_of_kin_phone?.trim() || null,
-        next_of_kin_relationship: form.next_of_kin_relationship?.trim() || null,
-        checks: form.checks ?? {},
-      });
+      if (canSeeIdentity) {
+        await upsertCustomer({
+          ...(editingId ? { id: editingId } : {}),
+          ...basic,
+          id_number: form.id_number?.trim() || null,
+          passport_number: form.passport_number?.trim() || null,
+        });
+      } else {
+        await saveCustomerBasic(editingId, basic);
+      }
       toast.success(editingId ? "Customer updated" : "Customer added");
       setFormOpen(false);
       await refresh();
@@ -286,22 +296,32 @@ function AdminCustomers() {
                   onChange={(e) => setForm((f) => ({ ...f, license_expiry: e.target.value }))}
                 />
               </div>
-              <div>
-                <Label htmlFor="id_number">National ID number</Label>
-                <Input
-                  id="id_number"
-                  value={form.id_number ?? ""}
-                  onChange={(e) => setForm((f) => ({ ...f, id_number: e.target.value }))}
-                />
-              </div>
-              <div>
-                <Label htmlFor="passport_number">Passport number</Label>
-                <Input
-                  id="passport_number"
-                  value={form.passport_number ?? ""}
-                  onChange={(e) => setForm((f) => ({ ...f, passport_number: e.target.value }))}
-                />
-              </div>
+              {canSeeIdentity ? (
+                <>
+                  <div>
+                    <Label htmlFor="id_number">National ID number</Label>
+                    <Input
+                      id="id_number"
+                      value={form.id_number ?? ""}
+                      onChange={(e) => setForm((f) => ({ ...f, id_number: e.target.value }))}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="passport_number">Passport number</Label>
+                    <Input
+                      id="passport_number"
+                      value={form.passport_number ?? ""}
+                      onChange={(e) => setForm((f) => ({ ...f, passport_number: e.target.value }))}
+                    />
+                  </div>
+                </>
+              ) : (
+                <p className="col-span-2 rounded-md bg-muted/50 px-3 py-2 text-xs text-muted-foreground">
+                  National ID and passport numbers, and ID documents, are kept private — only a Manager
+                  or the Owner can see or change them. You can still tick the checks below once you've
+                  seen the documents.
+                </p>
+              )}
               <div className="col-span-2">
                 <Label htmlFor="address">Address</Label>
                 <Input
@@ -356,7 +376,7 @@ function AdminCustomers() {
                   ))}
                 </div>
               </div>
-              {editingId && (
+              {editingId && canSeeIdentity && (
                 <div className="col-span-2">
                   <CustomerDocuments customerId={editingId} canDelete={canDelete} />
                 </div>
@@ -511,7 +531,10 @@ function AdminCustomers() {
                       ` (expires ${format(parseISO(profileCustomer.license_expiry), "MMM d, yyyy")})`}
                   </p>
                 )}
-                {profileCustomer.passport_number && <p>Passport: {profileCustomer.passport_number}</p>}
+                {canSeeIdentity && profileCustomer.passport_number && (
+                  <p>Passport: {profileCustomer.passport_number}</p>
+                )}
+                {canSeeIdentity && profileCustomer.id_number && <p>National ID: {profileCustomer.id_number}</p>}
                 {hasNextOfKin(profileCustomer) ? (
                   <p>
                     Next of kin: {profileCustomer.next_of_kin_name}
@@ -643,7 +666,7 @@ function CustomerDocuments({ customerId, canDelete }: { customerId: string; canD
 
   return (
     <div className="rounded-md border border-border p-3">
-      <p className="text-sm font-medium text-foreground">Documents (private — staff only)</p>
+      <p className="text-sm font-medium text-foreground">Documents (private — Manager and Owner only)</p>
       {docs === null ? (
         <p className="mt-2 text-sm text-muted-foreground">Loading…</p>
       ) : docs.length === 0 ? (

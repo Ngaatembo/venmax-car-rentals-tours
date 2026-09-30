@@ -45,6 +45,7 @@ import {
   type DbInquiry,
   type DbPayment,
 } from "@/lib/admin-data";
+import { can, useAdminRole } from "@/lib/admin-permissions";
 
 export const Route = createFileRoute("/admin/")({
   component: AdminDashboard,
@@ -112,6 +113,12 @@ function inquiryBadgeVariant(status: string): "default" | "secondary" | "outline
 }
 
 function AdminDashboard() {
+  // Payments (and revenue) are Manager/Owner only — Staff never request them.
+  // The Developer never reaches this page (the layout redirects to Fleet); this
+  // is a second check so the dashboard can't load business data for them.
+  const role = useAdminRole();
+  const showRevenue = can.managePayments(role);
+  const canLoad = can.receiveBookingAlerts(role);
   const [vehicles, setVehicles] = useState<Awaited<ReturnType<typeof listVehicles>>>([]);
   const [tours, setTours] = useState<Awaited<ReturnType<typeof listTours>>>([]);
   const [bookings, setBookings] = useState<DbBooking[]>([]);
@@ -121,13 +128,14 @@ function AdminDashboard() {
   const [range, setRange] = useState<RangeKey>("month");
 
   useEffect(() => {
+    if (!canLoad) return;
     (async () => {
       const [v, t, b, i, p] = await Promise.all([
         listVehicles(),
         listTours(),
         listBookings(),
         listInquiries(),
-        listPayments(),
+        showRevenue ? listPayments() : Promise.resolve([] as DbPayment[]),
       ]);
       setVehicles(v);
       setTours(t);
@@ -206,11 +214,13 @@ function AdminDashboard() {
     { label: "Confirmed", value: bookingCounts["confirmed"], to: "/admin/bookings" },
     { label: "Completed", value: bookingCounts["completed"], to: "/admin/bookings" },
     { label: "Cancelled", value: bookingCounts["cancelled"], to: "/admin/bookings" },
-    { label: "Revenue", value: `$${filteredRevenue.toFixed(2)}`, to: "/admin/payments" },
+    ...(showRevenue
+      ? [{ label: "Revenue", value: `$${filteredRevenue.toFixed(2)}`, to: "/admin/payments" }]
+      : []),
     { label: "Fleet vehicles", value: `${activeVehicles}/${vehicles.length} active`, to: "/admin/fleet" },
     { label: "Tour destinations", value: `${activeTours}/${tours.length} active`, to: "/admin/tours" },
     { label: "New inquiries", value: inquiryCounts["new"], to: "/admin/inquiries" },
-  ] as const;
+  ];
 
   return (
     <div>
