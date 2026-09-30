@@ -162,7 +162,7 @@ function buildSections(vehicles: Vehicle[], p: Policies): LegalSection[] {
           items={[
             "All VenMax deposits are refundable.",
             "Your deposit is refunded when you return the vehicle — on the spot, not the next day — using the payment method agreed with you.",
-            "VenMax may deduct from the deposit for minor damage, excess mileage or other outstanding charges.",
+            "VenMax may deduct from the deposit for minor damage not covered by insurance (such as scratches), excess mileage or other outstanding charges.",
           ]}
         />
       ),
@@ -195,16 +195,22 @@ function buildSections(vehicles: Vehicle[], p: Policies): LegalSection[] {
     },
     {
       id: "insurance",
-      title: "Insurance",
+      title: "Insurance & Damage",
       content: (
         <>
           <p>All VenMax vehicles are insured, and are provided in good working condition at the start of your rental.</p>
+          <LegalSubhead>Damage</LegalSubhead>
+          <Bullets
+            items={[
+              "Accident-related damage covered by the vehicle's insurance is not charged to you.",
+              "Minor damage that insurance doesn't cover, such as scratches, is charged to you and may be deducted from your deposit.",
+            ]}
+          />
           <LegalSubhead>During the rental, you are responsible for</LegalSubhead>
           <Bullets
             items={[
               "The vehicle, for the whole rental period.",
               "Any traffic fines and tolls.",
-              "Damage beyond normal wear and tear.",
             ]}
           />
           <p>
@@ -245,6 +251,18 @@ function buildSections(vehicles: Vehicle[], p: Policies): LegalSection[] {
             `A VenMax chauffeur can be added to any vehicle for an additional ${p.chauffeurFee}. This is not included in the vehicle's daily rate.`,
             "The client covers the driver's food and accommodation.",
             "The self-drive age requirement does not apply, because VenMax provides the driver.",
+          ]}
+        />
+      ),
+    },
+    {
+      id: "when-you-pay",
+      title: "When You Pay",
+      content: (
+        <Bullets
+          items={[
+            "Once your booking is confirmed, you pay a deposit to secure the vehicle.",
+            "The balance can be paid before or on the day you collect the vehicle.",
           ]}
         />
       ),

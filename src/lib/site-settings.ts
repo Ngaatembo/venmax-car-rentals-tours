@@ -23,7 +23,7 @@ export const SETTING_DEFAULTS = {
   contact_phone_secondary: "+263 78 047 5535",
   contact_whatsapp: "+263 71 422 5314",
   contact_email_sales: "sales@venmax.co.zw",
-  contact_email_bookings: "venmaxcarrentaltours@gmail.com",
+  contact_email_bookings: "",
   contact_hours: "Office hours 8am–5pm — WhatsApp messages answered anytime",
 
   // Stats shown on the homepage

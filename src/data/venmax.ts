@@ -83,7 +83,7 @@ export const company = {
   addressLines: ["27 Lawson Avenue", "Milton Park, Harare", "Zimbabwe"],
   phones: ["+263 71 422 5314", "+263 78 047 5535"],
   whatsapp: "263714225314",
-  emails: ["sales@venmax.co.zw", "venmaxcarrentaltours@gmail.com"],
+  emails: ["sales@venmax.co.zw"],
   hours: "Office hours 8am–5pm — WhatsApp messages answered anytime",
   social: {
     facebook: "https://www.facebook.com/profile.php?id=61576553241839",
@@ -498,7 +498,12 @@ export function buildRequirements(p: Policies) {
       title: "Proof of Residence or Employment",
       description: "Proof of residence or employment is required.",
     },
-    { number: "05", title: "Insurance", description: "All VenMax vehicles are insured." },
+    {
+      number: "05",
+      title: "Insurance & Damage",
+      description:
+        "All VenMax vehicles are insured. Minor damage that insurance doesn't cover, such as scratches, may be deducted from the deposit.",
+    },
     {
       number: "06",
       title: "Fuel",
@@ -535,9 +540,19 @@ export const faqs = [
       "{payment_methods}.",
   },
   {
+    question: "When do I pay?",
+    answer:
+      "Once your booking is confirmed, you pay a deposit to secure the vehicle. The balance can be paid before or on the day you collect the vehicle.",
+  },
+  {
     question: "Is the security deposit refundable?",
     answer:
-      "Yes — all deposits are refundable. The deposit is refunded when you return the vehicle, using the payment method agreed with you, less any deductions for minor damage or excess mileage.",
+      "Yes — all deposits are refundable. The deposit is refunded when you return the vehicle, using the payment method agreed with you, less any deductions for minor damage not covered by insurance (such as scratches) or excess mileage.",
+  },
+  {
+    question: "What happens if the vehicle is damaged?",
+    answer:
+      "All VenMax vehicles are insured, and accident-related damage covered by that insurance is not charged to you. Minor damage that insurance doesn't cover, such as scratches, may be deducted from your deposit.",
   },
   {
     question: "How much free mileage do I get?",
