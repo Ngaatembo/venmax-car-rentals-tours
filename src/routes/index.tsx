@@ -63,7 +63,7 @@ function Index() {
               Affordable daily rates, from $40/day
             </span>
             <span className="rounded-full border border-primary/60 bg-primary/15 px-4 py-2 text-sm font-semibold text-navy-foreground">
-              Deposits far below typical market rates, from $100 refundable
+              Small &amp; mid SUV deposits from $100. Others in the market charge $150 to $300
             </span>
           </div>
           <div className="mt-8 flex flex-wrap gap-4">

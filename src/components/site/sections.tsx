@@ -1589,7 +1589,7 @@ export function CancellationSection() {
           <div className="rounded-2xl border border-border bg-card p-6">
             <h3 className="text-base uppercase tracking-wide">Deposits Below Market Rates</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              Our refundable deposits are far lower than typical market rates, and the amount is shown on every vehicle.
+              Our refundable deposit on small and mid SUVs is just $100, while others in the market charge $150 to $300. The deposit is shown on every vehicle.
             </p>
           </div>
         </div>
