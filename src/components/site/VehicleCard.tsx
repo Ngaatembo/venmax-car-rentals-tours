@@ -20,6 +20,29 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
   const photos = [vehicle.image, ...(vehicle.gallery ?? [])];
   const specs = getSpecs(vehicle);
   const isTruck = /truck/i.test(vehicle.category);
+  // Avoid repeating the category when it is already included at the end of the vehicle name.
+  // Example: "Toyota Hilux D4D Truck" + "Truck" badge -> "Toyota Hilux D4D" + "Truck".
+  const displayName = vehicle.name.replace(new RegExp(`\\s+${vehicle.category}import { useState } from "react";
+import { MessageCircle, Users, Briefcase, Cog, Snowflake, Fuel } from "lucide-react";
+import type { Vehicle } from "@/data/venmax";
+import { vehicleCardMessage, vehicleDetailMessage, whatsappLink } from "@/data/venmax";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+
+function getSpecs(vehicle: Vehicle) {
+  return [
+    vehicle.seats ? { icon: Users, label: `${vehicle.seats} seats` } : null,
+    vehicle.bags ? { icon: Briefcase, label: `${vehicle.bags} bags` } : null,
+    vehicle.transmission ? { icon: Cog, label: vehicle.transmission } : null,
+    vehicle.fuelType ? { icon: Fuel, label: vehicle.fuelType } : null,
+    vehicle.ac ? { icon: Snowflake, label: "A/C" } : null,
+  ].filter((s): s is { icon: typeof Users; label: string } => Boolean(s));
+}
+
+export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
+  const [open, setOpen] = useState(false);
+  const [activePhoto, setActivePhoto] = useState(0);
+  const photos = [vehicle.image, ...(vehicle.gallery ?? [])];
+, "i"), "");
   const availabilityNote =
     vehicle.status && vehicle.status !== "available" ? "Availability on request" : null;
 
@@ -28,12 +51,12 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label={`View details for ${vehicle.name}`}
+        aria-label={`View details for ${displayName}`}
         className="relative aspect-[4/3] overflow-hidden bg-secondary text-left"
       >
         <img
           src={vehicle.image}
-          alt={`${vehicle.name} available from VenMax`}
+          alt={`${displayName} available from VenMax`}
           loading="lazy"
           width={1024}
           height={768}
@@ -51,7 +74,7 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
       </button>
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <h3 className="text-lg">{vehicle.name}</h3>
+        <h3 className="text-lg">{displayName}</h3>
 
         <div className="mt-2">
           <p className="text-xl font-semibold text-primary">{vehicle.priceLabel}</p>
@@ -107,7 +130,7 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
           <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
             <img
               src={photos[activePhoto] ?? vehicle.image}
-              alt={vehicle.name}
+              alt={displayName}
               style={
                 activePhoto === 0 && vehicle.imagePosition
                   ? { objectPosition: vehicle.imagePosition }
@@ -138,7 +161,7 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
             </div>
           )}
           <div className="p-6 pt-2">
-            <DialogTitle className="text-xl">{vehicle.name}</DialogTitle>
+            <DialogTitle className="text-xl">{displayName}</DialogTitle>
             <DialogDescription className="mt-2">{vehicle.description}</DialogDescription>
             <div className="mt-4 flex items-baseline justify-between gap-3 rounded-xl bg-secondary/60 p-4">
               <div>
