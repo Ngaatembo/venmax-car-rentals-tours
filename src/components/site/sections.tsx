@@ -747,6 +747,40 @@ export function AirportSection() {
 
 const valueIcons = { tag: Tag, calendar: CalendarDays, message: MessageCircle, globe: Globe };
 
+export function PriceAdvantageSection() {
+  return (
+    <Section tone="surface">
+      <SectionHeading
+        eyebrow="Why VenMax"
+        title="Lower deposits. Fairer rates. Drive away sooner."
+        description="Most car hire companies ask for $150 to $300 upfront. VenMax asks for just $100 on our small and mid SUVs, fully refundable."
+      />
+      <div className="mt-10 grid gap-6 md:grid-cols-2">
+        <article className="rounded-2xl border border-primary/40 bg-card p-6 sm:p-8">
+          <h3 className="text-base uppercase tracking-wide">Deposits below market rates</h3>
+          <p className="mt-4 text-4xl font-semibold text-primary">$100</p>
+          <p className="mt-1 text-sm text-muted-foreground">VenMax deposit, small and mid SUVs</p>
+          <p className="mt-4 text-2xl font-semibold text-muted-foreground line-through decoration-1">
+            $150 to $300
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">What others in the market charge</p>
+          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+            The deposit is refundable and shown clearly on every vehicle.
+          </p>
+        </article>
+        <article className="rounded-2xl border border-border bg-card p-6 sm:p-8">
+          <h3 className="text-base uppercase tracking-wide">Affordable rental rates</h3>
+          <p className="mt-4 text-4xl font-semibold text-primary">From $40/day</p>
+          <p className="mt-1 text-sm text-muted-foreground">Value-focused options for local and diaspora customers</p>
+          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+            Clear daily rates and deposits, so you know the cost before you book.
+          </p>
+        </article>
+      </div>
+    </Section>
+  );
+}
+
 export function ValueCardsSection() {
   return (
     <Section>
@@ -1573,26 +1607,12 @@ export function CancellationSection() {
   const p = policies(useSiteSettings());
   return (
     <Section id="cancellation">
-      <div className="grid items-start gap-8 lg:grid-cols-2">
+      <div className="grid items-start gap-8">
         <SectionHeading
           eyebrow="Cancellation & Refunds"
           title="Flexible Cancellation"
           description={`In the event of an emergency or change of plans, customers can cancel their rental. VenMax does not charge a cancellation fee, and the full amount paid is refunded within ${p.refundDays} business working days. This applies to every booking.`}
         />
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <h3 className="text-base uppercase tracking-wide">Affordable Rental Rates</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              Value-focused rental options for local and diaspora customers.
-            </p>
-          </div>
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <h3 className="text-base uppercase tracking-wide">Deposits Below Market Rates</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              Our refundable deposit on small and mid SUVs is just $100, while others in the market charge $150 to $300. The deposit is shown on every vehicle.
-            </p>
-          </div>
-        </div>
       </div>
     </Section>
   );

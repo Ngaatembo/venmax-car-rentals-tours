@@ -14,6 +14,7 @@ import {
   ToursTeaserSection,
   TestimonialsSection,
   ValueCardsSection,
+  PriceAdvantageSection,
   WelcomeSection,
   AboutSection,
   MissionVisionSection,
@@ -99,6 +100,7 @@ function Index() {
       <div className="relative z-10 mx-auto -mt-10 max-w-3xl px-4 sm:-mt-12 sm:px-6 lg:px-8">
         <BookingWidget />
       </div>
+      <PriceAdvantageSection />
       <ValueCardsSection />
       <FleetSection />
       <WelcomeSection />
