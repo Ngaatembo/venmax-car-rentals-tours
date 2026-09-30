@@ -77,7 +77,7 @@ function AdminLogin() {
         <p className="mt-8 text-center text-[10px] leading-relaxed text-muted-foreground/70">
           Custom admin system built exclusively for VenMax Car Rental & Tours
           <br />
-          Developed by NWT Dev
+          Developed by WebAura
         </p>
       </div>
     </div>

@@ -270,7 +270,7 @@ function AdminLayout() {
           <br />
           <span className="font-semibold text-muted-foreground">VenMax Car Rental & Tours</span>
           <br />
-          Developed by NWT Dev
+          Developed by WebAura
         </p>
       </div>
     </>
