@@ -225,7 +225,6 @@ export const vehicles: Vehicle[] = [
     bags: 4,
     transmission: "Auto",
     ac: true,
-    badge: "Family Pick",
   },
   {
     slug: "nissan-xtrail",

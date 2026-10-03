@@ -23,6 +23,13 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
   // Avoid repeating the category when it is already included at the end of the vehicle name.
   // Example: "Toyota Hilux D4D Truck" + "Truck" badge -> "Toyota Hilux D4D" + "Truck".
   const displayName = vehicle.name.replace(new RegExp(`\\s+${vehicle.category}$`, "i"), "");
+  // One red sticker per vehicle: its special label if it has one (e.g. "Budget Fuel Saver"),
+  // otherwise its category. The two are never shown together.
+  const badgeText = vehicle.badge?.trim();
+  const stickerText =
+    badgeText && badgeText.toLowerCase() !== vehicle.category.trim().toLowerCase()
+      ? badgeText
+      : vehicle.category;
   const availabilityNote =
     vehicle.status && vehicle.status !== "available" ? "Availability on request" : null;
 
@@ -44,7 +51,7 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
           className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
         />
         <span className="absolute right-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground shadow">
-          {vehicle.category}
+          {stickerText}
         </span>
       </button>
 
@@ -114,7 +121,7 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
               className="h-full w-full object-cover"
             />
             <span className="absolute right-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground shadow">
-              {isTruck ? "Truck" : vehicle.category}
+              {isTruck ? "Truck" : stickerText}
             </span>
           </div>
           {photos.length > 1 && (
