@@ -23,8 +23,8 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
   // Avoid repeating the category when it is already included at the end of the vehicle name.
   // Example: "Toyota Hilux D4D Truck" + "Truck" badge -> "Toyota Hilux D4D" + "Truck".
   const displayName = vehicle.name.replace(new RegExp(`\\s+${vehicle.category}$`, "i"), "");
-  // One red sticker per vehicle: its special label if it has one (e.g. "Budget Fuel Saver"),
-  // otherwise its category. The two are never shown together.
+  // One red sticker per vehicle, always top-right: its special label if it has one
+  // (e.g. "Budget Fuel Saver"), otherwise its category. The two are never shown together.
   const badgeText = vehicle.badge?.trim();
   const stickerText =
     badgeText && badgeText.toLowerCase() !== vehicle.category.trim().toLowerCase()
