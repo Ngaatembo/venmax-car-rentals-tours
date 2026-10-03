@@ -92,11 +92,11 @@ function Index() {
             </span>
             <span className="inline-flex items-center gap-2">
               <Star className="h-4 w-4 fill-primary text-primary" />
-              Rated 4.9 by 100+ Google reviewers
+              {hero.hero_trust_rating}
             </span>
             <span className="inline-flex items-center gap-2">
               <MapPin className="h-4 w-4 text-primary" />
-              Cars delivered anywhere in Harare
+              {hero.hero_trust_delivery}
             </span>
           </div>
         </div>

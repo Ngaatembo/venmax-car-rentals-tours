@@ -17,6 +17,10 @@ export const SETTING_DEFAULTS = {
   hero_subtitle:
     "Choose your vehicle, send us a WhatsApp message and let our team help arrange your rental — whether you're in Zimbabwe or planning your trip from abroad.",
 
+  // Trust lines under the hero buttons (and the reviews summary)
+  hero_trust_rating: "Rated 4.9 by 100+ Google reviewers",
+  hero_trust_delivery: "Cars delivered anywhere in Harare",
+
   // Contact details
   contact_address: "27 Lawson Avenue, Milton Park, Harare, Zimbabwe",
   contact_phone_primary: "+263 71 422 5314",

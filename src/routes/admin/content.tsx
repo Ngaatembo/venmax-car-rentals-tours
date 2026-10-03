@@ -273,6 +273,12 @@ const generalGroups: SettingGroup[] = [
       { key: "hero_tagline", label: "Small line above the heading" },
       { key: "hero_headline", label: "Main heading" },
       { key: "hero_subtitle", label: "Text under the heading", kind: "textarea" },
+      {
+        key: "hero_trust_rating",
+        label: "Rating line (under the buttons)",
+        help: "Also shown above the customer reviews. e.g. Rated 4.9 by 100+ Google reviewers",
+      },
+      { key: "hero_trust_delivery", label: "Delivery line (under the buttons)" },
     ],
   },
   {
