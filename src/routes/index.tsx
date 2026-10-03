@@ -57,8 +57,17 @@ function Index() {
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-primary">
             {hero.hero_tagline}
           </p>
+          <p className="mt-2 text-sm font-semibold tracking-[0.18em] text-primary">
+            {company.secondaryTagline}
+          </p>
           <h1 className="mt-3 max-w-2xl text-4xl leading-tight sm:text-6xl">{hero.hero_headline}</h1>
           <p className="mt-5 max-w-xl text-lg text-navy-foreground/80">{hero.hero_subtitle}</p>
+          <p className="mt-5 max-w-xl text-lg font-semibold text-navy-foreground">
+            Harare's most trusted and reliable car rental. Book on WhatsApp in minutes.
+          </p>
+          <p className="mt-2 max-w-xl text-sm font-medium text-navy-foreground/75">
+            Serving families at home and abroad.
+          </p>
           <div className="mt-5 flex max-w-2xl flex-wrap gap-3">
             <span className="rounded-full border border-primary/60 bg-primary/15 px-4 py-2 text-sm font-semibold text-navy-foreground">
               Affordable daily rates, from $40/day

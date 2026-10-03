@@ -656,7 +656,7 @@ export function ToursTeaserSection() {
             height={1278}
             className="h-full w-full object-cover object-[50%_45%]"
           />
-          <span className="absolute left-4 top-4 rounded-full bg-navy/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy-foreground">
+          <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground">
             {tour.name}
           </span>
           <a
@@ -689,7 +689,7 @@ export function AirportSection() {
             // Portrait photo: keep the control tower AND the front of the vehicle in frame.
             className="absolute inset-0 h-full w-full object-cover object-[50%_42%] lg:object-[50%_25%]"
           />
-          <span className="absolute left-4 top-4 rounded-full bg-navy/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy-foreground">
+          <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground">
             Airport Services
           </span>
         </div>
@@ -852,7 +852,7 @@ export function MileageSection() {
             // Road vanishes toward the centre-left; keep it and the tree canopy in frame on mobile.
             className="h-full w-full object-cover object-[42%_50%]"
           />
-          <span className="absolute left-4 top-4 rounded-full bg-navy/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy-foreground">
+          <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground">
             Long-distance
           </span>
         </div>
@@ -995,7 +995,7 @@ function AmbientVideo({
         <source src={`${base}.mp4`} type="video/mp4" />
       </video>
       {ready && caption && (
-        <span className="absolute bottom-4 left-4 z-20 rounded-full bg-navy/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy-foreground">
+        <span className="absolute bottom-4 left-4 z-20 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground">
           {caption}
         </span>
       )}
@@ -1198,7 +1198,7 @@ export function ToursSection() {
               )}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/5" />
-            <span className="absolute left-6 top-6 inline-flex items-center gap-1.5 rounded-full bg-navy-foreground/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-navy-foreground/90 backdrop-blur-sm">
+            <span className="absolute left-6 top-6 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-primary-foreground shadow backdrop-blur-sm">
               <MapPin className="h-3 w-3 text-primary" />
               Zimbabwe Journey
             </span>
