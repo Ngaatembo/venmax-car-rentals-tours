@@ -1425,7 +1425,7 @@ export function TestimonialsSection() {
           ))}
         </div>
         <a href={googleMaps.place} target="_blank" rel="noreferrer" className="hover:underline">
-          {settings.stat_google_rating} on Google · 100+ ratings
+          Rated {settings.stat_google_rating} by 100+ Google reviewers
         </a>
       </div>
       <Carousel opts={{ align: "start", loop: true }} className="mt-8">

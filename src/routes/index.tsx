@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Globe, MessageCircle, Star } from "lucide-react";
+import { ArrowRight, Globe, MapPin, MessageCircle, Star } from "lucide-react";
 import {
   AirportSection,
   BookingCta,
@@ -92,7 +92,11 @@ function Index() {
             </span>
             <span className="inline-flex items-center gap-2">
               <Star className="h-4 w-4 fill-primary text-primary" />
-              100+ Positive Ratings
+              Rated 4.9 by 100+ Google reviewers
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-primary" />
+              Cars delivered anywhere in Harare
             </span>
           </div>
         </div>
