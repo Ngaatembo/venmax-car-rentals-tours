@@ -23,7 +23,7 @@ import {
   SocialShowcaseSection,
 } from "@/components/site/sections";
 import { BookingWidget } from "@/components/site/BookingWidget";
-import { whatsappLink } from "@/data/venmax";
+import { company, whatsappLink } from "@/data/venmax";
 import heroImage from "@/assets/toyota-fortuner.jpg";
 import { useSiteSettings } from "@/lib/site-settings";
 
