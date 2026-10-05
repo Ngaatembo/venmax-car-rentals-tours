@@ -639,9 +639,14 @@ export async function listStaff() {
   return data as StaffMember[];
 }
 
-export async function inviteStaff(email: string, role: AppRole, mode: "password" | "email_invite" = "password") {
+export async function inviteStaff(
+  email: string,
+  role: AppRole,
+  mode: "password" | "email_invite" = "password",
+  password?: string,
+) {
   const { data, error } = await supabase.functions.invoke("admin-invite-staff", {
-    body: { email, role, mode },
+    body: { email, role, mode, password: password || undefined },
   });
   if (error) throw error;
   if (data?.error) throw new Error(data.error);

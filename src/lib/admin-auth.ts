@@ -81,8 +81,19 @@ export function useMyRole(session: Session | null | undefined) {
   return role;
 }
 
+// Shortest password the admin panel accepts (e.g. a 4-digit PIN or a short word).
+export const MIN_PASSWORD_LENGTH = 4;
+
+// The auth service itself refuses passwords under 6 characters. To let people use
+// short passwords (a 4-digit PIN, a short word), anything shorter than 6 characters
+// gets a fixed suffix added before it is sent. Longer passwords are sent unchanged,
+// so existing logins keep working. The admin-invite-staff function does the same.
+export function toAuthPassword(password: string) {
+  return password.length < 6 ? `${password}~vmx!` : password;
+}
+
 export async function signInAdmin(email: string, password: string) {
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { error } = await supabase.auth.signInWithPassword({ email, password: toAuthPassword(password) });
   if (error) throw error;
 }
 
@@ -91,6 +102,6 @@ export async function signOutAdmin() {
 }
 
 export async function updateOwnPassword(newPassword: string) {
-  const { error } = await supabase.auth.updateUser({ password: newPassword });
+  const { error } = await supabase.auth.updateUser({ password: toAuthPassword(newPassword) });
   if (error) throw error;
 }

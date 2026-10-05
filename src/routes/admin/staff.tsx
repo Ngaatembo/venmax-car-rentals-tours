@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/ui/password-input";
+import { MIN_PASSWORD_LENGTH } from "@/lib/admin-auth";
 import {
   Dialog,
   DialogContent,
@@ -90,6 +92,8 @@ function AdminStaff() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<AppRole>("staff");
   const [mode, setMode] = useState<"password" | "email_invite">("password");
+  // Optional: leave empty to get a generated password instead.
+  const [chosenPassword, setChosenPassword] = useState("");
 
   // Result of the most recent "password" mode add — shown once in a
   // dedicated dialog so the admin can copy it and share it with the person.
@@ -118,9 +122,13 @@ function AdminStaff() {
       toast.error("Enter an email address");
       return;
     }
+    if (mode === "password" && chosenPassword && chosenPassword.length < MIN_PASSWORD_LENGTH) {
+      toast.error(`Password must be at least ${MIN_PASSWORD_LENGTH} characters`);
+      return;
+    }
     setInviting(true);
     try {
-      const result = await inviteStaff(email.trim(), role, mode);
+      const result = await inviteStaff(email.trim(), role, mode, mode === "password" ? chosenPassword : undefined);
       if (mode === "password" && result.temp_password) {
         setResultEmail(result.email);
         setResultPassword(result.temp_password);
@@ -131,6 +139,7 @@ function AdminStaff() {
       }
       setOpen(false);
       setEmail("");
+      setChosenPassword("");
       setRole("staff");
       await refresh();
     } catch (err) {
@@ -226,6 +235,21 @@ function AdminStaff() {
                   placeholder="name@example.com"
                 />
               </div>
+              {mode === "password" && (
+                <div>
+                  <Label htmlFor="staff-password">Password (optional)</Label>
+                  <PasswordInput
+                    id="staff-password"
+                    value={chosenPassword}
+                    onChange={(e) => setChosenPassword(e.target.value)}
+                    placeholder="Leave empty to generate one"
+                    autoComplete="new-password"
+                  />
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Any {MIN_PASSWORD_LENGTH}+ characters works — a 4-digit PIN or a simple word is fine.
+                  </p>
+                </div>
+              )}
               <div>
                 <Label>Role</Label>
                 <Select value={role} onValueChange={(v) => setRole(v as AppRole)}>

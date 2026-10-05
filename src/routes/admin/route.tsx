@@ -21,7 +21,8 @@ import {
   KeyRound,
   ShieldAlert,
 } from "lucide-react";
-import { useAdminSession, useMyRole, signOutAdmin, updateOwnPassword } from "@/lib/admin-auth";
+import { useAdminSession, useMyRole, signOutAdmin, updateOwnPassword, MIN_PASSWORD_LENGTH } from "@/lib/admin-auth";
+import { PasswordInput } from "@/components/ui/password-input";
 import {
   AdminRoleContext,
   allowedRolesForPath,
@@ -92,8 +93,8 @@ function ChangePasswordDialog() {
   const [saving, setSaving] = useState(false);
 
   async function handleSave() {
-    if (password.length < 8) {
-      toast.error("Password must be at least 8 characters");
+    if (password.length < MIN_PASSWORD_LENGTH) {
+      toast.error(`Password must be at least ${MIN_PASSWORD_LENGTH} characters`);
       return;
     }
     if (password !== confirm) {
@@ -129,9 +130,8 @@ function ChangePasswordDialog() {
         <div className="space-y-4 py-2">
           <div>
             <Label htmlFor="new-password">New password</Label>
-            <Input
+            <PasswordInput
               id="new-password"
-              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="new-password"
@@ -139,9 +139,8 @@ function ChangePasswordDialog() {
           </div>
           <div>
             <Label htmlFor="confirm-password">Confirm new password</Label>
-            <Input
+            <PasswordInput
               id="confirm-password"
-              type="password"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               autoComplete="new-password"
