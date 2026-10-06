@@ -7,7 +7,7 @@
  */
 import { useMemo, type ReactNode } from "react";
 import { Bullets, LegalLink, type LegalSection } from "@/components/site/LegalPage";
-import { company } from "@/data/venmax";
+import { company, howItWorks, trustPoints, valueCards } from "@/data/venmax";
 import { fillTokens, policies, useRawSiteContent, useSiteSettings } from "@/lib/site-settings";
 
 // ---------------------------------------------------------------------------
@@ -26,6 +26,51 @@ export const PAGE_DEFAULTS = {
   about_offer: company.whatWeOffer.join("\n"),
   about_leadership: company.leadership,
 
+  home_welcome_title: "It's Your Journey",
+  home_welcome_text:
+    "From arriving at RGM International Airport to exploring Zimbabwe at your own pace, VenMax makes getting around simple, comfortable and reliable — a local team, a well-maintained fleet, and a journey that starts the moment you land.",
+  home_welcome_places: "Harare · Victoria Falls · Hwange · Great Zimbabwe · and beyond",
+
+  home_price_title: "Lower deposits. Fairer rates. Drive away sooner.",
+  home_price_description:
+    "Pay less upfront. Our small and mid SUVs need just a $100 refundable deposit, lower than most car hire companies in Zimbabwe.",
+  home_price1_heading: "Deposits below market rates",
+  home_price1_value: "From $100",
+  home_price1_label: "Refundable deposit on small and mid SUVs",
+  home_price1_text: "Lower than most in the market, and shown clearly on every vehicle.",
+  home_price2_heading: "Affordable rental rates",
+  home_price2_value: "From $40/day",
+  home_price2_label: "Value-focused options for local and diaspora customers",
+  home_price2_text: "Clear daily rates and deposits, so you know the cost before you book.",
+
+  home_value_cards: valueCards.map((c) => `${c.title}: ${c.description}`).join("\n"),
+  home_trust_points: trustPoints.map((t) => `${t.title}: ${t.description}`).join("\n"),
+
+  home_why_title: "Harare's Most Trusted Car Rental.",
+  home_why_description:
+    "A Zimbabwean-owned company built on straightforward, honest service — real vehicles, real prices, and local knowledge that makes travel here effortless.",
+  home_why_list:
+    "Zimbabwean-owned, local knowledge\nAll vehicles insured and well maintained\nTransparent pricing, no hidden fees\nFree vehicle pickup at the airport for hired vehicles",
+  home_promise_title: "Drive More. Spend Less. Travel Better.",
+
+  how_title: "Four simple steps",
+  how_description: "Everything can be arranged conveniently through WhatsApp.",
+  how_steps: howItWorks.map((h) => `${h.title}: ${h.description}`).join("\n"),
+
+  req_title: "Rental requirements and common questions",
+  req_description:
+    "Simple, straightforward requirements — kept easy to read so you can get on the road quickly.",
+  req_cards: [
+    "Driver Age: Self-drive customers must be {min_age} years or older. No age limit applies when you book a VenMax chauffeur.",
+    "Driver's Licence: The driver's licence must have been held for at least {licence_years} years.",
+    "Identification & Next of Kin: Customers provide both a valid ID and passport, plus next of kin details in case of an emergency.",
+    "Proof of Residence or Employment: Proof of residence or employment is required.",
+    "Insurance & Damage: All VenMax vehicles are insured. Minor damage that insurance doesn't cover, such as scratches, may be deducted from the deposit.",
+    "Fuel: Customers pay for fuel used during their rental and return the vehicle with the same fuel level.",
+    "Cross-Border Travel: {cross_border}",
+    "Vehicle Items: Lost vehicle items may be charged at applicable market rates.",
+  ].join("\n"),
+
   diaspora_hero_title: "Rent Your Car in Zimbabwe Before You Arrive.",
   diaspora_hero_description:
     "Planning a trip to Zimbabwe from abroad? VenMax makes it easy to arrange your vehicle before you land, with everything handled from start to finish on WhatsApp.",
@@ -41,6 +86,15 @@ function lines(value: string): string[] {
     .split(/\r?\n/)
     .map((l) => l.trim())
     .filter(Boolean);
+}
+
+function titled(value: string): { title: string; description: string }[] {
+  return lines(value).map((line) => {
+    const i = line.indexOf(":");
+    return i > 0
+      ? { title: line.slice(0, i).trim(), description: line.slice(i + 1).trim() }
+      : { title: line, description: "" };
+  });
 }
 
 /** The About / Diaspora wording the website should show right now (admin text or default). */
@@ -67,12 +121,54 @@ export function usePageContent() {
       }),
       whatWeOffer: lines(get("about_offer")),
       leadership: get("about_leadership"),
+      welcomeTitle: get("home_welcome_title"),
+      welcomeText: get("home_welcome_text"),
+      welcomePlaces: get("home_welcome_places"),
+      priceTitle: get("home_price_title"),
+      priceDescription: get("home_price_description"),
+      priceCards: [
+        {
+          heading: get("home_price1_heading"),
+          value: get("home_price1_value"),
+          label: get("home_price1_label"),
+          text: get("home_price1_text"),
+        },
+        {
+          heading: get("home_price2_heading"),
+          value: get("home_price2_value"),
+          label: get("home_price2_label"),
+          text: get("home_price2_text"),
+        },
+      ],
+      valueCards: titled(get("home_value_cards")),
+      trustPoints: titled(get("home_trust_points")),
+      whyTitle: get("home_why_title"),
+      whyDescription: get("home_why_description"),
+      whyList: lines(get("home_why_list")),
+      promiseTitle: get("home_promise_title"),
+      howTitle: get("how_title"),
+      howDescription: get("how_description"),
+      howSteps: titled(get("how_steps")),
+      reqTitle: get("req_title"),
+      reqDescription: get("req_description"),
+      reqCards: titled(get("req_cards")),
       diasporaHeroTitle: get("diaspora_hero_title"),
       diasporaHeroDescription: get("diaspora_hero_description"),
       diasporaHeading: get("diaspora_heading"),
       diasporaDescription: get("diaspora_description"),
     };
   }, [raw]);
+}
+
+/** Rental requirement cards (numbered 01, 02 …) with {placeholders} filled from Rates & Policies. */
+export function useRequirements() {
+  const content = usePageContent();
+  const p = policies(useSiteSettings());
+  return content.reqCards.map((c, i) => ({
+    number: String(i + 1).padStart(2, "0"),
+    title: c.title,
+    description: fillTokens(c.description, p),
+  }));
 }
 
 // ---------------------------------------------------------------------------

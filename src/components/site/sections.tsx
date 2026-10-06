@@ -37,22 +37,17 @@ import {
   businessFacts,
   company,
   diasporaMarkets,
-  howItWorks,
-  valueCards,
   fleetCountLabel,
   type Vehicle,
   googleMaps,
-  trustPoints,
   whatsappLink,
   buildDiasporaBenefits,
   buildRentalTerms,
-  buildRequirements,
-  buildWhyVenMax,
 } from "@/data/venmax";
 import { useFleet, useVehicles, useTours, useSiteContent, useServices, useFaqs, useTestimonials } from "@/lib/live-content";
 import { cn } from "@/lib/utils";
 import { fillTokens, phoneHref, policies, useSiteSettings } from "@/lib/site-settings";
-import { usePageContent } from "@/lib/page-content";
+import { usePageContent, useRequirements } from "@/lib/page-content";
 
 const serviceIcons = {
   key: KeyRound,
@@ -62,10 +57,11 @@ const serviceIcons = {
 };
 
 export function TrustStrip() {
+  const content = usePageContent();
   return (
     <section className="border-b border-border bg-background py-12 lg:py-16">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
-        {trustPoints.map((point) => (
+        {content.trustPoints.map((point) => (
           <div key={point.title}>
             <h3 className="text-base">{point.title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -209,19 +205,18 @@ export function AboutSection({ showCta = false }: { showCta?: boolean } = {}) {
 }
 
 export function WelcomeSection() {
+  const content = usePageContent();
   return (
     <Section tone="navy">
       <div className="mx-auto max-w-3xl text-center">
         <p className="eyebrow text-primary">More Than a Car</p>
-        <h2 className="mt-3 text-3xl text-navy-foreground sm:text-4xl">It's Your Journey</h2>
+        <h2 className="mt-3 text-3xl text-navy-foreground sm:text-4xl">{content.welcomeTitle}</h2>
         <p className="mt-5 text-base leading-relaxed text-navy-foreground/80 sm:text-lg">
-          From arriving at RGM International Airport to exploring Zimbabwe at your own pace, VenMax
-          makes getting around simple, comfortable and reliable — a local team, a well-maintained
-          fleet, and a journey that starts the moment you land.
+          {content.welcomeText}
         </p>
         <div className="mt-8 flex items-center justify-center gap-2 text-sm font-semibold uppercase tracking-widest text-navy-foreground/60">
           <Compass className="h-4 w-4 text-primary" />
-          Harare · Victoria Falls · Hwange · Great Zimbabwe · and beyond
+          {content.welcomePlaces}
         </div>
       </div>
     </Section>
@@ -752,30 +747,32 @@ export function AirportSection() {
 }
 
 const valueIcons = { tag: Tag, calendar: CalendarDays, message: MessageCircle, globe: Globe };
+const valueIconOrder = ["tag", "calendar", "message", "globe"] as const;
 
 export function PriceAdvantageSection() {
+  const content = usePageContent();
   return (
     <Section tone="surface">
       <SectionHeading
         eyebrow="Why VenMax"
-        title="Lower deposits. Fairer rates. Drive away sooner."
-        description="Pay less upfront. Our small and mid SUVs need just a $100 refundable deposit, lower than most car hire companies in Zimbabwe."
+        title={content.priceTitle}
+        description={content.priceDescription}
       />
       <div className="mt-10 grid gap-6 md:grid-cols-2">
         <article className="rounded-2xl border border-primary/40 bg-card p-6 sm:p-8">
-          <h3 className="text-base uppercase tracking-wide">Deposits below market rates</h3>
-          <p className="mt-4 text-4xl font-semibold text-primary">From $100</p>
-          <p className="mt-1 text-sm text-muted-foreground">Refundable deposit on small and mid SUVs</p>
+          <h3 className="text-base uppercase tracking-wide">{content.priceCards[0]!.heading}</h3>
+          <p className="mt-4 text-4xl font-semibold text-primary">{content.priceCards[0]!.value}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{content.priceCards[0]!.label}</p>
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-            Lower than most in the market, and shown clearly on every vehicle.
+            {content.priceCards[0]!.text}
           </p>
         </article>
         <article className="rounded-2xl border border-border bg-card p-6 sm:p-8">
-          <h3 className="text-base uppercase tracking-wide">Affordable rental rates</h3>
-          <p className="mt-4 text-4xl font-semibold text-primary">From $40/day</p>
-          <p className="mt-1 text-sm text-muted-foreground">Value-focused options for local and diaspora customers</p>
+          <h3 className="text-base uppercase tracking-wide">{content.priceCards[1]!.heading}</h3>
+          <p className="mt-4 text-4xl font-semibold text-primary">{content.priceCards[1]!.value}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{content.priceCards[1]!.label}</p>
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-            Clear daily rates and deposits, so you know the cost before you book.
+            {content.priceCards[1]!.text}
           </p>
         </article>
       </div>
@@ -784,11 +781,12 @@ export function PriceAdvantageSection() {
 }
 
 export function ValueCardsSection() {
+  const content = usePageContent();
   return (
     <Section>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {valueCards.map((card) => {
-          const Icon = valueIcons[card.icon];
+        {content.valueCards.map((card, i) => {
+          const Icon = valueIcons[valueIconOrder[i % valueIconOrder.length]!];
           return (
             <article key={card.title} className="rounded-2xl border border-border bg-card p-6">
               <span className="flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -807,18 +805,19 @@ export function ValueCardsSection() {
 }
 
 export function HowItWorksSection() {
+  const content = usePageContent();
   return (
     <Section tone="surface" id="how-it-works">
       <SectionHeading
         eyebrow="How It Works"
-        title="Four simple steps"
-        description="Everything can be arranged conveniently through WhatsApp."
+        title={content.howTitle}
+        description={content.howDescription}
       />
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {howItWorks.map((item) => (
-          <article key={item.step} className="rounded-2xl border border-border bg-card p-6">
+        {content.howSteps.map((item, i) => (
+          <article key={`${i}-${item.title}`} className="rounded-2xl border border-border bg-card p-6">
             <span className="text-xs font-semibold uppercase tracking-widest text-primary">
-              Step {item.step}
+              Step {i + 1}
             </span>
             <h3 className="mt-3 text-base uppercase tracking-wide">{item.title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -1252,6 +1251,7 @@ export function ToursSection() {
 // live vehicle list; the other two tiles are real stated facts (not
 // invented customer/rating numbers, which VenMax hasn't supplied yet).
 export function WhySection() {
+  const page = usePageContent();
   const settings = useSiteSettings();
   const p = policies(settings);
   const vehicles = useVehicles();
@@ -1270,14 +1270,14 @@ export function WhySection() {
     { value: content["vehicle_models_display"] || fleetCountLabel(vehicles.length)?.replace(" vehicles", ""), label: "Vehicle Models" },
   ].filter((st): st is { value: string; label: string } => Boolean(st.value));
 
-  const featureRows = buildWhyVenMax(p).slice(0, 4);
+  const featureRows = page.whyList;
 
   return (
     <Section tone="navy" id="why-venmax">
       <SectionHeading
         eyebrow="Trusted in Harare"
-        title="Harare's Most Trusted Car Rental."
-        description="A Zimbabwean-owned company built on straightforward, honest service — real vehicles, real prices, and local knowledge that makes travel here effortless."
+        title={page.whyTitle}
+        description={page.whyDescription}
         invert
       />
       <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -1321,6 +1321,7 @@ export function WhySection() {
 // Photo-beside-text (stacked on phones) because the client photo is too small to
 // stretch full-bleed without going soft.
 export function BrandPromiseSection() {
+  const content = usePageContent();
   return (
     <section className="bg-navy text-navy-foreground">
       <div className="grid lg:min-h-[30rem] lg:grid-cols-2">
@@ -1338,7 +1339,7 @@ export function BrandPromiseSection() {
         <div className="flex flex-col justify-center px-4 py-12 sm:px-6 lg:py-16 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pr-12">
           <p className="eyebrow text-primary">Our Promise</p>
           <h2 className="mt-3 max-w-xl text-3xl leading-tight sm:text-4xl">
-            Drive More. Spend Less. Travel Better.
+            {content.promiseTitle}
           </h2>
           <p className="mt-3 text-sm text-navy-foreground/80">VenMax Car Rental &amp; Tours</p>
         </div>
@@ -1489,17 +1490,19 @@ export function TestimonialsSection() {
 // Rental Requirements + FAQ, condensed into one accordion so the essential
 // information survives without taking up two full homepage sections.
 export function RequirementsFaqSection() {
+  const content = usePageContent();
+  const requirements = useRequirements();
   const p = policies(useSiteSettings());
   const faqs = useFaqs();
   return (
     <Section tone="surface" id="requirements">
       <SectionHeading
         eyebrow="Requirements & FAQ"
-        title="Rental requirements and common questions"
-        description="Simple, straightforward requirements — kept easy to read so you can get on the road quickly."
+        title={content.reqTitle}
+        description={content.reqDescription}
       />
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {buildRequirements(p).map((req) => (
+        {requirements.map((req) => (
           <article key={req.number} className="rounded-2xl border border-border bg-card p-6">
             <span className="text-2xl font-semibold text-primary">{req.number}</span>
             <h3 className="mt-3 text-base">{req.title}</h3>

@@ -28,7 +28,104 @@ import { buildSections as buildPrivacySections } from "@/components/site/legal-s
 import { buildSections as buildCookieSections } from "@/components/site/legal-sections/cookie";
 
 // ---------------- Pages (About, Diaspora, legal pages) ----------------
-type PageId = "about" | "diaspora" | "terms" | "privacy" | "cookie";
+type PageId = "home" | "how" | "requirements" | "about" | "diaspora" | "terms" | "privacy" | "cookie";
+
+const homeGroups: SettingGroup[] = [
+  {
+    title: "Welcome block",
+    description: "The “It's Your Journey” block on the homepage.",
+    fields: [
+      { key: "home_welcome_title", label: "Heading" },
+      { key: "home_welcome_text", label: "Text", kind: "textarea", rows: 5 },
+      { key: "home_welcome_places", label: "Places line" },
+    ],
+  },
+  {
+    title: "Price highlights",
+    description: "The two big cards about deposits and rates. Update these if your prices change.",
+    fields: [
+      { key: "home_price_title", label: "Section heading" },
+      { key: "home_price_description", label: "Section text", kind: "textarea", rows: 3 },
+      { key: "home_price1_heading", label: "Card 1 — title" },
+      { key: "home_price1_value", label: "Card 1 — big text", help: "e.g. From $100" },
+      { key: "home_price1_label", label: "Card 1 — small line" },
+      { key: "home_price1_text", label: "Card 1 — sentence", kind: "textarea", rows: 2 },
+      { key: "home_price2_heading", label: "Card 2 — title" },
+      { key: "home_price2_value", label: "Card 2 — big text", help: "e.g. From $40/day" },
+      { key: "home_price2_label", label: "Card 2 — small line" },
+      { key: "home_price2_text", label: "Card 2 — sentence", kind: "textarea", rows: 2 },
+    ],
+  },
+  {
+    title: "Highlights under the hero",
+    fields: [
+      {
+        key: "home_trust_points",
+        label: "Four highlights",
+        kind: "textarea",
+        rows: 6,
+        help: "One per line, written as Title: description.",
+      },
+      {
+        key: "home_value_cards",
+        label: "Four value cards",
+        kind: "textarea",
+        rows: 6,
+        help: "One per line, written as Title: description.",
+      },
+    ],
+  },
+  {
+    title: "Harare's most trusted car rental",
+    fields: [
+      { key: "home_why_title", label: "Heading" },
+      { key: "home_why_description", label: "Text", kind: "textarea", rows: 4 },
+      {
+        key: "home_why_list",
+        label: "Reasons",
+        kind: "textarea",
+        rows: 6,
+        help: "One per line. The stats above them (rating, price, clients, models) come from the General tab in Site Content.",
+      },
+      { key: "home_promise_title", label: "Promise banner heading" },
+    ],
+  },
+];
+
+const howGroups: SettingGroup[] = [
+  {
+    title: "How It Works",
+    fields: [
+      { key: "how_title", label: "Heading" },
+      { key: "how_description", label: "Text under the heading", kind: "textarea", rows: 3 },
+      {
+        key: "how_steps",
+        label: "Steps",
+        kind: "textarea",
+        rows: 8,
+        help: "One per line, written as Title: description. Steps are numbered automatically.",
+      },
+    ],
+  },
+];
+
+const requirementsGroups: SettingGroup[] = [
+  {
+    title: "Rental Requirements",
+    description: "Shown on the homepage and the self-drive page.",
+    fields: [
+      { key: "req_title", label: "Heading" },
+      { key: "req_description", label: "Text under the heading", kind: "textarea", rows: 3 },
+      {
+        key: "req_cards",
+        label: "Requirement cards",
+        kind: "textarea",
+        rows: 14,
+        help: "One per line, written as Title: description. Cards are numbered automatically. Placeholders like {min_age}, {licence_years} and {cross_border} follow Rates & Policies in Site Content. The FAQ below the cards is edited in Site Content → FAQ.",
+      },
+    ],
+  },
+];
 
 const aboutGroups: SettingGroup[] = [
   {
@@ -106,6 +203,9 @@ const diasporaGroups: SettingGroup[] = [
 ];
 
 const pageOptions: { id: PageId; label: string; description: string; href: string }[] = [
+  { id: "home", label: "Homepage blocks", description: "Welcome, price highlights, value cards, Why VenMax", href: "/" },
+  { id: "how", label: "How It Works", description: "The four booking steps", href: "/#how-it-works" },
+  { id: "requirements", label: "Rental Requirements", description: "Requirement cards and heading", href: "/#requirements" },
   { id: "about", label: "About", description: "Story, mission, vision, values", href: "/about" },
   { id: "diaspora", label: "For Diaspora", description: "Heading and intro for visitors from abroad", href: "/diaspora" },
   { id: "terms", label: "Rental Terms & Conditions", description: "Eligibility, deposits, mileage, payments", href: "/terms-of-service" },
@@ -114,7 +214,7 @@ const pageOptions: { id: PageId; label: string; description: string; href: strin
 ];
 
 export function PagesSection() {
-  const [page, setPage] = useState<PageId>("about");
+  const [page, setPage] = useState<PageId>("home");
   const current = pageOptions.find((p) => p.id === page)!;
 
   return (
@@ -149,6 +249,15 @@ export function PagesSection() {
         </Button>
       </div>
 
+      {page === "home" && (
+        <SettingsForm key="home" groups={homeGroups} defaults={PAGE_DEFAULTS as Record<string, string>} />
+      )}
+      {page === "how" && (
+        <SettingsForm key="how" groups={howGroups} defaults={PAGE_DEFAULTS as Record<string, string>} />
+      )}
+      {page === "requirements" && (
+        <SettingsForm key="requirements" groups={requirementsGroups} defaults={PAGE_DEFAULTS as Record<string, string>} />
+      )}
       {page === "about" && (
         <SettingsForm key="about" groups={aboutGroups} defaults={PAGE_DEFAULTS as Record<string, string>} />
       )}

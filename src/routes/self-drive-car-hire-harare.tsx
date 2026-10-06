@@ -3,7 +3,8 @@ import { Check, MessageCircle } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { Section, SectionHeading } from "@/components/site/Section";
 import { VehicleCard } from "@/components/site/VehicleCard";
-import { buildRentalTerms, buildRequirements, whatsappLink } from "@/data/venmax";
+import { buildRentalTerms, whatsappLink } from "@/data/venmax";
+import { useRequirements } from "@/lib/page-content";
 import { policies, useSiteSettings } from "@/lib/site-settings";
 import { useVehicles } from "@/lib/live-content";
 
@@ -30,6 +31,7 @@ export const Route = createFileRoute("/self-drive-car-hire-harare")({
 function SelfDrivePage() {
   const vehicles = useVehicles();
   const p = policies(useSiteSettings());
+  const requirements = useRequirements();
 
   return (
     <>
@@ -85,7 +87,7 @@ function SelfDrivePage() {
               description="Straightforward requirements — no surprises on pickup day."
             />
             <div className="mt-8 space-y-6">
-              {buildRequirements(p).map((req) => (
+              {requirements.map((req) => (
                 <div key={req.number} className="flex gap-4">
                   <span className="text-lg font-semibold text-primary">{req.number}</span>
                   <div>
