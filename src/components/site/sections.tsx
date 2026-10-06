@@ -52,6 +52,7 @@ import {
 import { useFleet, useVehicles, useTours, useSiteContent, useServices, useFaqs, useTestimonials } from "@/lib/live-content";
 import { cn } from "@/lib/utils";
 import { fillTokens, phoneHref, policies, useSiteSettings } from "@/lib/site-settings";
+import { usePageContent } from "@/lib/page-content";
 
 const serviceIcons = {
   key: KeyRound,
@@ -83,6 +84,7 @@ export function TrustStrip() {
 // on the main page again (not a new claim; pulled from her own marketing).
 // Mission & Vision — verbatim from VenMax's official venmax.co.zw site.
 export function CoreValuesSection() {
+  const content = usePageContent();
   return (
     <Section id="values">
       <SectionHeading
@@ -91,7 +93,7 @@ export function CoreValuesSection() {
         description="The principles that shape every rental, every trip, and every conversation with VenMax."
       />
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {company.coreValues.map((value) => (
+        {content.coreValues.map((value) => (
           <article key={value.title} className="rounded-2xl border border-border bg-card p-6">
             <h3 className="text-base">{value.title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -105,13 +107,14 @@ export function CoreValuesSection() {
 }
 
 export function OfferAndLeadershipSection() {
+  const content = usePageContent();
   return (
     <Section tone="surface">
       <div className="grid gap-12 lg:grid-cols-2">
         <div>
           <SectionHeading eyebrow="What We Offer" title="Built around your convenience" />
           <ul className="mt-6 space-y-4">
-            {company.whatWeOffer.map((item) => (
+            {content.whatWeOffer.map((item) => (
               <li key={item} className="flex items-start gap-3 text-sm">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                 {item}
@@ -122,7 +125,7 @@ export function OfferAndLeadershipSection() {
         <div>
           <SectionHeading eyebrow="Our Leadership" title="A team built for the road" />
           <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-            {company.leadership}
+            {content.leadership}
           </p>
         </div>
       </div>
@@ -131,6 +134,7 @@ export function OfferAndLeadershipSection() {
 }
 
 export function MissionVisionSection() {
+  const content = usePageContent();
   return (
     <Section tone="navy" id="mission-vision">
       <SectionHeading
@@ -142,12 +146,12 @@ export function MissionVisionSection() {
       <div className="mx-auto mt-10 grid max-w-5xl gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border border-navy-foreground/15 bg-navy-foreground/5 p-8">
           <p className="eyebrow text-primary">Our Vision</p>
-          <p className="mt-4 text-lg leading-relaxed text-navy-foreground">{company.vision}</p>
+          <p className="mt-4 text-lg leading-relaxed text-navy-foreground">{content.vision}</p>
         </div>
         <div className="rounded-2xl border border-navy-foreground/15 bg-navy-foreground/5 p-8">
           <p className="eyebrow text-primary">Our Mission</p>
           <p className="mt-4 text-sm leading-relaxed text-navy-foreground/85">
-            {company.mission}
+            {content.mission}
           </p>
         </div>
       </div>
@@ -156,6 +160,7 @@ export function MissionVisionSection() {
 }
 
 export function AboutSection({ showCta = false }: { showCta?: boolean } = {}) {
+  const content = usePageContent();
   return (
     <Section id="about">
       <div className="mx-auto max-w-3xl text-center">
@@ -165,7 +170,7 @@ export function AboutSection({ showCta = false }: { showCta?: boolean } = {}) {
           align="center"
         />
         <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground">
-          {company.aboutParagraphs.map((para) => {
+          {content.aboutParagraphs.map((para) => {
             const parts = para.split(/(1000\+)/);
             return (
               <p key={para}>
@@ -184,10 +189,10 @@ export function AboutSection({ showCta = false }: { showCta?: boolean } = {}) {
         </div>
         <p className="mt-6 text-sm">
           <span className="font-semibold text-foreground">Target Market: </span>
-          <span className="text-muted-foreground">{company.targetMarket}</span>
+          <span className="text-muted-foreground">{content.targetMarket}</span>
         </p>
         <blockquote className="mt-8 rounded-2xl border border-border bg-card px-6 py-5 text-base font-semibold leading-relaxed text-primary">
-          “{company.brandQuote}”
+          “{content.brandQuote}”
         </blockquote>
         {showCta && (
           <Link
@@ -1087,14 +1092,15 @@ function DiasporaVisual() {
 
 // Reused on the homepage teaser and (with `full`) the dedicated /diaspora page.
 export function DiasporaSection({ full = false }: { full?: boolean } = {}) {
+  const content = usePageContent();
   return (
     <Section tone="navy" id="diaspora">
       <div className="grid items-center gap-12 lg:grid-cols-2">
         <div>
           <SectionHeading
             eyebrow="For Diaspora"
-            title="Coming to Zimbabwe? Arrange your rental before you arrive."
-            description="Whether you're visiting family, attending an event, travelling for business or exploring Zimbabwe, you can arrange your rental with VenMax before your trip — from start to finish on WhatsApp."
+            title={content.diasporaHeading}
+            description={content.diasporaDescription}
             invert
           />
           <div className="mt-6 flex flex-wrap gap-2">

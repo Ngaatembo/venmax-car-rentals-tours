@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
+import { usePageContent } from "@/lib/page-content";
 import {
   AboutSection,
   BookingCta,
@@ -23,12 +24,13 @@ export const Route = createFileRoute("/about")({
 });
 
 function AboutPage() {
+  const content = usePageContent();
   return (
     <>
       <PageHero
         eyebrow="About VenMax"
-        title="Driving a brighter future together"
-        description="Who we are, what we stand for, and the team behind every VenMax journey."
+        title={content.aboutHeroTitle}
+        description={content.aboutHeroDescription}
       />
       <AboutSection />
       <MissionVisionSection />
