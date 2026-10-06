@@ -55,6 +55,7 @@ export const ADMIN_SECTION_ACCESS: Record<string, AppRole[]> = {
   "/admin/fleet": [...SITE, "staff"],
   "/admin/tours": [...SITE, "staff"],
   "/admin/content": SITE,
+  "/admin/pages": SITE,
   "/admin/audit-log": OWNER,
   "/admin/staff": OWNER,
 };

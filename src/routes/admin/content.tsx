@@ -42,13 +42,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Pencil, Trash2, Star, ExternalLink } from "lucide-react";
-import { PAGE_DEFAULTS, legalKeys, type LegalSlug } from "@/lib/page-content";
-import { sectionsToText } from "@/lib/legal-text";
-import { useVehicles } from "@/lib/live-content";
-import { buildSections as buildTermsSections } from "@/components/site/legal-sections/terms";
-import { buildSections as buildPrivacySections } from "@/components/site/legal-sections/privacy";
-import { buildSections as buildCookieSections } from "@/components/site/legal-sections/cookie";
+import { Plus, Pencil, Trash2, Star } from "lucide-react";
+import { SettingsForm, type SettingGroup } from "@/components/admin/SettingsForm";
 import { can, useAdminRole } from "@/lib/admin-permissions";
 import {
   listSiteContent,
@@ -74,7 +69,7 @@ export const Route = createFileRoute("/admin/content")({
 });
 
 
-type Tab = "general" | "rates" | "pages" | "services" | "faq" | "testimonials";
+type Tab = "general" | "rates" | "services" | "faq" | "testimonials";
 
 function AdminContent() {
   const [tab, setTab] = useState<Tab>("general");
@@ -83,15 +78,13 @@ function AdminContent() {
     <div>
       <h1 className="text-2xl font-semibold text-foreground">Website Content</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Manage the public site's hero text, contact details, rates and policies, page text (About,
-        Diaspora, Terms, Privacy, Cookies), services, FAQ and testimonials. Changes here update the live website.
+        Manage the public site's hero text, contact details, rates and policies, services, FAQ and testimonials. The About, Diaspora, Terms, Privacy and Cookie pages are under Pages in the menu. Changes here update the live website.
       </p>
 
       <Tabs value={tab} onValueChange={(v) => setTab(v as Tab)} className="mt-6">
-        <TabsList>
+        <TabsList className="h-auto flex-wrap justify-start">
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="rates">Rates &amp; Policies</TabsTrigger>
-          <TabsTrigger value="pages">Pages</TabsTrigger>
           <TabsTrigger value="services">Services</TabsTrigger>
           <TabsTrigger value="faq">FAQ</TabsTrigger>
           <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
@@ -101,188 +94,10 @@ function AdminContent() {
       <div className="mt-6">
         {tab === "general" && <GeneralSection />}
         {tab === "rates" && <RatesSection />}
-        {tab === "pages" && <PagesSection />}
         {tab === "services" && <ServicesSection />}
         {tab === "faq" && <FaqSection />}
         {tab === "testimonials" && <TestimonialsSection />}
       </div>
-    </div>
-  );
-}
-
-// ---------------- Settings forms (General, Rates & Policies) ----------------
-type SettingField = {
-  key: string;
-  label: string;
-  help?: string;
-  kind?: "text" | "textarea" | "number";
-  rows?: number;
-  prefix?: string;
-  suffix?: string;
-};
-type SettingGroup = { title: string; description?: string; fields: SettingField[] };
-
-function defaultFor(key: string, extra?: Record<string, string>): string {
-  return extra?.[key] ?? (SETTING_DEFAULTS as Record<string, string>)[key] ?? "";
-}
-
-function SettingsForm({
-  groups,
-  preview,
-  defaults,
-}: {
-  groups: SettingGroup[];
-  preview?: (values: Record<string, string>) => ReactNode;
-  /** Extra built-in wording for keys that aren't in SETTING_DEFAULTS (page text). */
-  defaults?: Record<string, string>;
-}) {
-  const keys = groups.flatMap((g) => g.fields.map((f) => f.key));
-  const [saved, setSaved] = useState<Record<string, string>>({});
-  const [values, setValues] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-
-  async function refresh() {
-    setLoading(true);
-    try {
-      const rows = await listSiteContent();
-      const map: Record<string, string> = {};
-      for (const k of keys) map[k] = rows.find((r) => r.key === k)?.value ?? "";
-      setSaved(map);
-      setValues(map);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to load settings");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    refresh();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const dirty = keys.filter((k) => (values[k] ?? "") !== (saved[k] ?? ""));
-
-  async function handleSave() {
-    setSaving(true);
-    try {
-      for (const k of dirty) await setSiteContent(k, (values[k] ?? "").trim());
-      setSaved({ ...values });
-      refreshSiteSettings();
-      toast.success(`Saved ${dirty.length} change${dirty.length === 1 ? "" : "s"} — the website now uses them`);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to save");
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  // Blank fields fall back to the built-in default on the website.
-  const effective: Record<string, string> = {};
-  for (const k of keys) effective[k] = (values[k] ?? "").trim() || defaultFor(k, defaults);
-
-  if (loading) return <p className="text-sm text-muted-foreground">Loading…</p>;
-
-  return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
-      <div className="space-y-6">
-        {groups.map((group) => (
-          <section key={group.title} className="rounded-lg border border-border bg-background p-5">
-            <h2 className="text-base font-semibold text-foreground">{group.title}</h2>
-            {group.description && (
-              <p className="mt-1 text-sm text-muted-foreground">{group.description}</p>
-            )}
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              {group.fields.map((field) => {
-                const def = defaultFor(field.key, defaults);
-                const value = values[field.key] ?? "";
-                const wide = field.kind === "textarea" || (!field.prefix && !field.suffix && field.kind !== "number");
-                return (
-                  <div key={field.key} className={wide ? "sm:col-span-2" : undefined}>
-                    <Label htmlFor={`set-${field.key}`}>{field.label}</Label>
-                    <div className="mt-1.5 flex items-center gap-2">
-                      {field.prefix && <span className="text-sm text-muted-foreground">{field.prefix}</span>}
-                      {field.kind === "textarea" ? (
-                        <Textarea
-                          id={`set-${field.key}`}
-                          rows={field.rows ?? 6}
-                          value={value}
-                          placeholder={def}
-                          onChange={(e) => setValues((v) => ({ ...v, [field.key]: e.target.value }))}
-                        />
-                      ) : (
-                        <Input
-                          id={`set-${field.key}`}
-                          inputMode={field.kind === "number" ? "decimal" : undefined}
-                          value={value}
-                          placeholder={def}
-                          onChange={(e) =>
-                            setValues((v) => ({
-                              ...v,
-                              [field.key]:
-                                field.kind === "number" ? e.target.value.replace(/[^0-9.]/g, "") : e.target.value,
-                            }))
-                          }
-                        />
-                      )}
-                      {field.suffix && <span className="shrink-0 text-sm text-muted-foreground">{field.suffix}</span>}
-                    </div>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {field.help ? `${field.help} ` : ""}
-                      {def ? (
-                        value.trim() ? (
-                          value.trim() !== def ? (
-                            <button
-                              type="button"
-                              className="underline underline-offset-2 hover:text-foreground"
-                              onClick={() => setValues((v) => ({ ...v, [field.key]: "" }))}
-                            >
-                              Reset to default
-                            </button>
-                          ) : null
-                        ) : (
-                          <>
-                            Blank — the website uses the text shown.{" "}
-                            <button
-                              type="button"
-                              className="underline underline-offset-2 hover:text-foreground"
-                              onClick={() => setValues((v) => ({ ...v, [field.key]: def }))}
-                            >
-                              Edit this text
-                            </button>
-                          </>
-                        )
-                      ) : null}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        ))}
-        <div className="sticky bottom-0 flex items-center justify-between gap-3 rounded-lg border border-border bg-background/95 p-4 backdrop-blur">
-          <p className="text-sm text-muted-foreground">
-            {dirty.length ? `${dirty.length} unsaved change${dirty.length === 1 ? "" : "s"}` : "All changes saved"}
-          </p>
-          <div className="flex gap-2">
-            <Button variant="ghost" disabled={!dirty.length || saving} onClick={() => setValues({ ...saved })}>
-              Discard
-            </Button>
-            <Button disabled={!dirty.length || saving} onClick={handleSave}>
-              {saving ? "Saving…" : "Save changes"}
-            </Button>
-          </div>
-        </div>
-      </div>
-      {preview && (
-        <aside className="h-fit rounded-lg border border-border bg-muted/40 p-5 lg:sticky lg:top-4">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            How the website will read
-          </p>
-          <div className="mt-3 space-y-3 text-sm text-foreground">{preview(effective)}</div>
-        </aside>
-      )}
     </div>
   );
 }
@@ -330,7 +145,7 @@ const generalGroups: SettingGroup[] = [
   },
   {
     title: "Social posts",
-    description: "Instagram, TikTok or Facebook links shown in “See VenMax in action”.",
+    description: "Instagram, TikTok, Facebook or LinkedIn post links shown in “See VenMax in action”.",
     fields: [
       { key: "social_showcase_1", label: "Featured post #1" },
       { key: "social_showcase_2", label: "Featured post #2" },
@@ -422,325 +237,6 @@ function RatesSection() {
           );
         }}
       />
-    </div>
-  );
-}
-
-// ---------------- Pages (About, Diaspora, legal pages) ----------------
-type PageId = "about" | "diaspora" | "terms" | "privacy" | "cookie";
-
-const pageOptions: { id: PageId; label: string; href: string }[] = [
-  { id: "about", label: "About", href: "/about" },
-  { id: "diaspora", label: "For Diaspora", href: "/diaspora" },
-  { id: "terms", label: "Rental Terms & Conditions", href: "/terms-of-service" },
-  { id: "privacy", label: "Privacy Policy", href: "/privacy-policy" },
-  { id: "cookie", label: "Cookie Policy", href: "/cookie-policy" },
-];
-
-const aboutGroups: SettingGroup[] = [
-  {
-    title: "Page heading",
-    fields: [
-      { key: "about_hero_title", label: "Heading" },
-      { key: "about_hero_description", label: "Text under the heading", kind: "textarea", rows: 3 },
-    ],
-  },
-  {
-    title: "About VenMax",
-    description: "Also shown on the homepage.",
-    fields: [
-      {
-        key: "about_story",
-        label: "Our story",
-        kind: "textarea",
-        rows: 14,
-        help: "Leave a blank line between paragraphs.",
-      },
-      { key: "about_target_market", label: "Target market" },
-      { key: "about_brand_quote", label: "Brand quote", kind: "textarea", rows: 3 },
-    ],
-  },
-  {
-    title: "Mission & vision",
-    fields: [
-      { key: "about_vision", label: "Our vision", kind: "textarea", rows: 3 },
-      { key: "about_mission", label: "Our mission", kind: "textarea", rows: 8 },
-    ],
-  },
-  {
-    title: "Core values",
-    fields: [
-      {
-        key: "about_core_values",
-        label: "Core values",
-        kind: "textarea",
-        rows: 10,
-        help: "One per line, written as Title: description.",
-      },
-    ],
-  },
-  {
-    title: "What we offer & leadership",
-    fields: [
-      {
-        key: "about_offer",
-        label: "What we offer",
-        kind: "textarea",
-        rows: 6,
-        help: "One per line.",
-      },
-      { key: "about_leadership", label: "Our leadership", kind: "textarea", rows: 5 },
-    ],
-  },
-];
-
-const diasporaGroups: SettingGroup[] = [
-  {
-    title: "Page heading",
-    fields: [
-      { key: "diaspora_hero_title", label: "Heading" },
-      { key: "diaspora_hero_description", label: "Text under the heading", kind: "textarea", rows: 4 },
-    ],
-  },
-  {
-    title: "Diaspora section",
-    description: "Also shown on the homepage.",
-    fields: [
-      { key: "diaspora_heading", label: "Section heading" },
-      { key: "diaspora_description", label: "Section text", kind: "textarea", rows: 4 },
-    ],
-  },
-];
-
-function PagesSection() {
-  const [page, setPage] = useState<PageId>("about");
-  const current = pageOptions.find((p) => p.id === page)!;
-
-  return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-end gap-3">
-        <div className="min-w-0 flex-1 sm:max-w-sm">
-          <Label>Page to edit</Label>
-          <Select value={page} onValueChange={(v) => setPage(v as PageId)}>
-            <SelectTrigger className="mt-1.5">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {pageOptions.map((p) => (
-                <SelectItem key={p.id} value={p.id}>
-                  {p.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <Button asChild variant="outline">
-          <a href={current.href} target="_blank" rel="noreferrer">
-            <ExternalLink className="mr-1.5 h-4 w-4" />
-            View page
-          </a>
-        </Button>
-      </div>
-
-      {page === "about" && (
-        <SettingsForm key="about" groups={aboutGroups} defaults={PAGE_DEFAULTS as Record<string, string>} />
-      )}
-      {page === "diaspora" && (
-        <SettingsForm key="diaspora" groups={diasporaGroups} defaults={PAGE_DEFAULTS as Record<string, string>} />
-      )}
-      {page === "terms" && <LegalEditor key="terms" slug="terms" label="Rental Terms & Conditions" />}
-      {page === "privacy" && <LegalEditor key="privacy" slug="privacy" label="Privacy Policy" />}
-      {page === "cookie" && <LegalEditor key="cookie" slug="cookie" label="Cookie Policy" />}
-    </div>
-  );
-}
-
-function LegalEditor({ slug, label }: { slug: LegalSlug; label: string }) {
-  const keys = legalKeys(slug);
-  const settings = useSiteSettings();
-  const vehicles = useVehicles();
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [savedText, setSavedText] = useState("");
-  const [savedUpdated, setSavedUpdated] = useState("");
-  const [text, setText] = useState("");
-  const [updated, setUpdated] = useState("");
-  const [touched, setTouched] = useState(false);
-
-  // The wording the website shows when no custom text has been saved.
-  const builtIn = useMemo(() => {
-    const p = policies(settings);
-    const sections =
-      slug === "terms"
-        ? buildTermsSections(vehicles, p)
-        : slug === "privacy"
-          ? buildPrivacySections(settings)
-          : buildCookieSections(settings);
-    return sectionsToText(sections);
-  }, [slug, settings, vehicles]);
-
-  async function refresh() {
-    setLoading(true);
-    try {
-      const rows = await listSiteContent();
-      const t = rows.find((r) => r.key === keys.text)?.value ?? "";
-      const u = rows.find((r) => r.key === keys.updated)?.value ?? "";
-      setSavedText(t);
-      setSavedUpdated(u);
-      setText(t);
-      setUpdated(u);
-      setTouched(false);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to load page text");
-    } finally {
-      setLoading(false);
-    }
-  }
-  useEffect(() => {
-    refresh();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const usingCustom = savedText.trim().length > 0;
-  const shown = touched || usingCustom ? text : builtIn;
-  const dirty = touched
-    ? text.trim() !== (usingCustom ? savedText.trim() : builtIn.trim()) || updated.trim() !== savedUpdated.trim()
-    : false;
-
-  async function handleSave() {
-    if (!/^##\s+\S/m.test(text)) {
-      toast.error("Start each section with a heading line, like: ## Section title");
-      return;
-    }
-    setSaving(true);
-    try {
-      await setSiteContent(keys.text, text.trim());
-      await setSiteContent(keys.updated, updated.trim());
-      refreshSiteSettings();
-      toast.success(`${label} saved — the website now shows your text`);
-      await refresh();
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to save");
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  async function handleRevert() {
-    setSaving(true);
-    try {
-      await setSiteContent(keys.text, "");
-      await setSiteContent(keys.updated, "");
-      refreshSiteSettings();
-      toast.success(`${label} is back to the original text`);
-      await refresh();
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to reset");
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  if (loading) return <p className="text-sm text-muted-foreground">Loading…</p>;
-
-  return (
-    <div className="space-y-4">
-      <section className="rounded-lg border border-border bg-background p-5">
-        <div className="flex flex-wrap items-center gap-2">
-          <h2 className="text-base font-semibold text-foreground">{label}</h2>
-          <Badge variant={usingCustom ? "default" : "outline"}>
-            {usingCustom ? "Using your text" : "Using the original text"}
-          </Badge>
-        </div>
-        <p className="mt-1 text-sm text-muted-foreground">
-          This is the text on the page. Edit it and save to update the website. The “at a glance”
-          box, the intro and the closing note stay automatic.
-        </p>
-        <details className="mt-3 text-xs text-muted-foreground">
-          <summary className="cursor-pointer">How to format the text</summary>
-          <ul className="mt-2 list-disc space-y-1 pl-5">
-            <li>
-              Start each section with a heading line: <code className="rounded bg-muted px-1">## Section title</code>.
-              Leave the <code className="rounded bg-muted px-1">{"{#…}"}</code> at the end of existing headings as it is — it keeps links to that section working.
-            </li>
-            <li>Leave a blank line between paragraphs.</li>
-            <li>
-              Start a bullet point with <code className="rounded bg-muted px-1">- </code>
-            </li>
-            <li>
-              Links: <code className="rounded bg-muted px-1">[text](https://…)</code> · Bold:{" "}
-              <code className="rounded bg-muted px-1">**text**</code>
-            </li>
-            <li>
-              Placeholders such as <code className="rounded bg-muted px-1">{"{chauffeur_fee}"}</code> follow Rates
-              &amp; Policies (see the FAQ tab for the full list).
-            </li>
-          </ul>
-        </details>
-
-        <div className="mt-4">
-          <Label htmlFor={`legal-${slug}-updated`}>Last updated (shown on the page)</Label>
-          <Input
-            id={`legal-${slug}-updated`}
-            className="mt-1.5 sm:max-w-xs"
-            value={updated}
-            placeholder="September 2026"
-            onChange={(e) => {
-              if (!touched) {
-                setTouched(true);
-                if (!usingCustom) setText(builtIn);
-              }
-              setUpdated(e.target.value);
-            }}
-          />
-        </div>
-
-        <div className="mt-4">
-          <Label htmlFor={`legal-${slug}-text`}>Page text</Label>
-          <Textarea
-            id={`legal-${slug}-text`}
-            className="mt-1.5 min-h-[28rem] font-mono text-xs leading-relaxed"
-            value={shown}
-            onChange={(e) => {
-              setTouched(true);
-              setText(e.target.value);
-            }}
-          />
-        </div>
-      </section>
-
-      <div className="sticky bottom-0 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-background/95 p-4 backdrop-blur">
-        <p className="text-sm text-muted-foreground">{dirty ? "Unsaved changes" : "All changes saved"}</p>
-        <div className="flex flex-wrap gap-2">
-          {usingCustom && (
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="outline" disabled={saving}>
-                  Back to original text
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Go back to the original text?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Your edited version of the {label} is removed and the website shows the original wording again.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleRevert}>Go back</AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          )}
-          <Button variant="ghost" disabled={!dirty || saving} onClick={refresh}>
-            Discard
-          </Button>
-          <Button disabled={!dirty || saving} onClick={handleSave}>
-            {saving ? "Saving…" : "Save changes"}
-          </Button>
-        </div>
-      </div>
     </div>
   );
 }

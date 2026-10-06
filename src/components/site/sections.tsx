@@ -1545,12 +1545,13 @@ export function RequirementsFaqSection() {
   );
 }
 
-type EmbedPlatform = "instagram" | "tiktok" | "facebook" | null;
+type EmbedPlatform = "instagram" | "tiktok" | "facebook" | "linkedin" | null;
 
 function detectSocialPlatform(url: string): EmbedPlatform {
   if (/instagram\.com/.test(url)) return "instagram";
   if (/tiktok\.com/.test(url)) return "tiktok";
   if (/facebook\.com|fb\.watch/.test(url)) return "facebook";
+  if (/linkedin\.com|lnkd\.in/.test(url)) return "linkedin";
   return null;
 }
 
@@ -1558,6 +1559,7 @@ const platformLabel: Record<Exclude<EmbedPlatform, null>, string> = {
   instagram: "Instagram",
   tiktok: "TikTok",
   facebook: "Facebook",
+  linkedin: "LinkedIn",
 };
 
 export function SocialShowcaseSection() {
@@ -1574,7 +1576,7 @@ export function SocialShowcaseSection() {
       <SectionHeading
         eyebrow="Follow The Journey"
         title="See VenMax in action"
-        description="Real posts from our Instagram and TikTok — fleet updates, offers and the road ahead."
+        description="Real posts from our social pages — fleet updates, offers and the road ahead."
         align="center"
       />
       {links.length > 0 ? (
