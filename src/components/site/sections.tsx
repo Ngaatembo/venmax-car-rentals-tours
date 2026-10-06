@@ -865,7 +865,7 @@ export function MileageSection() {
           </span>
           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 via-ink/50 to-transparent px-5 pb-4 pt-12">
             <p className="text-sm font-semibold text-navy-foreground sm:text-base">
-              A VenMax guest on holiday at Chimanimani Hotel
+              Our guest, miles from home and loving it: Chimanimani Hotel
             </p>
           </div>
         </div>
