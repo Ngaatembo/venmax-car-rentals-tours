@@ -29,7 +29,7 @@ import {
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import airportImage from "@/assets/airport-pickup.jpg";
 import chauffeurImage from "@/assets/chauffeur-driver.jpg";
-import roadImage from "@/assets/hero-harare.jpg";
+import roadImage from "@/assets/chimanimani-serena.jpg";
 import brandPromiseImage from "@/assets/venmax-serena-road.jpg";
 import happyClientImage from "@/assets/venmax-happy-client.jpg";
 import logo from "@/assets/logo-header.png";
@@ -854,16 +854,20 @@ export function MileageSection() {
         <div className="relative aspect-[16/11] overflow-hidden rounded-2xl">
           <img
             src={roadImage}
-            alt="A long tree-lined road in Zimbabwe"
+            alt="A VenMax Nissan Serena parked at Chimanimani Hotel in the Eastern Highlands"
             loading="lazy"
-            width={1920}
-            height={1080}
-            // Road vanishes toward the centre-left; keep it and the tree canopy in frame on mobile.
-            className="h-full w-full object-cover object-[42%_50%]"
+            width={1080}
+            height={742}
+            className="h-full w-full object-cover object-[50%_55%]"
           />
           <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground">
             Long-distance
           </span>
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 via-ink/50 to-transparent px-5 pb-4 pt-12">
+            <p className="text-sm font-semibold text-navy-foreground sm:text-base">
+              A VenMax guest on holiday at Chimanimani Hotel
+            </p>
+          </div>
         </div>
         <div>
           <SectionHeading
