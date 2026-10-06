@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/accordion";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import airportImage from "@/assets/airport-pickup.jpg";
-import chauffeurImage from "@/assets/range-rover-sport.jpg";
+import chauffeurImage from "@/assets/chauffeur-driver.jpg";
 import roadImage from "@/assets/hero-harare.jpg";
 import brandPromiseImage from "@/assets/venmax-serena-road.jpg";
 import happyClientImage from "@/assets/venmax-happy-client.jpg";
@@ -567,16 +567,21 @@ export function ChauffeurSection() {
         <div className="relative order-2 aspect-[4/5] overflow-hidden rounded-2xl bg-navy lg:order-none lg:aspect-auto lg:min-h-[30rem]">
           <img
             src={chauffeurImage}
-            alt="A black VenMax executive SUV available with a professional driver"
+            alt="One of the VenMax professional drivers, standing beside a Toyota Hilux"
             loading="lazy"
-            width={678}
+            width={810}
             height={1080}
-            // Tall photo: the vehicle sits in the lower-middle of the frame.
-            className="absolute inset-0 h-full w-full object-cover object-[50%_62%]"
+            // Tall photo: keep the driver's head and shoulders in frame.
+            className="absolute inset-0 h-full w-full object-cover object-[50%_30%]"
           />
           <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground">
             With a Driver
           </span>
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 via-ink/50 to-transparent px-5 pb-5 pt-14">
+            <p className="text-sm font-semibold text-navy-foreground sm:text-base">
+              Meet one of our professional drivers
+            </p>
+          </div>
         </div>
         <div>
           <SectionHeading
