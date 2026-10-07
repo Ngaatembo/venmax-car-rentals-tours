@@ -3,9 +3,8 @@ import { Bullets, LegalLink, type LegalSection } from "@/components/site/LegalPa
 import { company, whatsappLink } from "@/data/venmax";
 import { contactInfo, type SiteSettings } from "@/lib/site-settings";
 
-// Only states what VenMax has confirmed or what this website demonstrably does.
-// No retention periods, security certifications or data-sharing arrangements are
-// claimed — add them here only once VenMax confirms them.
+// Reflects data practices and retention information confirmed by VenMax.
+
 export function buildSections(settings: SiteSettings): LegalSection[] {
   const address = settings.contact_address;
   const contact = contactInfo(settings);
@@ -23,6 +22,10 @@ export function buildSections(settings: SiteSettings): LegalSection[] {
           This policy explains what personal information we collect when you use this website or
           contact us about a rental, chauffeur hire, airport service, shuttle or tour, why we use
           it, and the choices you have.
+        </p>
+        <p>
+          This policy is intended to align with Zimbabwe's Cyber and Data Protection Act
+          [Chapter 12:07] and applicable data protection requirements.
         </p>
       </>
     ),
@@ -54,11 +57,9 @@ export function buildSections(settings: SiteSettings): LegalSection[] {
               website forms do not ask you to upload documents.
             </>,
             <>
-              <strong>Further identity verification, in some instances</strong> — for the safety of
-              our customers and the security of our fleet, we may ask you for your personal social
-              media handles and professional background. We use them only to verify your identity
-              for the rental, and we keep them confidential. If you have concerns, please speak to
-              us before you send your documents.
+              <strong>Rental verification information</strong> — for rental verification, VenMax
+              may collect the information and documents listed above, including your ID or passport,
+              driver's licence, proof of residence or employment, and next-of-kin details.
             </>,
             <>
               <strong>Your location, only if you choose</strong> — if you tap "Use my current
@@ -82,7 +83,7 @@ export function buildSections(settings: SiteSettings): LegalSection[] {
         <Bullets
           items={[
             "To reply to your enquiry and arrange your booking — availability, dates, price, delivery or pick-up.",
-            "To check that you meet the rental requirements for self-drive hire, and to verify your identity, including, in some instances, through the further verification described above.",
+            "To verify your identity and eligibility for self-drive hire, prevent fraud or vehicle theft, and fulfil the rental agreement.",
             "To keep in touch with you about your booking before, during and after the rental.",
             "To contact your next of kin in an emergency.",
             "To handle deposits, cancellations, refunds, excess mileage, traffic fines, tolls or damage connected with a rental.",
@@ -129,9 +130,10 @@ export function buildSections(settings: SiteSettings): LegalSection[] {
               .
             </>,
             <>
-              <strong>Your chosen payment provider</strong> — for example Mukuru, Western Union,
-              WorldRemit, your bank, EcoCash or InnBucks, which process your payment under their
-              own terms.
+              <strong>Payment providers</strong> — where you choose a payment method such as
+              Mukuru, Western Union, WorldRemit, a bank, EcoCash or InnBucks, the relevant provider
+              processes your payment under its own terms. The website itself does not process online
+              payments.
             </>,
             <>
               <strong>Authorities or other parties</strong> — where the law requires it, or where
@@ -194,14 +196,18 @@ export function buildSections(settings: SiteSettings): LegalSection[] {
     content: (
       <>
         <p>
-          We keep your information only for as long as it's needed to handle your enquiry or
-          booking and any follow-up — such as deposit refunds, cancellations, excess mileage,
-          traffic fines or damage — and for VenMax's business records.
+          For an active rental, VenMax may keep relevant information for the duration of the rental
+          and for up to 30 days afterwards for traffic fines, tolls or damage matters.
         </p>
         <p>
-          You can ask us to delete your information at any time (see{" "}
-          <LegalLink href="#your-rights">Customer / Data Subject Rights</LegalLink>). We'll delete
-          what we are not required to keep.
+          After the rental, VenMax intends to securely delete the information within 90 days,
+          unless a longer period is required for an accident, insurance claim, dispute, legal
+          obligation or another applicable requirement.
+        </p>
+        <p>
+          If an application is cancelled or withdrawn, you may request deletion of information
+          that VenMax is not required to retain. Deletion requests are subject to applicable legal,
+          contractual, insurance, dispute or security requirements.
         </p>
       </>
     ),
@@ -226,6 +232,10 @@ export function buildSections(settings: SiteSettings): LegalSection[] {
           Send your request by WhatsApp or email using the details in{" "}
           <LegalLink href="#contact-us">Contact Us</LegalLink>. We may need to confirm who you are
           before acting on it.
+        </p>
+        <p>
+          If you believe your data-protection rights have been violated, you may also lodge a
+          complaint with the Zimbabwe Data Protection Authority (POTRAZ).
         </p>
       </>
     ),
