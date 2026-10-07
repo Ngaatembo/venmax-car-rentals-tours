@@ -283,7 +283,23 @@ export function useLegalOverride(slug: LegalSlug): { sections: LegalSection[] | 
   const raw = useRawSiteContent();
   const settings = useSiteSettings();
   const keys = legalKeys(slug);
-  const text = raw[keys.text]?.trim() ?? "";
+  const rawText = raw[keys.text]?.trim() ?? "";
+  const text = slug === "terms"
+    ? rawText
+        .replace(
+          /VenMax may request the documents and details listed above to verify rental eligibility, prevent fraud or vehicle theft, protect customers and the fleet, and fulfil the rental agreement\.\s*VenMax does not require access to your social media profiles, private photos, social-media logins or full bank transaction history for rental verification\.?/gi,
+          "VenMax may request the documents and details listed above to verify rental eligibility, prevent fraud or vehicle theft, protect customers and the fleet, and fulfil the rental agreement. To provide a safe and secure experience for everyone, we may occasionally ask for additional verification, such as professional background or personal details, before confirming your vehicle. Please rest assured that we value your trust; your information is held in the strictest confidence and is always handled safely in accordance with our Privacy Policy.",
+        )
+        .replace(
+          /Harare airport shuttle\s*[—-]\s*\$30 per trip\.?/gi,
+          "Harare airport shuttle — $30 per trip, inclusive of fuel, for destinations within Harare only.",
+        )
+    : slug === "privacy"
+      ? rawText.replace(
+          /VenMax Car Rental & Tours \("VenMax", "we", "us"\) is/gi,
+          "VenMax Car Rental & Tours is",
+        )
+      : rawText;
   const updated = raw[keys.updated]?.trim() ?? "";
   return useMemo(() => {
     const sections = text ? parseLegalText(fillTokens(text, policies(settings))) : [];
