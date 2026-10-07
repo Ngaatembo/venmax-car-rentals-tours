@@ -125,6 +125,12 @@ export function buildSections(vehicles: Vehicle[], p: Policies): LegalSection[] 
             ]}
           />
           <p>
+            In some instances, we may also ask for personal social media handles and professional
+            background, for further identity verification. This is to protect our customers and the
+            security of our fleet. If you have concerns, please speak to us before you send your
+            documents.
+          </p>
+          <p>
             No age limit applies when you book a VenMax chauffeur, because the vehicle is driven by
             our driver.
           </p>

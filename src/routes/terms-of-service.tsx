@@ -31,7 +31,7 @@ function RentalTermsPage() {
     <LegalPage
       title="Rental Terms & Conditions"
       description="The terms that apply when you rent a vehicle or book a chauffeur, airport service, shuttle or tour with VenMax."
-      updated={override.updated ?? "September 2026"}
+      updated={override.updated ?? "October 2026"}
       currentHref="/terms-of-service"
       intro={
         <p>

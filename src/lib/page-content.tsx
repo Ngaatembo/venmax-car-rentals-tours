@@ -63,7 +63,7 @@ export const PAGE_DEFAULTS = {
   req_cards: [
     "Driver Age: Self-drive customers must be {min_age} years or older. No age limit applies when you book a VenMax chauffeur.",
     "Driver's Licence: The driver's licence must have been held for at least {licence_years} years.",
-    "Identification & Next of Kin: Customers provide both a valid ID and passport, plus next of kin details in case of an emergency.",
+    "Identification & Next of Kin: Customers provide both a valid ID and passport, plus next of kin details in case of an emergency. In some instances, we may also ask for personal social media handles and professional background, for further identity verification.",
     "Proof of Residence or Employment: Proof of residence or employment is required.",
     "Insurance & Damage: All VenMax vehicles are insured. Minor damage that insurance doesn't cover, such as scratches, may be deducted from the deposit.",
     "Fuel: Customers pay for fuel used during their rental and return the vehicle with the same fuel level.",

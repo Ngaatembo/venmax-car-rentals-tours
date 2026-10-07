@@ -54,6 +54,13 @@ export function buildSections(settings: SiteSettings): LegalSection[] {
               website forms do not ask you to upload documents.
             </>,
             <>
+              <strong>Further identity verification, in some instances</strong> — for the safety of
+              our customers and the security of our fleet, we may ask you for your personal social
+              media handles and professional background. We use them only to verify your identity
+              for the rental, and we keep them confidential. If you have concerns, please speak to
+              us before you send your documents.
+            </>,
+            <>
               <strong>Your location, only if you choose</strong> — if you tap "Use my current
               location" on a booking form, your browser asks your permission and then shares your
               position once to fill in the pick-up address.
@@ -75,7 +82,7 @@ export function buildSections(settings: SiteSettings): LegalSection[] {
         <Bullets
           items={[
             "To reply to your enquiry and arrange your booking — availability, dates, price, delivery or pick-up.",
-            "To check that you meet the rental requirements for self-drive hire.",
+            "To check that you meet the rental requirements for self-drive hire, and to verify your identity, including, in some instances, through the further verification described above.",
             "To keep in touch with you about your booking before, during and after the rental.",
             "To contact your next of kin in an emergency.",
             "To handle deposits, cancellations, refunds, excess mileage, traffic fines, tolls or damage connected with a rental.",
