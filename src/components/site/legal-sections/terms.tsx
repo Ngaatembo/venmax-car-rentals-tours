@@ -127,8 +127,11 @@ export function buildSections(vehicles: Vehicle[], p: Policies): LegalSection[] 
           <p>
             VenMax may request the documents and details listed above to verify rental eligibility,
             prevent fraud or vehicle theft, protect customers and the fleet, and fulfil the rental
-            agreement. VenMax does not require access to your social media profiles, private photos,
-            social-media logins or full bank transaction history for rental verification.
+            agreement. To provide a safe and secure experience for everyone, we may occasionally ask
+            for additional verification, such as professional background or personal details, before
+            confirming your vehicle. Please rest assured that we value your trust; your information
+            is held in the strictest confidence and is always handled safely in accordance with our
+            Privacy Policy.
           </p>
           <p>
             No age limit applies when you book a VenMax chauffeur, because the vehicle is driven by
@@ -223,7 +226,7 @@ export function buildSections(vehicles: Vehicle[], p: Policies): LegalSection[] 
                 and need it at the airport.
               </>,
               <>
-                <strong>Harare airport shuttle — {p.shuttlePerTrip}.</strong> Ask about airport drop-off,
+                <strong>Harare airport shuttle — {p.shuttlePerTrip}, inclusive of fuel, for destinations within Harare only.</strong> Ask about airport drop-off,
                 or a pickup-and-drop-off service, when you message us.
               </>,
             ]}
