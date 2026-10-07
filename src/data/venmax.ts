@@ -381,7 +381,7 @@ export const services: Service[] = [
     slug: "airport-transfer",
     name: "Airport Transfers",
     description:
-      "Harare airport shuttle services are available at $30 per trip. Airport vehicle pickup is free when you have hired a VenMax vehicle.",
+      "Harare airport shuttle — $30 per trip, inclusive of fuel, for destinations within Harare only. Airport vehicle pickup is free when you have hired a VenMax vehicle.",
     icon: "plane",
     whatsapp: "Hello VenMax, I'd like to arrange an airport transfer.",
   },
@@ -561,12 +561,12 @@ export const faqs = [
   {
     question: "Do you offer airport pickup?",
     answer:
-      "Vehicle pickup at the airport is free when you have hired a VenMax vehicle and require it at the airport. Separately, Harare airport shuttle services are available at {shuttle_fee} per trip.",
+      "Vehicle pickup at the airport is free when you have hired a VenMax vehicle and require it at the airport. Separately, Harare airport shuttle — {shuttle_fee} per trip, inclusive of fuel, for destinations within Harare only.",
   },
   {
     question: "Do you deliver vehicles?",
     answer:
-      "Yes — free vehicle delivery within all Harare areas for rental customers. This is separate from the airport shuttle ({shuttle_fee} per trip).",
+      "Yes — free vehicle delivery within all Harare areas for rental customers. This is separate from the Harare airport shuttle — {shuttle_fee} per trip, inclusive of fuel, for destinations within Harare only.",
   },
   {
     question: "Can I hire a car with a driver?",

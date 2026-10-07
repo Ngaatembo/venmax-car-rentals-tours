@@ -19,9 +19,9 @@ export function buildSections(settings: SiteSettings): LegalSection[] {
           {address}.
         </p>
         <p>
-          This policy explains what personal information we collect when you use this website or
-          contact us about a rental, chauffeur hire, airport service, shuttle or tour, why we use
-          it, and the choices you have.
+          This policy explains what personal information VenMax collects when you use this website
+          or contact VenMax about a rental, chauffeur hire, airport service, shuttle or tour, why
+          VenMax uses it, and the choices you have.
         </p>
         <p>
           This policy is intended to align with Zimbabwe's Cyber and Data Protection Act

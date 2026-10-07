@@ -717,8 +717,9 @@ export function AirportSection() {
                 Airport shuttle · {p.shuttlePerTrip}
               </p>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Harare airport shuttle services are available at {p.shuttlePerTrip}. Ask about airport
-                drop-off, or a pickup-and-drop-off service, when you message us.
+                Harare airport shuttle — {p.shuttlePerTrip}, inclusive of fuel, for destinations within
+                Harare only. Ask about airport drop-off, or a pickup-and-drop-off service, when you
+                message us.
               </p>
             </div>
           </div>
@@ -933,8 +934,8 @@ export function BookingPaymentSection() {
         <div className="mt-6 rounded-2xl border border-border bg-card p-5 text-sm">
           <p className="font-semibold">{p.deliveryNote}</p>
           <p className="mt-1 text-muted-foreground">
-            This is vehicle delivery for rental customers — separate from the airport shuttle
-            ({p.shuttlePerTrip}).
+            This is vehicle delivery for rental customers — separate from the Harare airport shuttle
+            ({p.shuttlePerTrip}, inclusive of fuel, for destinations within Harare only).
           </p>
         </div>
       </div>
