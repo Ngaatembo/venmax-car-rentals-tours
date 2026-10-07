@@ -577,11 +577,9 @@ export function ChauffeurSection() {
           <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground">
             With a Driver
           </span>
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 via-ink/50 to-transparent px-5 pb-5 pt-14">
-            <p className="text-sm font-semibold text-navy-foreground sm:text-base">
-              Meet one of our professional drivers
-            </p>
-          </div>
+          <span className="absolute bottom-4 left-4 max-w-[calc(100%-2rem)] rounded-xl bg-primary px-3 py-1.5 text-[11px] font-semibold uppercase leading-snug tracking-wider text-primary-foreground">
+            Meet one of our professional drivers
+          </span>
         </div>
         <div>
           <SectionHeading
@@ -863,11 +861,9 @@ export function MileageSection() {
           <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground">
             Long-distance
           </span>
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 via-ink/50 to-transparent px-5 pb-4 pt-12">
-            <p className="text-sm font-semibold text-navy-foreground sm:text-base">
-              Holiday mode in Chimanimani, with VenMax
-            </p>
-          </div>
+          <span className="absolute bottom-4 left-4 max-w-[calc(100%-2rem)] rounded-xl bg-primary px-3 py-1.5 text-[11px] font-semibold uppercase leading-snug tracking-wider text-primary-foreground">
+            Holiday mode in Chimanimani, with VenMax
+          </span>
         </div>
         <div>
           <SectionHeading
