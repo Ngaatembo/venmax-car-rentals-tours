@@ -490,7 +490,7 @@ export function buildRequirements(p: Policies) {
       number: "03",
       title: "Identification & Next of Kin",
       description:
-        "Customers provide both a valid ID and passport, plus next of kin details in case of an emergency. In some instances, we may also ask for personal social media handles and professional background, for further identity verification.",
+        "Customers provide both a valid ID and passport, plus next of kin details in case of an emergency. To provide a safe and secure experience for everyone, we may occasionally ask for additional verification, such as professional background or personal details, before confirming your vehicle.",
     },
     {
       number: "04",
@@ -526,7 +526,7 @@ export const faqs = [
   {
     question: "What do I need to rent a car?",
     answer:
-      "Self-drive drivers must be {min_age} or older and have held a driver's licence for at least {licence_years} years. You'll need a valid ID and passport, proof of residence or employment, and next of kin details for emergencies. In some instances we may also ask for personal social media handles and professional background, for further identity verification. There is no age limit when you book a VenMax chauffeur.",
+      "Self-drive drivers must be {min_age} or older and have held a driver's licence for at least {licence_years} years. You'll need a valid ID and passport, proof of residence or employment, and next of kin details for emergencies. To provide a safe and secure experience for everyone, we may occasionally ask for additional verification, such as professional background or personal details, before confirming your vehicle. There is no age limit when you book a VenMax chauffeur.",
   },
   {
     question: "How does booking work?",

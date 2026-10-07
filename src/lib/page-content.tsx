@@ -10,6 +10,25 @@ import { Bullets, LegalLink, type LegalSection } from "@/components/site/LegalPa
 import { company, howItWorks, trustPoints, valueCards } from "@/data/venmax";
 import { fillTokens, policies, useRawSiteContent, useSiteSettings } from "@/lib/site-settings";
 
+const VERIFICATION_SENTENCE =
+  "To provide a safe and secure experience for everyone, we may occasionally ask for additional verification, such as professional background or personal details, before confirming your vehicle.";
+
+/**
+ * Admin-saved text can contain older verification wording. Swap it for the approved wording so
+ * the site never shows the superseded statements.
+ */
+export function stripOldVerificationWording(text: string): string {
+  return text
+    .replace(
+      /In some instances,? we may (?:also )?ask for (?:your )?personal social[- ]media handles and professional background,? for further identity verification\.?/gi,
+      VERIFICATION_SENTENCE,
+    )
+    .replace(
+      /\s*VenMax does not require access to your social[- ]media profiles, private photos, social-media logins or full bank transaction history for rental verification\.?/gi,
+      "",
+    );
+}
+
 // ---------------------------------------------------------------------------
 // About + For Diaspora page text
 // ---------------------------------------------------------------------------
@@ -151,7 +170,7 @@ export function usePageContent() {
       howSteps: titled(get("how_steps")),
       reqTitle: get("req_title"),
       reqDescription: get("req_description"),
-      reqCards: titled(get("req_cards")),
+      reqCards: titled(stripOldVerificationWording(get("req_cards"))),
       diasporaHeroTitle: get("diaspora_hero_title"),
       diasporaHeroDescription: get("diaspora_hero_description"),
       diasporaHeading: get("diaspora_heading"),
@@ -284,7 +303,7 @@ export function useLegalOverride(slug: LegalSlug): { sections: LegalSection[] | 
   const settings = useSiteSettings();
   const keys = legalKeys(slug);
   const rawText = raw[keys.text]?.trim() ?? "";
-  const text = slug === "terms"
+  const normalized = slug === "terms"
     ? rawText
         .replace(
           /VenMax may request the documents and details listed above to verify rental eligibility, prevent fraud or vehicle theft, protect customers and the fleet, and fulfil the rental agreement\.\s*VenMax does not require access to your social media profiles, private photos, social-media logins or full bank transaction history for rental verification\.?/gi,
@@ -300,6 +319,7 @@ export function useLegalOverride(slug: LegalSlug): { sections: LegalSection[] | 
           "VenMax Car Rental & Tours is",
         )
       : rawText;
+  const text = stripOldVerificationWording(normalized);
   const updated = raw[keys.updated]?.trim() ?? "";
   return useMemo(() => {
     const sections = text ? parseLegalText(fillTokens(text, policies(settings))) : [];
