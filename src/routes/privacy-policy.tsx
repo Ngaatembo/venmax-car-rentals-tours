@@ -25,7 +25,7 @@ function PrivacyPolicyPage() {
     <LegalPage
       title="Privacy Policy"
       description="What personal information VenMax collects, why, and the choices you have — in plain language."
-      updated="7 October 2026"
+      updated="October 2026"
       currentHref="/privacy-policy"
       sections={override.sections ?? buildSections(settings)}
       whatsappMessage="Hello VenMax, I have a question about your Privacy Policy."
