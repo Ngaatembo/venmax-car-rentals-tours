@@ -15,7 +15,7 @@ export function buildSections(settings: SiteSettings): LegalSection[] {
     content: (
       <>
         <p>
-          {company.name} ("VenMax", "we", "us") is a car rental and tours company based at{" "}
+          {company.name} is a car rental and tours company based at{" "}
           {address}.
         </p>
         <p>
@@ -59,7 +59,8 @@ export function buildSections(settings: SiteSettings): LegalSection[] {
             <>
               <strong>Rental verification information</strong> — for rental verification, VenMax
               may collect the information and documents listed above, including your ID or passport,
-              driver's licence, proof of residence or employment, and next-of-kin details.
+              driver's licence, proof of residence or employment, next-of-kin details, and, where reasonably
+              necessary for verification, additional professional background or personal details.
             </>,
             <>
               <strong>Your location, only if you choose</strong> — if you tap "Use my current
@@ -83,7 +84,7 @@ export function buildSections(settings: SiteSettings): LegalSection[] {
         <Bullets
           items={[
             "To reply to your enquiry and arrange your booking — availability, dates, price, delivery or pick-up.",
-            "To verify your identity and eligibility for self-drive hire, prevent fraud or vehicle theft, and fulfil the rental agreement.",
+            "To verify your identity and eligibility for self-drive hire, prevent fraud or vehicle theft, and fulfil the rental agreement, including occasional additional verification where reasonably necessary.",
             "To keep in touch with you about your booking before, during and after the rental.",
             "To contact your next of kin in an emergency.",
             "To handle deposits, cancellations, refunds, excess mileage, traffic fines, tolls or damage connected with a rental.",
