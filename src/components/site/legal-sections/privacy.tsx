@@ -234,8 +234,8 @@ export function buildSections(settings: SiteSettings): LegalSection[] {
           before acting on it.
         </p>
         <p>
-          If you believe your data-protection rights have been violated, you may also lodge a
-          complaint with the Zimbabwe Data Protection Authority (POTRAZ).
+          If you have a question, concern or request regarding your personal information, please
+          contact VenMax using the details provided below.
         </p>
       </>
     ),
