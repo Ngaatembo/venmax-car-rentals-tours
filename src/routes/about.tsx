@@ -19,7 +19,8 @@ export const Route = createFileRoute("/about")({
       },
       {
         property: "og:description",
-        content: "VenMax's story, mission, vision and the values behind our car rental, self-drive, chauffeur and tour services in Harare, Zimbabwe.",
+        content:
+          "VenMax's story, mission, vision and the values behind our car rental, self-drive, chauffeur and tour services in Harare, Zimbabwe.",
       },
       {
         property: "og:url",
