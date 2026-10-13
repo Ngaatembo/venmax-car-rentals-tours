@@ -22,6 +22,7 @@ const searchSchema = z.object({
 export const Route = createFileRoute("/book")({
   validateSearch: (search) => searchSchema.parse(search),
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/book" }],
     meta: [
       { title: "Request a Quote | VenMax Car Rental & Tours" },
       {
