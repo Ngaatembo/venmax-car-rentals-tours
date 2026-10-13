@@ -13,17 +13,26 @@ import { contactInfo, useSiteSettings } from "@/lib/site-settings";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/contact" }],
     meta: [
+      {
+        property: "og:url",
+        content: "https://venmax.co.zw/contact",
+      },
       { title: "Contact VenMax | Car Rental Harare Airport & City" },
       {
         name: "description",
         content:
           "Message VenMax on WhatsApp, call or email us. 27 Lawson Avenue, Milton Park, Harare — free airport vehicle pickup with a hired vehicle.",
       },
-      { property: "og:title", content: "Contact VenMax | Car Rental Harare Airport & City" },
+      {
+        property: "og:title",
+        content: "Contact VenMax | Car Rental Harare Airport & City",
+      },
       {
         property: "og:description",
-        content: "Message VenMax on WhatsApp, call or email us in Harare.",
+        content:
+          "Message VenMax on WhatsApp, call or email us in Harare.",
       },
     ],
   }),

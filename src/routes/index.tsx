@@ -29,7 +29,21 @@ import { useSiteSettings } from "@/lib/site-settings";
 
 export const Route = createFileRoute("/")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/" }],
     meta: [
+      {
+        property: "og:title",
+        content: "Car Rental Zimbabwe | Affordable Car Hire in Harare | VenMax",
+      },
+      {
+        property: "og:description",
+        content:
+          "Affordable car rental in Zimbabwe with easy WhatsApp booking. Vehicles from $40/day for local and diaspora customers. Arrange your Harare car hire before you arrive.",
+      },
+      {
+        property: "og:url",
+        content: "https://venmax.co.zw/",
+      },
       { title: "Car Rental Zimbabwe | Affordable Car Hire in Harare | VenMax" },
       {
         name: "description",
@@ -45,6 +59,18 @@ function Index() {
   const hero = useSiteSettings();
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "VenMax Car Rental & Tours",
+            alternateName: "VenMax",
+            url: "https://venmax.co.zw/",
+          }),
+        }}
+      />
       <section className="relative overflow-hidden bg-navy text-navy-foreground">
         <img
           src={heroImage}

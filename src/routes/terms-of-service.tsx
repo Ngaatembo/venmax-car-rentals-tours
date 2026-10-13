@@ -10,7 +10,21 @@ import { useVehicles } from "@/lib/live-content";
 
 export const Route = createFileRoute("/terms-of-service")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/terms-of-service" }],
     meta: [
+      {
+        property: "og:title",
+        content: "Rental Terms & Conditions | VenMax Car Rental & Tours",
+      },
+      {
+        property: "og:description",
+        content:
+          "VenMax rental terms: eligibility, rates and refundable deposits, 200 km/day mileage, fuel, insurance, airport services, chauffeur hire, payments, cancellations and booking on WhatsApp.",
+      },
+      {
+        property: "og:url",
+        content: "https://venmax.co.zw/terms-of-service",
+      },
       { title: "Rental Terms & Conditions | VenMax Car Rental & Tours" },
       {
         name: "description",

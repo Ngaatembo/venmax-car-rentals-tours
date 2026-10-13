@@ -9,14 +9,22 @@ import { useVehicles } from "@/lib/live-content";
 
 export const Route = createFileRoute("/chauffeur-service-harare")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/chauffeur-service-harare" }],
     meta: [
+      {
+        property: "og:url",
+        content: "https://venmax.co.zw/chauffeur-service-harare",
+      },
       { title: "Chauffeur Service in Harare | VenMax Car Rental & Tours" },
       {
         name: "description",
         content:
           "Professional chauffeur service in Harare, Zimbabwe for business meetings, events and long-distance travel. Available on any vehicle in the VenMax fleet — book on WhatsApp.",
       },
-      { property: "og:title", content: "Chauffeur Service in Harare | VenMax" },
+      {
+        property: "og:title",
+        content: "Chauffeur Service in Harare | VenMax",
+      },
       {
         property: "og:description",
         content:

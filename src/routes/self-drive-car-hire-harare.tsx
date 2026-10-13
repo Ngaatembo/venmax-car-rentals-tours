@@ -10,14 +10,22 @@ import { useVehicles } from "@/lib/live-content";
 
 export const Route = createFileRoute("/self-drive-car-hire-harare")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/self-drive-car-hire-harare" }],
     meta: [
+      {
+        property: "og:url",
+        content: "https://venmax.co.zw/self-drive-car-hire-harare",
+      },
       { title: "Self-Drive Car Hire in Harare | VenMax Car Rental & Tours" },
       {
         name: "description",
         content:
           "Self-drive car hire in Harare, Zimbabwe with transparent pricing, free airport vehicle pickup with a hired vehicle and free vehicle delivery. Book any vehicle in the VenMax fleet on WhatsApp.",
       },
-      { property: "og:title", content: "Self-Drive Car Hire in Harare | VenMax" },
+      {
+        property: "og:title",
+        content: "Self-Drive Car Hire in Harare | VenMax",
+      },
       {
         property: "og:description",
         content:

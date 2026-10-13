@@ -11,7 +11,21 @@ import {
 
 export const Route = createFileRoute("/about")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/about" }],
     meta: [
+      {
+        property: "og:title",
+        content: "About Us | VenMax Car Rental & Tours",
+      },
+      {
+        property: "og:description",
+        content:
+          "VenMax's story, mission, vision and the values behind our car rental, self-drive, chauffeur and tour services in Harare, Zimbabwe.",
+      },
+      {
+        property: "og:url",
+        content: "https://venmax.co.zw/about",
+      },
       { title: "About Us | VenMax Car Rental & Tours" },
       {
         name: "description",
