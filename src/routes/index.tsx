@@ -37,7 +37,8 @@ export const Route = createFileRoute("/")({
       },
       {
         property: "og:description",
-        content: "Affordable car rental in Zimbabwe with easy WhatsApp booking. Vehicles from $40/day for local and diaspora customers. Arrange your Harare car hire before you arrive.",
+        content:
+          "Affordable car rental in Zimbabwe with easy WhatsApp booking. Vehicles from $40/day for local and diaspora customers. Arrange your Harare car hire before you arrive.",
       },
       {
         property: "og:url",
