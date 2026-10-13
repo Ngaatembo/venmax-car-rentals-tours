@@ -29,6 +29,7 @@ import { useSiteSettings } from "@/lib/site-settings";
 
 export const Route = createFileRoute("/")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/" }],
     meta: [
       { title: "Car Rental Zimbabwe | Affordable Car Hire in Harare | VenMax" },
       {
