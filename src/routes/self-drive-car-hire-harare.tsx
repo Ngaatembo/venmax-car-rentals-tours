@@ -12,6 +12,7 @@ export const Route = createFileRoute("/self-drive-car-hire-harare")({
   head: () => ({
     links: [{ rel: "canonical", href: "https://venmax.co.zw/self-drive-car-hire-harare" }],
     meta: [
+      { property: "og:url", content: "https://venmax.co.zw/self-drive-car-hire-harare" },
       { title: "Self-Drive Car Hire in Harare | VenMax Car Rental & Tours" },
       {
         name: "description",
