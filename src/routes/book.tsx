@@ -40,7 +40,8 @@ export const Route = createFileRoute("/book")({
       },
       {
         property: "og:description",
-        content: "Request a vehicle, chauffeur, airport transfer or tour booking with VenMax.",
+        content:
+          "Request a vehicle, chauffeur, airport transfer or tour booking with VenMax.",
       },
     ],
   }),
