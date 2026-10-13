@@ -24,14 +24,20 @@ export const Route = createFileRoute("/book")({
   head: () => ({
     links: [{ rel: "canonical", href: "https://venmax.co.zw/book" }],
     meta: [
-      { property: "og:url", content: "https://venmax.co.zw/book" },
+      {
+        property: "og:url",
+        content: "https://venmax.co.zw/book",
+      },
       { title: "Request a Quote | VenMax Car Rental & Tours" },
       {
         name: "description",
         content:
           "Request a vehicle, chauffeur, airport transfer or tour booking with VenMax in Harare, Zimbabwe.",
       },
-      { property: "og:title", content: "Request a Quote | VenMax" },
+      {
+        property: "og:title",
+        content: "Request a Quote | VenMax",
+      },
       {
         property: "og:description",
         content: "Request a vehicle, chauffeur, airport transfer or tour booking with VenMax.",
