@@ -14,7 +14,8 @@ export const Route = createFileRoute("/cookie-policy")({
       },
       {
         property: "og:description",
-        content: "VenMax's website uses only essential browser storage — no advertising or tracking cookies.",
+        content:
+          "VenMax's website uses only essential browser storage — no advertising or tracking cookies.",
       },
       {
         property: "og:url",
