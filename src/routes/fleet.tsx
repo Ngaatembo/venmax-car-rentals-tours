@@ -6,6 +6,9 @@ export const Route = createFileRoute("/fleet")({
   head: () => ({
     links: [{ rel: "canonical", href: "https://venmax.co.zw/fleet" }],
     meta: [
+      { property: "og:title", content: "Car Rental Fleet Harare | Daily Rates from $40 | VenMax" },
+      { property: "og:description", content: "Browse the VenMax fleet — hybrids, SUVs, a Hilux D4D truck and premium 4x4s with clear daily rates and deposits. Book on WhatsApp." },
+      { property: "og:url", content: "https://venmax.co.zw/fleet" },
       { title: "Car Rental Fleet Harare | Daily Rates from $40 | VenMax" },
       {
         name: "description",
