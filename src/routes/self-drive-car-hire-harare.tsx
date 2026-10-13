@@ -10,6 +10,7 @@ import { useVehicles } from "@/lib/live-content";
 
 export const Route = createFileRoute("/self-drive-car-hire-harare")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/self-drive-car-hire-harare" }],
     meta: [
       { title: "Self-Drive Car Hire in Harare | VenMax Car Rental & Tours" },
       {
