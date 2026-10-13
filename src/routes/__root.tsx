@@ -37,8 +37,8 @@ const venmaxBusinessStructuredData = {
   email: "sales@venmax.co.zw",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "27 Lawson Avenue",
-    addressLocality: "Milton Park, Harare",
+    streetAddress: "27 Lawson Avenue, Milton Park",
+    addressLocality: "Harare",
     addressCountry: "ZW",
   },
   sameAs: [
@@ -129,7 +129,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { property: "og:image", content: socialImageUrl },
-      { property: "twitter:image", content: socialImageUrl },
+      { name: "twitter:image", content: socialImageUrl },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
