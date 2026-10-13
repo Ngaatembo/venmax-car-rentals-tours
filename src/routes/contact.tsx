@@ -15,6 +15,7 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     links: [{ rel: "canonical", href: "https://venmax.co.zw/contact" }],
     meta: [
+      { property: "og:url", content: "https://venmax.co.zw/contact" },
       { title: "Contact VenMax | Car Rental Harare Airport & City" },
       {
         name: "description",
