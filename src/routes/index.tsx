@@ -49,6 +49,18 @@ function Index() {
   const hero = useSiteSettings();
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "VenMax Car Rental & Tours",
+            alternateName: "VenMax",
+            url: "https://venmax.co.zw/",
+          }),
+        }}
+      />
       <section className="relative overflow-hidden bg-navy text-navy-foreground">
         <img
           src={heroImage}
