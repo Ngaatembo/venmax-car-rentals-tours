@@ -14,7 +14,8 @@ export const Route = createFileRoute("/privacy-policy")({
       },
       {
         property: "og:description",
-        content: "How VenMax Car Rental & Tours collects, uses and looks after the personal information you share through this website, WhatsApp, email or phone.",
+        content:
+          "How VenMax Car Rental & Tours collects, uses and looks after the personal information you share through this website, WhatsApp, email or phone.",
       },
       {
         property: "og:url",
