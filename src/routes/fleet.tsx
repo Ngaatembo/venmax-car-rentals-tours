@@ -4,6 +4,7 @@ import { FleetCatalogue, BookingCta } from "@/components/site/sections";
 
 export const Route = createFileRoute("/fleet")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/fleet" }],
     meta: [
       { title: "Car Rental Fleet Harare | Daily Rates from $40 | VenMax" },
       {
