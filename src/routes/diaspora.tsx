@@ -17,6 +17,7 @@ import { usePageContent } from "@/lib/page-content";
 
 export const Route = createFileRoute("/diaspora")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/diaspora" }],
     meta: [
       { title: "Car Hire Zimbabwe for the Diaspora | Rent Before You Arrive | VenMax" },
       {
