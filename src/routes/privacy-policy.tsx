@@ -8,9 +8,18 @@ export const Route = createFileRoute("/privacy-policy")({
   head: () => ({
     links: [{ rel: "canonical", href: "https://venmax.co.zw/privacy-policy" }],
     meta: [
-      { property: "og:title", content: "Privacy Policy | VenMax Car Rental & Tours" },
-      { property: "og:description", content: "How VenMax Car Rental & Tours collects, uses and looks after the personal information you share through this website, WhatsApp, email or phone." },
-      { property: "og:url", content: "https://venmax.co.zw/privacy-policy" },
+      {
+        property: "og:title",
+        content: "Privacy Policy | VenMax Car Rental & Tours",
+      },
+      {
+        property: "og:description",
+        content: "How VenMax Car Rental & Tours collects, uses and looks after the personal information you share through this website, WhatsApp, email or phone.",
+      },
+      {
+        property: "og:url",
+        content: "https://venmax.co.zw/privacy-policy",
+      },
       { title: "Privacy Policy | VenMax Car Rental & Tours" },
       {
         name: "description",
