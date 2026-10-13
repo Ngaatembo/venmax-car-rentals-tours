@@ -12,7 +12,8 @@ export const Route = createFileRoute("/fleet")({
       },
       {
         property: "og:description",
-        content: "Browse the VenMax fleet — hybrids, SUVs, a Hilux D4D truck and premium 4x4s with clear daily rates and deposits. Book on WhatsApp.",
+        content:
+          "Browse the VenMax fleet — hybrids, SUVs, a Hilux D4D truck and premium 4x4s with clear daily rates and deposits. Book on WhatsApp.",
       },
       {
         property: "og:url",
