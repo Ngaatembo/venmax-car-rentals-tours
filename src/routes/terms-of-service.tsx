@@ -18,7 +18,8 @@ export const Route = createFileRoute("/terms-of-service")({
       },
       {
         property: "og:description",
-        content: "VenMax rental terms: eligibility, rates and refundable deposits, 200 km/day mileage, fuel, insurance, airport services, chauffeur hire, payments, cancellations and booking on WhatsApp.",
+        content:
+          "VenMax rental terms: eligibility, rates and refundable deposits, 200 km/day mileage, fuel, insurance, airport services, chauffeur hire, payments, cancellations and booking on WhatsApp.",
       },
       {
         property: "og:url",
