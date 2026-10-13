@@ -13,6 +13,7 @@ import { contactInfo, useSiteSettings } from "@/lib/site-settings";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/contact" }],
     meta: [
       { title: "Contact VenMax | Car Rental Harare Airport & City" },
       {
