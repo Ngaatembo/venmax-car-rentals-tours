@@ -6,6 +6,7 @@ import { useSiteSettings } from "@/lib/site-settings";
 
 export const Route = createFileRoute("/privacy-policy")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/privacy-policy" }],
     meta: [
       { title: "Privacy Policy | VenMax Car Rental & Tours" },
       {
