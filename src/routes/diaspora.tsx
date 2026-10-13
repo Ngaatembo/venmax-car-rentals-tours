@@ -25,7 +25,8 @@ export const Route = createFileRoute("/diaspora")({
       },
       {
         property: "og:description",
-        content: "Car rental for Zimbabweans abroad and visitors: arrange your Harare car hire, including airport vehicle pickup, before you land — booked through WhatsApp.",
+        content:
+          "Car rental for Zimbabweans abroad and visitors: arrange your Harare car hire, including airport vehicle pickup, before you land — booked through WhatsApp.",
       },
       {
         property: "og:url",
