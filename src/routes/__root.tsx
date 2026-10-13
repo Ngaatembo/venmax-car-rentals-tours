@@ -157,10 +157,10 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(venmaxBusinessStructuredData) }}
-          />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(venmaxBusinessStructuredData) }}
+        />
       </head>
       <body>
         {children}
