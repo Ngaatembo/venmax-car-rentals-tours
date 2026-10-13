@@ -11,6 +11,7 @@ export const Route = createFileRoute("/chauffeur-service-harare")({
   head: () => ({
     links: [{ rel: "canonical", href: "https://venmax.co.zw/chauffeur-service-harare" }],
     meta: [
+      { property: "og:url", content: "https://venmax.co.zw/chauffeur-service-harare" },
       { title: "Chauffeur Service in Harare | VenMax Car Rental & Tours" },
       {
         name: "description",
