@@ -6,6 +6,7 @@ import { useSiteSettings } from "@/lib/site-settings";
 
 export const Route = createFileRoute("/cookie-policy")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/cookie-policy" }],
     meta: [
       { title: "Cookie Policy | VenMax Car Rental & Tours" },
       {
