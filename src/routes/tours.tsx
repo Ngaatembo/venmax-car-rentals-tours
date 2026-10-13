@@ -7,9 +7,18 @@ export const Route = createFileRoute("/tours")({
   head: () => ({
     links: [{ rel: "canonical", href: "https://venmax.co.zw/tours" }],
     meta: [
-      { property: "og:title", content: "Tours in Zimbabwe | VenMax Car Rental & Tours" },
-      { property: "og:description", content: "Custom Zimbabwe travel packages from VenMax — Victoria Falls, Hwange, Great Zimbabwe, Matobo Hills and Harare, with the vehicle and route sorted for you." },
-      { property: "og:url", content: "https://venmax.co.zw/tours" },
+      {
+        property: "og:title",
+        content: "Tours in Zimbabwe | VenMax Car Rental & Tours",
+      },
+      {
+        property: "og:description",
+        content: "Custom Zimbabwe travel packages from VenMax — Victoria Falls, Hwange, Great Zimbabwe, Matobo Hills and Harare, with the vehicle and route sorted for you.",
+      },
+      {
+        property: "og:url",
+        content: "https://venmax.co.zw/tours",
+      },
       { title: "Tours in Zimbabwe | VenMax Car Rental & Tours" },
       {
         name: "description",
