@@ -11,6 +11,7 @@ import {
 
 export const Route = createFileRoute("/about")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/about" }],
     meta: [
       { title: "About Us | VenMax Car Rental & Tours" },
       {
