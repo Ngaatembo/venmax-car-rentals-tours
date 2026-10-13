@@ -31,7 +31,8 @@ export const Route = createFileRoute("/contact")({
       },
       {
         property: "og:description",
-        content: "Message VenMax on WhatsApp, call or email us in Harare.",
+        content:
+          "Message VenMax on WhatsApp, call or email us in Harare.",
       },
     ],
   }),
