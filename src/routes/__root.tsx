@@ -11,6 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import socialImage from "@/assets/toyota-fortuner.jpg";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
@@ -19,6 +20,34 @@ import { CookieNotice } from "@/components/site/CookieNotice";
 import { SETTING_DEFAULTS, useSiteSettings, whatsappNumber } from "@/lib/site-settings";
 
 const DEFAULT_WHATSAPP = whatsappNumber({ ...SETTING_DEFAULTS });
+const SITE_URL = "https://venmax.co.zw";
+const socialImageUrl = socialImage.startsWith("http")
+  ? socialImage
+  : `${SITE_URL}${socialImage.startsWith("/") ? "" : "/"}${socialImage}`;
+
+const venmaxBusinessStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": `${SITE_URL}/#business`,
+  name: "VenMax Car Rental & Tours",
+  url: SITE_URL,
+  image: socialImageUrl,
+  logo: `${SITE_URL}/favicon.png`,
+  telephone: "+263 71 422 5314",
+  email: "sales@venmax.co.zw",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "27 Lawson Avenue",
+    addressLocality: "Milton Park, Harare",
+    addressCountry: "ZW",
+  },
+  sameAs: [
+    "https://www.facebook.com/profile.php?id=61576553241839",
+    "https://www.tiktok.com/@venmax.car.rentaltours",
+    "https://www.linkedin.com/company/venmax-car-rental-tours/",
+    "https://www.instagram.com/venmax_car_rental__tours",
+  ],
+};
 
 function NotFoundComponent() {
   return (
@@ -99,6 +128,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Affordable car rental in Zimbabwe with easy WhatsApp booking, for local and diaspora customers.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: socialImageUrl },
+      { property: "twitter:image", content: socialImageUrl },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
@@ -126,6 +157,10 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(venmaxBusinessStructuredData) }}
+          />
       </head>
       <body>
         {children}
