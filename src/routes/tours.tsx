@@ -13,7 +13,8 @@ export const Route = createFileRoute("/tours")({
       },
       {
         property: "og:description",
-        content: "Custom Zimbabwe travel packages from VenMax — Victoria Falls, Hwange, Great Zimbabwe, Matobo Hills and Harare, with the vehicle and route sorted for you.",
+        content:
+          "Custom Zimbabwe travel packages from VenMax — Victoria Falls, Hwange, Great Zimbabwe, Matobo Hills and Harare, with the vehicle and route sorted for you.",
       },
       {
         property: "og:url",
