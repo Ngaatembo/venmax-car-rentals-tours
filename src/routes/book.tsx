@@ -24,6 +24,7 @@ export const Route = createFileRoute("/book")({
   head: () => ({
     links: [{ rel: "canonical", href: "https://venmax.co.zw/book" }],
     meta: [
+      { property: "og:url", content: "https://venmax.co.zw/book" },
       { title: "Request a Quote | VenMax Car Rental & Tours" },
       {
         name: "description",
