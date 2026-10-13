@@ -9,6 +9,7 @@ import { useVehicles } from "@/lib/live-content";
 
 export const Route = createFileRoute("/chauffeur-service-harare")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://venmax.co.zw/chauffeur-service-harare" }],
     meta: [
       { title: "Chauffeur Service in Harare | VenMax Car Rental & Tours" },
       {
